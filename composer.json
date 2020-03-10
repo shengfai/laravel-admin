@@ -1,0 +1,34 @@
+{
+    "name": "shengfai\/laravel-admin",
+    "description": "An administrative interface package for Laravel",
+    "license": "MIT",
+    "keywords": ["laravel", "admin", "laravel admin"],
+    "authors": [
+        {
+            "name": "shengfai",
+            "email": "shengfai@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "laravel/framework": ">=5.7",
+        "spatie/laravel-permission": ">=3.0",
+        "spatie/laravel-activitylog": ">=3.0",
+        "laravel/ui": ">=2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Shengfai\\LaravelAdmin\\": "src"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Shengfai\\LaravelAdmin\\AdminServiceProvider"
+            ]
+        }
+    }
+}

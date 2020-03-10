@@ -1,0 +1,127 @@
+<?php
+
+namespace Shengfai\LaravelAdmin\Controllers;
+
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
+
+/**
+ * 权限控制器
+ * Class PermissionsController
+ *
+ * @package \Shengfai\LaravelAdmin\Controllers
+ * @author ShengFai <shengfai@qq.com>
+ * @version 2020年3月10日
+ */
+class PermissionsController extends Controller
+{
+    /**
+     * 页面标题
+     *
+     * @var string $title
+     */
+    protected $title = '系统权限管理';
+    
+    /**
+     * 守卫
+     *
+     * @var web
+     */
+    protected $defaultGuardName = 'web';
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param Permission $permission
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function index(Permission $permission)
+    {
+        // 获取权限列表
+        $permissions = $permission->where('guard_name', $this->defaultGuardName)->get();
+        
+        // 格式化分组
+        $groupedPermissions = $permissions->groupBy(function ($item) {
+            return Str::contains($item->name, '.') ? Str::before($item->name, '.') : 'pnode';
+        });
+        
+        return $this->view([
+            'groups' => $groupedPermissions->all()
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function create()
+    {
+        return $this->form();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @param Permission $permission
+     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
+    public function store(Request $request, Permission $permission)
+    {
+        // 添加记录
+        $permission->fill($request->all());
+        $permission = Permission::create($permission->toArray());
+        
+        // 添加日志
+        if ($permission->id) {
+            app(LogService::class)->console([
+                'action' => '添加权限',
+                'remark' => $permission->title
+            ]);
+        }
+        
+        return $this->success('数据保存成功', '');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param Permission $permission
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function edit(Permission $permission)
+    {
+        return $this->view(compact('permission'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param Permission $permission
+     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
+    public function update(Request $request, Permission $permission)
+    {
+        if ($permission->update($request->all())) {
+            return $this->success('恭喜, 数据保存成功!', '');
+        }
+        return $this->error('数据保存失败, 请稍候再试!');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Permission $permission
+     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
+    public function destroy(Permission $permission)
+    {
+        if ($permission->delete()) {
+            return $this->success('权限删除成功!', '');
+        }
+        return $this->error('权限删除失败, 请稍候再试!');
+    }
+}
