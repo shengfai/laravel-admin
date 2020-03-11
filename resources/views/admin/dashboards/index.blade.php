@@ -1,28 +1,41 @@
+<!-- 页面标签 -->
+<div class="layadmin-pagetabs" id="LAY_app_tabs">
+    <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+    <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+    <div class="layui-tab" lay-unauto="" lay-allowclose="true" lay-filter="layadmin-layout-tabs">
+      	<ul class="layui-tab-title" id="LAY_app_tabsheader">
+        	<li lay-id="{{ route('admin.dashboards.console') }}" lay-attr="{{ route('admin.dashboards.console') }}" class=""><i class="layui-icon layui-icon-home"></i><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></li>
+      		<li lay-id="{{ route('admin.dashboards.index') }}" lay-attr="{{ route('admin.dashboards.index') }}" class="layui-this"><span>仪表盘</span><i class="layui-icon layui-unselect layui-tab-close">ဆ</i></li>
+      	</ul>
+    </div>
+</div>
+	
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-sm6 layui-col-md3">
             <div class="layui-card">
                 <div class="layui-card-header">
-                    注册量 <span class="layui-badge layui-bg-orange layuiadmin-badge">7日</span>
+                    注册量 <span class="layui-badge layui-bg-blue layuiadmin-badge">7日</span>
                 </div>
                 <div class="layui-card-body layuiadmin-card-list">
                     <p class="layuiadmin-big-font text-center">
-                        <a data-tips-text="七日" data-open="{{ route('admin.consumers.index', ['days'=>7]) }}">0</a>
-                        <a data-tips-text="当天" data-open="{{ route('admin.consumers.index', ['days'=>1]) }}"><sub style="font-size: 14px">(0)</sub></a>
+                        <a data-tips-text="七日" data-open="">0</a>
+                        <a data-tips-text="当天" data-open=""><sub style="font-size: 14px">(0)</sub></a>
                     </p>
                     <p>
                         <span class="layuiadmin-middle-font">总注册量</span>
                         <span class="layuiadmin-span-color">
-                            <a data-open="{{ route('admin.consumers.index') }}">0</a>
+                            <a data-open="">0</a>
                         </span>
                     </p>
                 </div>
             </div>
         </div>
+        
         <div class="layui-col-sm6 layui-col-md3">
             <div class="layui-card">
                 <div class="layui-card-header">
-                    机构数 <span class="layui-badge layui-bg-orange layuiadmin-badge">7日</span>
+                    机构数 <span class="layui-badge layui-bg-cyan layuiadmin-badge">7日</span>
                 </div>
                 <div class="layui-card-body layuiadmin-card-list">
                     <p class="layuiadmin-big-font text-center">0</p>
@@ -33,10 +46,11 @@
                 </div>
             </div>
         </div>
+        
         <div class="layui-col-sm6 layui-col-md3">
             <div class="layui-card">
                 <div class="layui-card-header">
-                    任务数 <span class="layui-badge layui-bg-orange layuiadmin-badge">7日</span>
+                    任务数 <span class="layui-badge layui-bg-green layuiadmin-badge">7日</span>
                 </div>
                 <div class="layui-card-body layuiadmin-card-list">
                     <p class="layuiadmin-big-font text-center">0</p>
@@ -47,6 +61,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="layui-col-sm6 layui-col-md3">
             <div class="layui-card">
                 <div class="layui-card-header">
@@ -61,6 +76,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="layui-col-sm12">
             <div class="layui-card">
                 <div class="layui-card-header">
@@ -78,7 +94,7 @@
                         </div>
                         <div class="layui-col-sm4">
                             <div class="layuiadmin-card-list">
-                                <p class="layuiadmin-normal-font">月用户数：100000</p>
+                                <p class="layuiadmin-normal-font">周用户（100000）</p>
                                 <span>环比增加</span>
                                 <div class="layui-progress layui-progress-big" lay-showpercent="yes">
                                     <div class="layui-progress-bar" lay-percent="30%" style="width: 30%;">
@@ -87,7 +103,7 @@
                                 </div>
                             </div>
                             <div class="layuiadmin-card-list">
-                                <p class="layuiadmin-normal-font">月用户数：100000</p>
+                                <p class="layuiadmin-normal-font">周访问（100000）</p>
                                 <span>环比增加</span>
                                 <div class="layui-progress layui-progress-big" lay-showpercent="yes">
                                     <div class="layui-progress-bar" lay-percent="60%" style="width: 60%;">
@@ -96,11 +112,11 @@
                                 </div>
                             </div>
                             <div class="layuiadmin-card-list">
-                                <p class="layuiadmin-normal-font">月用户数：10000</p>
+                                <p class="layuiadmin-normal-font">周订单（10000）</p>
                                 <span>环比增加</span>
                                 <div class="layui-progress layui-progress-big" lay-showpercent="yes">
-                                    <div class="layui-progress-bar" lay-percent="90%" style="width: 90%;">
-                                        <span class="layui-progress-text">90%</span>
+                                    <div class="layui-progress-bar" lay-percent="80%" style="width: 80%;">
+                                        <span class="layui-progress-text">80%</span>
                                     </div>
                                 </div>
                             </div>

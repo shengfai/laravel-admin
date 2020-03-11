@@ -205,3 +205,21 @@ label{font-size:100%;font-weight:500;margin-bottom:0}
 .layuiadmin-card-list p.layuiadmin-normal-font {padding-bottom:10px;font-size:20px;color:#666;line-height:24px}
 .layuiadmin-card-list p.layuiadmin-big-font {font-size: 36px; color: #666; line-height: 36px; padding: 5px 0 10px; overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;}
 .layui-form-radio>i{font-size:18px;}
+
+/* 页面标签 */
+.layui-fluid{top:40px;}
+.layadmin-pagetabs{position: fixed; left: 220px; top: 50px; right: 0; z-index: 999; height: 40px; line-height: 40px; padding: 0 40px 0 40px; background-color: #fff; box-sizing: border-box; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); -webkit-transition: all .3s;}
+.layadmin-pagetabs .layui-tab{margin:0;overflow:hidden}
+.layadmin-pagetabs .layui-tab-title{height:40px;border:none}
+.layadmin-pagetabs .layui-tab-title li{min-width:0;line-height:40px;max-width:160px;text-overflow:ellipsis;padding-right:40px;overflow:hidden;border-right:1px solid #f6f6f6;vertical-align:top}
+.layadmin-pagetabs .layui-tab-title li:first-child{padding-right:15px}
+.layadmin-pagetabs .layui-tab-title li .layui-tab-close{position:absolute;right:8px;top:50%;margin:-7px 0 0;width:16px;height:16px;line-height:16px;border-radius:50%;font-size:12px}
+.layadmin-pagetabs .layui-tab-title li:after{content:'';position:absolute;top:0;left:0;width:0;height:2px;border-radius:0;background-color:#292B34;transition:all .3s;-webkit-transition:all .3s}
+.layadmin-pagetabs .layui-tab-title li:hover:after{width:100%}
+.layadmin-pagetabs .layui-tab-title li.layui-this,.layadmin-pagetabs .layui-tab-title li:hover{background-color:#f6f6f6}
+.layadmin-pagetabs .layui-tab-title li:first-child .layui-tab-close,.layadmin-tabs-select.layui-nav .layui-nav-bar,.layadmin-tabs-select.layui-nav .layui-nav-more{display:none}
+.layadmin-pagetabs .layadmin-tabs-control{position:absolute;top:0;width:40px;height:100%;text-align:center;cursor:pointer;transition:all .3s;-webkit-transition:all .3s;box-sizing:border-box;border-left:1px solid #f6f6f6}
+.layadmin-pagetabs .layadmin-tabs-control:hover{background-color:#f6f6f6}
+.layadmin-pagetabs .layui-icon-prev{left:0;border-left:none;border-right:1px solid #f6f6f6}
+.layadmin-pagetabs .layui-icon-next{right:0}
+.layadmin-pagetabs .layui-icon-down{right:0}
