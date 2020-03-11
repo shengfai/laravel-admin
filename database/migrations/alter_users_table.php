@@ -40,7 +40,7 @@ class AlterUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table(users, function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('type');
             $table->dropColumn('phone');
             $table->dropColumn('avatar');
