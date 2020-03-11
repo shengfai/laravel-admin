@@ -4,6 +4,7 @@ namespace Shengfai\LaravelAdmin\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Shengfai\LaravelAdmin\Handlers\ActivityHandler;
 
 /**
  * 角色控制器
@@ -68,6 +69,8 @@ class RolesController extends Controller
             'remark' => $request->remark
         ]);
         
+        ActivityHandler::console()->performedOn($role)->log('创建角色');
+        
         return $this->success('数据保存成功', '');
     }
 
@@ -108,6 +111,9 @@ class RolesController extends Controller
             'remark',
             'status'
         ]);
+        
+        ActivityHandler::console()->performedOn($role)->log('更新角色');
+        
         if ($role->update($request->all())) {
             return $this->success('恭喜, 数据保存成功!', '');
         }
@@ -125,6 +131,9 @@ class RolesController extends Controller
         if ($role->delete()) {
             return $this->success('角色删除成功!', '');
         }
+        
+        ActivityHandler::console()->performedOn($role)->log('删除角色');
+        
         return $this->error('角色删除失败, 请稍候再试!');
     }
 }

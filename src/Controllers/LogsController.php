@@ -3,6 +3,7 @@
 namespace Shengfai\LaravelAdmin\Controllers;
 
 use Illuminate\Http\Request;
+use Spatie\Activitylog\Models\Activity;
 
 /**
  * 日志控制器
@@ -19,17 +20,17 @@ class LogsController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @param Log $log
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, Log $log)
+    public function index(Request $request)
     {
-        $this->title = '系统日志管理';
+        $this->title = '系统日志';
+        
+        $queryBuilder = Activity::query();
         
         // 日志类型
-        $queryBuilder = $log;
         if ($request->filled('type')) {
-            $queryBuilder = $log->where('type', (int)$request->type);
+            $queryBuilder->where('log_name', $request->type);
         }
         $this->assign('type', $request->type);
         
@@ -39,10 +40,10 @@ class LogsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Log $log
+     * @param Activity $activity
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function show(Log $log)
+    public function show(Activity $log)
     {
         return $this->view(compact('log'));
     }

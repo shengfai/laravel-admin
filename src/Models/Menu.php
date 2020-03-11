@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Shengfai\LaravelAdmin\Traits\Scope;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Shengfai\LaravelAdmin\Contracts\Conventions;
+use Shengfai\LaravelAdmin\Traits\CustomActivityProperties;
 
 /**
  * 系统菜单模型
@@ -18,7 +21,7 @@ use Shengfai\LaravelAdmin\Traits\Scope;
  */
 class Menu extends Model
 {
-    use SoftDeletes, Scope;
+    use SoftDeletes, Scope, LogsActivity, CustomActivityProperties;
     
     /**
      * 可以被批量赋值的属性。
@@ -46,21 +49,28 @@ class Menu extends Model
     protected $appends = [
         'full_url'
     ];
-
+    
     /**
-     * 模型事件
+     * The attributes that need to be logged
      *
-     * @return void
+     * @var array
      */
-    public static function boot()
-    {
-        parent::boot();
-        
-        // 初始化模型
-        static::creating(function ($model) {
-            $model->initialize();
-        });
-    }
+    protected static $logAttributes = [
+        'parent_id',
+        'name',
+        'code',
+        'permission_id',
+        'url',
+        'params',
+        'status'
+    ];
+    
+    /**
+     * customizing the log name
+     *
+     * @var string
+     */
+    protected static $logName = Conventions::LOG_TYPE_CONSOLE;
 
     /**
      * 是否拥有父菜单
@@ -70,6 +80,23 @@ class Menu extends Model
     public function hasParent()
     {
         return $this->parent_id != 0;
+    }
+
+    /**
+     * customizing the description
+     *
+     * @param string $eventName
+     * @return string
+     */
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        if ($eventName == 'created') {
+            return '创建菜单';
+        } elseif ($eventName == 'deleted') {
+            return '删除菜单';
+        } else {
+            return '更新菜单';
+        }
     }
 
     /**

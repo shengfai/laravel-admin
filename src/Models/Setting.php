@@ -3,6 +3,9 @@
 namespace Shengfai\LaravelAdmin\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Shengfai\LaravelAdmin\Contracts\Conventions;
+use Shengfai\LaravelAdmin\Traits\CustomActivityProperties;
 
 /**
  * 系统配置
@@ -14,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Setting extends Model
 {
+    use LogsActivity, CustomActivityProperties;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +28,37 @@ class Setting extends Model
         'name',
         'value'
     ];
+    
+    /**
+     * all $fillable attributes changes will be logged
+     *
+     * @var string
+     */
+    protected static $logFillable = true;
+    
+    /**
+     * customizing the log name
+     *
+     * @var string
+     */
+    protected static $logName = Conventions::LOG_TYPE_CONSOLE;
+
+    /**
+     * customizing the description
+     *
+     * @param string $eventName
+     * @return string
+     */
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        if ($eventName == 'created') {
+            return '创建配置';
+        } elseif ($eventName == 'deleted') {
+            return '删除配置';
+        } else {
+            return '更新配置';
+        }
+    }
 
     /**
      * Value设置器

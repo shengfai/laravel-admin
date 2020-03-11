@@ -10,10 +10,9 @@
             <div class="layui-input-inline">
                 <select name="type" class="layui-select" lay-search="">
                     <option value="" >- 全部日志 -</option>
-                    <option value="1" @if($type==1) selected="selected" @endif>系统日志</option>
-                    <option value="2" @if($type==2) selected="selected" @endif>操作日志</option>
-                    <option value="3" @if($type==3) selected="selected" @endif>行为日志</option>
-                    <option value="4" @if($type==4) selected="selected" @endif>抓取日志</option>
+                    <option value="run" @if($type=='run') selected="selected" @endif>系统日志</option>
+                    <option value="console" @if($type=='console') selected="selected" @endif>操作日志</option>
+                    <option value="behavior" @if($type=='behavior') selected="selected" @endif>行为日志</option>
                 </select>
             </div>
         </div>
@@ -50,16 +49,26 @@
             @foreach ($list as $key => $vo)
             <tr>
                 <td class="list-table-check-td think-checkbox">
-                    <input class="list-check-box" value="{{ $vo['id'] }}" type="checkbox">
+                    <input class="list-check-box" value="{{ $vo->id }}" type="checkbox">
                 </td>
-                <td class="text-left">{{ $vo->type_format }}</td>
-                <td class="text-left">{{ $vo->user->name ?? '未设置'}}</td>
+                <td class="text-left">
+                	@if($vo->log_name =='run')
+                	<span>系统</span>
+                	@elseif($vo->log_name =='console')
+                	<span>操作</span>
+                	@elseif($vo->log_name =='behavior')
+                	<span>行为</span>
+                	@else
+                	<span>其他</span>
+                	@endif
+                </td>
+                <td class="text-left">{{ $vo->causer->name ?? '未设置'}}</td>
                 <td class="text-left">{{ $vo->ip }}</td>
                 <td class="text-left">{{ $vo->method }}</td>
                 <td class="text-left">{{ $vo->host }}</td>
                 <td class="text-left">{{ $vo->node }}</td>
-                <td class="text-left">{{ $vo->action }}</td>
-                <td class="text-left">{{ $vo->remark }}</td>
+                <td class="text-left"></td>
+                <td class="text-left">{{ $vo->description }}</td>
                 <td class="text-left">{{ $vo->created_at->diffForHumans() }}</td>
                 <td class="text-left">
                     <span class="text-explode">|</span>

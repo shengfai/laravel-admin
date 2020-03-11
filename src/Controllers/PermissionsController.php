@@ -5,6 +5,7 @@ namespace Shengfai\LaravelAdmin\Controllers;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
+use Shengfai\LaravelAdmin\Handlers\ActivityHandler;
 
 /**
  * 权限控制器
@@ -76,10 +77,7 @@ class PermissionsController extends Controller
         
         // 添加日志
         if ($permission->id) {
-            app(LogService::class)->console([
-                'action' => '添加权限',
-                'remark' => $permission->title
-            ]);
+            ActivityHandler::console()->performedOn($permission)->log('添加权限');
         }
         
         return $this->success('数据保存成功', '');
@@ -106,6 +104,7 @@ class PermissionsController extends Controller
     public function update(Request $request, Permission $permission)
     {
         if ($permission->update($request->all())) {
+            ActivityHandler::console()->performedOn($permission)->log('更新权限');
             return $this->success('恭喜, 数据保存成功!', '');
         }
         return $this->error('数据保存失败, 请稍候再试!');
@@ -120,6 +119,7 @@ class PermissionsController extends Controller
     public function destroy(Permission $permission)
     {
         if ($permission->delete()) {
+            ActivityHandler::console()->performedOn($permission)->log('删除权限');
             return $this->success('权限删除成功!', '');
         }
         return $this->error('权限删除失败, 请稍候再试!');

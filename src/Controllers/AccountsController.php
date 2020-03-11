@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Shengfai\LaravelAdmin\Contracts\Conventions;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Shengfai\LaravelAdmin\Handlers\ActivityHandler;
 
 /**
  * 登录界面
@@ -37,6 +38,8 @@ class AccountsController extends Controller
      */
     public function sendFailedLoginResponse()
     {
+        ActivityHandler::console()->log('授权失败');
+        
         return $this->error('输入的账号或者密码有误');
     }
 
@@ -74,7 +77,7 @@ class AccountsController extends Controller
      */
     protected function authenticated(Request $request, User $user)
     {
-        // @todo 记录日志
+        ActivityHandler::console()->performedOn($user)->log('授权登录');
         
         return $this->success('登录成功，正在进入系统...', route('admin.dashboards.console'));
     }
@@ -87,8 +90,9 @@ class AccountsController extends Controller
      */
     public function logout(Request $request)
     {
-        $this->guard()->logout();
+        ActivityHandler::console()->performedOn($request->user())->log('退出登录');
         
+        $this->guard()->logout();
         $request->session()->invalidate();
         
         return redirect(route('admin.login'));

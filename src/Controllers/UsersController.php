@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasPermissions;
 use Shengfai\LaravelAdmin\Contracts\Conventions;
+use Shengfai\LaravelAdmin\Handlers\ActivityHandler;
 
 /**
  * 用户控制台
@@ -80,6 +81,8 @@ class UsersController extends Controller
         if ($request->roles) {
             $user->assignRole($request->roles);
         }
+        
+        ActivityHandler::console()->performedOn($user)->log('创建用户');
         
         return $this->success('数据保存成功', '');
     }
@@ -161,6 +164,8 @@ class UsersController extends Controller
             
             // 绑定角色
             $user->assignRole($request->roles);
+            
+            ActivityHandler::console()->performedOn($user)->log('用户授权');
         }
         
         // 更新用户

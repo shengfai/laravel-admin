@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Models\Permission;
 use Shengfai\LaravelAdmin\Handlers\DataHandler;
+use Shengfai\LaravelAdmin\Handlers\ActivityHandler;
 
 /**
  * 角色授权
@@ -70,6 +71,8 @@ class AuthorizationsController extends Controller
         
         // 增加权限
         $role->givePermissionTo($request->nodes);
+        
+        ActivityHandler::console()->performedOn($role)->log('角色授权');
         
         return $this->success('节点授权更新成功！', '');
     }
