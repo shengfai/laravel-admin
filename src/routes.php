@@ -30,7 +30,11 @@ Route::middleware('web')->group(function () {
                 Route::group([
                     'namespace' => config('administrator.namespace')
                 ], function () {
-                    return config('administrator.custom_routes_file');
+                    with(config('administrator.custom_routes_file'), function ($routes_file) {
+                       if( file_exists($routes_file)) {
+                            include config('administrator.custom_routes_file');
+                        }
+                    });
                 });
                 
                 // 登录/登出
