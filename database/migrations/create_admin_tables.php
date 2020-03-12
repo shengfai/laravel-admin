@@ -39,22 +39,20 @@ class CreateAdminTables extends Migration
             $table->timestamps();
         });
         
-        // 日志
-        Schema::create('logs', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedTinyInteger('type')->default(1)->comment('日志类别');
-            $table->unsignedSmallInteger('behavior_id')->default(0)->nullable();
-            $table->morphs('owner');
-            $table->ipAddress('ip')->comment('操作者IP');
-            $table->string('user_agent', 512)->comment('操作者UserAgent');
-            $table->string('method', 32)->comment('操作方法');
-            $table->string('host', 128)->comment('主机');
-            $table->string('node', 128)->comment('当前节点');
-            $table->mediumText('params')->comment('提交数据');
-            $table->string('action', 64)->comment('操作行为');
-            $table->string('remark', 256)->nullable()->comment('备注');
+        // 分类
+        Schema::create('types', function (Blueprint $table) {
+            $table->unsignedMediumInteger('id', true);
+            $table->unsignedMediumInteger('parent_id')->default(0);
+            $table->string('model_type', 32)->index()->comment('适用模型');
+            $table->string('name', 32)->comment('名称');
+            $table->string('identifier', 32)->nullable()->comment('标识');
+            $table->string('cover_pic', 128)->nullable()->comment('封面');
+            $table->string('description')->nullable()->comment('描述');
+            $table->boolean('is_recommend')->default(false)->comment('推荐');
+            $table->unsignedTinyInteger('sort')->default(0)->comment('排序');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
-        });
+		});
     }
 
     /**
@@ -66,6 +64,6 @@ class CreateAdminTables extends Migration
     {
         Schema::dropIfExists('menus');
         Schema::drop('settings');
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('types');
     }
 }
