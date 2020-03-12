@@ -5,6 +5,7 @@ namespace Shengfai\LaravelAdmin\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Shengfai\LaravelAdmin\Traits\Scope;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * 分类模型
@@ -73,5 +74,21 @@ class Type extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * 查询指定父节点记录
+     *
+     * @param Builder $query
+     * @param int $parent_id
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfParent(Builder $query, int $parent_id = null)
+    {
+        if (is_null($parent_id)) {
+            return $query;
+        }
+        
+        return $query->where('parent_id', $parent_id);
     }
 }
