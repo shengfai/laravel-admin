@@ -223,3 +223,6 @@ label{font-size:100%;font-weight:500;margin-bottom:0}
 .layadmin-pagetabs .layui-icon-prev{left:0;border-left:none;border-right:1px solid #f6f6f6}
 .layadmin-pagetabs .layui-icon-next{right:0}
 .layadmin-pagetabs .layui-icon-down{right:0}
+
+/* 页面标题  */
+.page-subject{background: #fff; height: 42px; line-height: 42px; padding: 0 15px; border-bottom: 1px solid #f6f6f6; color: #333; border-radius: 2px 2px 0 0; font-size: 14px;}

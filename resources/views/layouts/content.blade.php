@@ -2,13 +2,6 @@
 @yield('style')
 <div class="layui-content">
 
-	{{--
-    <div class="layui-header notselect">
-        <div class="pull-left"><h5>@yield('title', $title)</h5></div>
-        <div class="pull-right margin-right-15 nowrap">@yield('button')</div>
-    </div>
-    --}}
-    
     <!-- 页面标签 -->
     <div class="layadmin-pagetabs" id="LAY_app_tabs">
         <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
@@ -31,6 +24,10 @@
             @isset($alert['content'])<p style="font-size:14px">{!! $alert['content'] !!}</p>@endisset
         </div>
         @endisset
+         <div class="layui-header notselect page-subject">
+            <div class="pull-left">@yield('title', $title)</div>
+            <div class="pull-right margin-right-15 nowrap">@yield('button')</div>
+        </div>
         @yield('content')
     </div>
 </div>
