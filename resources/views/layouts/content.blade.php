@@ -26,7 +26,7 @@
         @endisset
          <div class="layui-header notselect page-subject">
             <div class="pull-left">@yield('title', $title)</div>
-            <div class="pull-right margin-right-15 nowrap">@yield('button')</div>
+            <div class="pull-right nowrap">@yield('button')</div>
         </div>
         @yield('content')
     </div>
