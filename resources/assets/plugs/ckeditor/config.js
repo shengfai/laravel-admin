@@ -25,7 +25,7 @@
             editor.addCommand('uimage', {
                 exec: function (editor) {
                     var field = '_editor_upload_' + Math.floor(Math.random() * 100000);
-                    var url = window.ROOT_URL + '/plugs/upfile.html?mode=one&type=png,jpg,gif,jpeg&field=' + field;
+                    var url = window.ROOT_URL + 'plugs/upfile.html?mode=one&type=png,jpg,gif,jpeg&field=' + field;
                     $('<input type="hidden">').attr('name', field).appendTo(editor.element.$).on('change', function () {
                         var element = CKEDITOR.dom.element.createFromHtml('<img src="' + this.value + '" border="0" title="image" />');
                         editor.insertElement(element), $(this).remove();

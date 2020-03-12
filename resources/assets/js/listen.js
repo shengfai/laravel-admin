@@ -82,7 +82,7 @@ define(['jquery', 'admin.plugs'], function () {
         var method = $(this).attr('data-file') === 'one' ? 'one' : 'mtl';
         var type = $(this).attr('data-type') || 'jpg,png', field = $(this).attr('data-field') || 'file';
         var title = $(this).attr('data-title') || '文件上传', uptype = $(this).attr('data-uptype') || '';
-        var url = window.ROOT_URL + '/plugs/upfile.html?mode=' + method + '&uptype=' + uptype + '&type=' + type + '&field=' + field;
+        var url = window.ROOT_URL + 'plugs/upfile.html?mode=' + method + '&uptype=' + uptype + '&type=' + type + '&field=' + field;
         $.form.iframe(url, title || '文件管理');
     });
 
@@ -94,7 +94,7 @@ define(['jquery', 'admin.plugs'], function () {
     /*! 注册 data-icon 事件行为 */
     this.$body.on('click', '[data-icon]', function () {
         var field = $(this).attr('data-icon') || $(this).attr('data-field') || 'icon';
-        var url = window.ROOT_URL + '/admin/plugs/icon.html?field=' + field;
+        var url = window.ROOT_URL + 'plugs/icon.html?field=' + field;
         $.form.iframe(url, '图标选择');
     });
 
