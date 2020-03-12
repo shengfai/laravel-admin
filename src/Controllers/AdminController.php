@@ -247,7 +247,7 @@ abstract class AdminController extends BaseController
             $method = $this->getCurrentMethodName();
             $action = empty($view) ? in_array($method, ['create', 'edit']) ? 'form' : $method : $view;
             $controller = $this->getCurrentControllerName(true);
-            $this->view = "admin::admin.{$controller}.{$action}";
+            $this->view = "admin::{$controller}.{$action}";
         }
         
         return view($this->view, $data);
