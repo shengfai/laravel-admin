@@ -58,7 +58,7 @@ return [
      */
     'global_rows_per_page' => 20,
                 
-    'custom_routes_file' => app_path('routes/administrator.php'),
+    'custom_routes_file' => base_path('routes/administrator.php'),
                 
     'allowed_upload_file_exts' => [
         'ico',
