@@ -31,7 +31,7 @@ class DashboardsController extends Controller
         // 转化为树形结构
         $menus = DataHandler::arr2tree($collection->toArray());
         
-        return view('admin::admin.console', compact('menus'));
+        return view('admin::console', compact('menus'));
     }
 
     /**
