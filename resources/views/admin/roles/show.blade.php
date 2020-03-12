@@ -6,20 +6,26 @@ ul.ztree li{white-space:normal!important}
 ul.ztree li span.button.switch{margin-right:5px}
 ul.ztree ul ul li{display:inline-block;white-space:normal}
 ul.ztree>li{padding:15px 25px 15px 15px}
-ul.ztree>li>ul{margin-top:12px;border-top:1px solid rgba(0,0,0,.1)}
+ul.ztree>li>ul{margin-top:12px;}
 ul.ztree>li>ul>li{padding:5px}
 ul.ztree>li>a>span{font-size:15px;font-weight:700}
 </style>
 @stop
 
 @section('content')
-<ul id="zTree" class="ztree loading">
-    <li></li>
-</ul>
-<div class="hr-line-dashed"></div>
-<div class="layui-form-item text-center">
-    <button class="layui-btn" data-submit-role type='button'>保存数据</button>
-    <button class="layui-btn layui-btn-danger" type='button' onclick="window.history.back()">取消编辑</button>
+<div class="layui-card">
+	<div class="layui-card-body">
+		<ul id="zTree" class="ztree loading">
+    		<li></li>
+		</ul>
+		<div class="hr-line-dashed"></div>
+        <div class="layui-form-item text-center">
+        	<div class="layui-footer">
+            	<button class="layui-btn" data-submit-role type='button'>保存数据</button>
+            	<button class="layui-btn layui-btn-danger" type='button' onclick="window.history.back()">取消编辑</button>
+            </div>
+        </div>
+    </div>
 </div>
 @stop
 
