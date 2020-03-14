@@ -91,4 +91,20 @@ class Type extends Model
         
         return $query->where('parent_id', $parent_id);
     }
+
+    /**
+     * 查询指定模型记录
+     *
+     * @param Builder $query
+     * @param string $model
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfModel(Builder $query, string $model = null)
+    {
+        if (is_null($model)) {
+            return $query;
+        }
+        
+        return $query->where('model_type', $model);
+    }
 }
