@@ -15,7 +15,7 @@ use Shengfai\LaravelAdmin\Models\Type;
  */
 class TypesController extends Controller
 {
-    
+
     /**
      * 页面标题
      *
@@ -27,17 +27,16 @@ class TypesController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @param Type $type
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Shengfai\LaravelAdmin\Controllers\unknown[]|\Shengfai\LaravelAdmin\Controllers\string[]|\Shengfai\LaravelAdmin\Controllers\NULL[]|\Shengfai\LaravelAdmin\Controllers\number[]
      */
-    public function index(Request $request, Type $type)
+    public function index(Request $request)
     {
-        $type = $type->ofType(get_associate_model($request->model), 'model_type');
-        
+        $queryBuilder = Type::query()->ofModel($request->model);
+
         // 当前分类
         $this->buildModelTypes($request->model);
-        
-        return $this->list($type);
+
+        return $this->list($queryBuilder);
     }
 
     /**
@@ -50,7 +49,7 @@ class TypesController extends Controller
     {
         // 获取上级类型
         $this->buildModelTypes($model);
-        
+
         return $this->form();
     }
 
@@ -65,21 +64,17 @@ class TypesController extends Controller
     public function store(Request $request, Type $type)
     {
         try {
-            
-            $data = $request->all();
-            
-            $data['user_id'] = auth()->user()->id;
-            
-            $data['model_type'] = get_associate_model($data['model']);
-            
-            $type->fill($data);
-            
+
+            $type->fill($request->all());
+
+            $type->user_id = auth()->user()->id;
+
             $type->save();
-            
+
             return $this->success('数据添加成功', '');
-        
+
         } catch (\Exception $e) {
-            
+
             return $this->error('数据添加失败', '', $e);
         }
     }
@@ -95,10 +90,10 @@ class TypesController extends Controller
     {
         // 获取类别记录
         $this->assign('type', $type);
-        
+
         // 获取上级类型
         $this->buildModelTypes($model);
-        
+
         return $this->form();
     }
 
@@ -113,35 +108,33 @@ class TypesController extends Controller
     {
         try {
             $type = Type::query()->where('id', $id)->first();
-            
+
             $type->fill($request->all());
-            
+
             $type->save();
-            
+
             return $this->success('数据更新成功', '');
-        
+
         } catch (\Exception $e) {
-        
+
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param Type $type
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
-    public function destroy(int $id)
+    public function destroy(Type $type)
     {
-        $type = Type::query()->find($id);
-        
         // 判断子元素
         if ($type->children->isNotEmpty()) {
             return $this->error('请先删除该类型下的子类型', '');
         }
-        
+
         $type->delete();
-        
+
         return $this->success('数据删除成功', '');
     }
 
@@ -153,22 +146,15 @@ class TypesController extends Controller
      */
     protected function buildModelTypes(string $model)
     {
+        $class = strtolower(class_basename($model));
+
         // 模型
-        switch ($model) {
-            case 'feedback':
-                $this->title = '反馈类别';
-                break;
-            default:
-                break;
-        }
+        $this->title = config('administrator.types_title')[$class];
         $this->assign('model', $model);
-        
+
         // 获取上级类型
-        $parentTypes = Type::query()->where([
-            'parent_id' => 0,
-            'model_type' => get_associate_model($model)
-        ])->get();
-        
+        $parentTypes = Type::query()->ofModel($model)->ofParent(0)->get();
+
         $this->assign('parent_types', $parentTypes);
     }
 }

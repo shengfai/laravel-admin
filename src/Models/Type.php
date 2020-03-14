@@ -47,6 +47,18 @@ class Type extends Model
     ];
 
     /**
+     * 判断该分类是否被使用
+     *
+     * @return boolean
+     */
+    public function isUsed()
+    {
+        $class = 'App\Models\\' . $this->model_type;
+        
+        return $class::ofType($this->id)->exists();
+    }
+
+    /**
      * 父类型
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -105,6 +117,19 @@ class Type extends Model
             return $query;
         }
         
-        return $query->where('model_type', $model);
+        $class = ucfirst(class_basename($model));
+        return $query->where('model_type', $class);
+    }
+
+    /**
+     * 模型设置器
+     *
+     * @param string $url
+     * @return string
+     */
+    public function setModelTypeAttribute($value)
+    {
+        $class = ucfirst(class_basename($model));
+        $this->attributes['model_type'] = $class;
     }
 }

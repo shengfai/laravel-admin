@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+    
     /*
      * Domain for routing.
      * @type string
@@ -57,9 +57,11 @@ return [
      * @type int
      */
     'global_rows_per_page' => 20,
-                
+    
+    // 自定义路由文件
     'custom_routes_file' => base_path('routes/administrator.php'),
-                
+    
+    // 运行上传文件后缀
     'allowed_upload_file_exts' => [
         'ico',
         'png',
@@ -69,5 +71,8 @@ return [
         'mp4',
         'mov',
         'mp3'
-    ]
+    ],
+    
+    // 类别名称
+    'types_title' => []
 ];
