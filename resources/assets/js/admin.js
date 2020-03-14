@@ -280,6 +280,18 @@ $(function () {
                     var $all = $('a[data-menu-node]'), tmp = node.split('-'), tmpNode = tmp.shift();
                     while (tmp.length > 0) {
                         tmpNode = tmpNode + '-' + tmp.shift();
+                        if ($('a[data-menu-node="' + tmpNode + '"]').attr('data-menu-node') == tmpNode && tmpNode.split('-').length > 2) {
+                            var txt = $('a[data-menu-node="' + tmpNode + '"]').text();
+                            var dataOpen = $('a[data-menu-node="' + tmpNode + '"]').attr('data-open');
+                            if (localStorage.menu) {
+                                if ($('#LAY_app_tabsheader').find('li[lay-id="' + tmpNode + '"]').length <= 0) {
+                                    $('#LAY_app_tabsheader li').removeClass('layui-this');
+                                    $('#LAY_app_tabsheader').append('<li lay-id="' + tmpNode + '" class="layui-this"><a class="transition" data-open="' + dataOpen + '">' + txt + '</a><i class="layui-icon layui-unselect layui-tab-close" data-close="topLabel">ဆ</i></li>')
+                                }
+                            }
+
+                        }
+
                         $all = $all.not($('a[data-menu-node="' + tmpNode + '"]').addClass('active'));
                     }
                     $all.removeClass('active');
@@ -299,7 +311,11 @@ $(function () {
             window.onhashchange.call(this);
         };
     };
-
+    $('#LAY_app_tabsheader').on('click', '.layui-tab-close', function() {
+        if ($('#LAY_app_tabsheader li').length > 2) {
+            $(this).parent().remove();
+        }
+    });
     // 注册对象到Jq
     $.vali = function (form, callback, options) {
         return (new function () {

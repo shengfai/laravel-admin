@@ -1,4 +1,3 @@
-
 define(['jquery', 'admin.plugs'], function () {
 
     /*! 定义当前body对象 */
