@@ -24,10 +24,12 @@
             @isset($alert['content'])<p style="font-size:14px">{!! $alert['content'] !!}</p>@endisset
         </div>
         @endisset
+        @isset($title)
          <div class="layui-header notselect page-subject">
             <div class="pull-left">@yield('title', $title)</div>
             <div class="pull-right nowrap">@yield('button')</div>
         </div>
+        @endisset
         @yield('content')
     </div>
 </div>
