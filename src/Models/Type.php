@@ -129,7 +129,7 @@ class Type extends Model
      */
     public function setModelTypeAttribute($value)
     {
-        $class = ucfirst(class_basename($model));
+        $class = ucfirst(class_basename($value));
         $this->attributes['model_type'] = $class;
     }
 }
