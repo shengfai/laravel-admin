@@ -14,6 +14,24 @@ class DataHandler
 {
 
     /**
+     * 获取百分比
+     *
+     * @param int $value
+     * @param int $total
+     * @param int $precision
+     * @return float
+     */
+    public static function getPercentageValue(int $value, int $total, int $precision = 4)
+    {
+        // 总数为空
+        if ($total <= 0) {
+            return sprintf("%01.2f", 50);
+        }
+        
+        return sprintf("%01.2f", (round($value / $total, $precision) * 100));
+    }
+
+    /**
      * 一维数据数组生成数据树
      *
      * @param array $array 数据列表
