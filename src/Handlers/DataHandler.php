@@ -25,7 +25,7 @@ class DataHandler
     {
         // 总数为空
         if ($total <= 0) {
-            return sprintf("%01.2f", 50);
+            return sprintf("%01.2f", 0);
         }
         
         return sprintf("%01.2f", (round($value / $total, $precision) * 100));
