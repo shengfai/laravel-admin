@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasPermissions;
-use Shengfai\LaravelAdmin\Contracts\Conventions;
 use Shengfai\LaravelAdmin\Handlers\ActivityHandler;
 
 /**
@@ -74,7 +73,7 @@ class UsersController extends Controller
         
         // 更新用户
         $user->fill($request->all());
-        $user->type = Conventions::USER_TYPE_ADMIN;
+        $user->type = User::TYPE_ADMINISTRATOR;
         $user->save();
         
         // 更新绑定角色
@@ -82,7 +81,7 @@ class UsersController extends Controller
             $user->assignRole($request->roles);
         }
         
-        ActivityHandler::console()->performedOn($user)->log('创建用户');
+        ActivityHandler::console()->performedOn($user)->log('授权用户');
         
         return $this->success('数据保存成功', '');
     }
