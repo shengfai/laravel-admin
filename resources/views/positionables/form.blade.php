@@ -10,7 +10,7 @@
         <label class="layui-form-label">对象模型</label>
         <div class="layui-input-block">
         	<select name="positionable_type"  required="required" class="layui-select">
-                @foreach(config('administrator.position.available_models') as $vo)
+                @foreach(config('administrator.available_positioned_models') as $vo)
 				<option  selected value="{{ $vo['model'] }}">{{ $vo['name']  }}</option>
                 @endforeach
             </select>
