@@ -4,28 +4,29 @@ namespace Shengfai\LaravelAdmin\Controllers;
 
 use Illuminate\Http\Request;
 use Shengfai\LaravelAdmin\Models\Position;
-use Shengfai\LaravelAdmin\Models\PositionData;
+use Shengfai\LaravelAdmin\Models\Positionable;
 use Shengfai\LaravelAdmin\Contracts\Conventions;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * 推荐位控制器
- * Class PositionDatasController
+ * Class PositionablesController
  *
  * @package \Shengfai\LaravelAdmin\Controllers
  * @author ShengFai <shengfai@qq.com>
  * @version 2020年3月10日
  */
-class PositionDatasController extends Controller
+class PositionablesController extends Controller
 {
 
     /**
      * Display a listing of the resource.
      *
      * @param Position $position
-     * @param PositionData $positionData
+     * @param Positionable $positionable
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Shengfai\LaravelAdmin\Controllers\unknown[]|\Shengfai\LaravelAdmin\Controllers\string[]|\Shengfai\LaravelAdmin\Controllers\NULL[]|\Shengfai\LaravelAdmin\Controllers\number[]
      */
-    public function index(Position $position, PositionData $positionData)
+    public function index(Position $position, Positionable $positionable)
     {
         $this->title = $position->name;
         
@@ -38,7 +39,7 @@ class PositionDatasController extends Controller
         
         // 关联模板主题
         $this->assign('position', $position);
-        $queryBuilder = $positionData->where('position_id', '=', $position->id);
+        $queryBuilder = $positionable->where('position_id', '=', $position->id);
         
         return $this->list($queryBuilder);
     }
@@ -62,17 +63,25 @@ class PositionDatasController extends Controller
      */
     public function push(Request $request)
     {
-        // 获取推荐对象
-        $target = get_target_object($request->target_type, $request->target_id);
-        $data = collect($target->getPushDataForPosition())->toJson();
+        try {
+            
+            // 获取推荐对象
+            $target = with($request, function ($model) {
+                return $model->positionable_type::findOrFail($model->positionable_id);
+            });
+            $data = collect($target->getPositionedData())->toJson();
+            
+            $this->assign('data', json_decode($data));
+            
+            // 获取推荐位
+            $positions = Position::ofSort()->get();
+            $this->assign('positions', $positions);
+            
+            return $this->view();
         
-        $this->assign('data', json_decode($data));
-        
-        // 获取推荐位
-        $positions = Position::ofSort()->get();
-        $this->assign('positions', $positions);
-        
-        return $this->view();
+        } catch (ModelNotFoundException $e) {
+            return $this->error('推荐数据不存在, 请检查后重试!');
+        }
     }
 
     /**
@@ -83,29 +92,37 @@ class PositionDatasController extends Controller
      */
     public function store(Request $request)
     {
-        $positionData = PositionData::updateOrCreate([
-            'position_id' => $request->position_id,
-            'target_type' => $request->target_type,
-            'target_id' => $request->target_id
-        ], [
-            'title' => $request->title,
-            'cover_pic' => $request->cover_pic,
-            'description' => $request->description
-        ]);
-        
-        if ($positionData) {
+        try {
+            
+            // 判断记录是否存在
+            $target = with($request, function ($model) {
+                return $model->positionable_type::findOrFail($model->positionable_id);
+            });
+            
+            $positionable = Positionable::updateOrCreate([
+                'position_id' => $request->position_id,
+                'positionable_type' => $request->positionable_type,
+                'positionable_id' => $request->positionable_id
+            ], [
+                'title' => $request->title,
+                'cover_pic' => $request->cover_pic,
+                'description' => $request->description
+            ]);
+            
             return $this->success('恭喜, 数据保存成功!', '');
+        
+        } catch (ModelNotFoundException $e) {
+            return $this->error('推荐数据不存在, 请检查后重试!');
         }
-        return $this->error('数据保存失败, 请稍候再试!');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param PositionData $data
+     * @param Positionable $data
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function edit(PositionData $data)
+    public function edit(Positionable $data)
     {
         $this->assign('data', $data);
         $this->view = 'admin.positiondatas.push';
@@ -116,10 +133,10 @@ class PositionDatasController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param PositionData $data
+     * @param Positionable $data
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
-    public function update(Request $request, PositionData $data)
+    public function update(Request $request, Positionable $data)
     {
         $data->fill($request->all());
         if ($data->update()) {
@@ -131,9 +148,9 @@ class PositionDatasController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param PositionData $data
+     * @param Positionable $data
      */
-    public function destroy(PositionData $data)
+    public function destroy(Positionable $data)
     {
         $data->delete();
         return $this->success('数据保存成功', '');

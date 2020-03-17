@@ -2,20 +2,20 @@
 
 namespace Shengfai\LaravelAdmin\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Shengfai\LaravelAdmin\Traits\Scope;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * 推荐数据模型
- * Class PositionData
+ * Class Positionable
  *
  * @package \Shengfai\LaravelAdmin\Models
  * @author ShengFai <shengfai@qq.com>
  * @version 2020年3月10日
  */
-class PositionData extends Model
+class Positionable extends Pivot
 {
     use Scope;
     
@@ -26,11 +26,12 @@ class PositionData extends Model
      */
     protected $fillable = [
         'position_id',
-        'target_type',
-        'target_id',
+        'positionable_type',
+        'positionable_id',
         'title',
         'cover_pic',
-        'description'
+        'description',
+        'sort'
     ];
     
     /**
@@ -47,7 +48,7 @@ class PositionData extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function target(): MorphTo
+    public function positionable(): MorphTo
     {
         return $this->morphTo();
     }

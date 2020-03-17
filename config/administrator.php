@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 return [
     
     /*
@@ -74,5 +76,15 @@ return [
     ],
     
     // 类别名称
-    'types_title' => []
+    'types_title' => [],
+                
+    // 可推荐模型
+    'position' => [
+        'available_models' => [
+            'user' => [
+                'name' => '用户模型',
+                'model' => User::class
+            ]
+        ]
+    ]
 ];

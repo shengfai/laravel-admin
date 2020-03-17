@@ -53,6 +53,30 @@ class CreateAdminTables extends Migration
             $table->unsignedInteger('user_id');
             $table->timestamps();
 		});
+        
+        // 推荐位
+        Schema::create('positions', function (Blueprint $table) {
+            $table->unsignedSmallInteger('id', true);
+            $table->string('name', 32)->comment('名称');
+            $table->string('cover_pic', 64)->default('')->nullable()->comment('封面');
+            $table->string('description', 128)->default('')->nullable()->comment('描述');
+            $table->unsignedTinyInteger('sort')->default(0)->comment('排序');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+        
+        // 推荐内容
+        Schema::create('positionable', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedSmallInteger('position_id');
+            $table->foreign('position_id')->references('id')->on('positions')->onDelete('cascade');
+            $table->morphs('positionable');
+            $table->string('title', 64)->comment('名称');
+            $table->string('cover_pic', 64)->default('')->nullable()->comment('封面/Logo');
+            $table->string('description', 512)->default('')->nullable()->comment('描述');
+            $table->unsignedTinyInteger('sort')->default(0);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -65,5 +89,7 @@ class CreateAdminTables extends Migration
         Schema::dropIfExists('menus');
         Schema::drop('settings');
         Schema::dropIfExists('types');
+        Schema::dropIfExists('positions');
+        Schema::dropIfExists('positionable');
     }
 }

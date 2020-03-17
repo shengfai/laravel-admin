@@ -50,7 +50,6 @@ class PositionsController extends Controller
      */
     public function store(Request $request, Position $position)
     {
-        
         $position->fill($request->all());
         $position->save();
         
@@ -107,20 +106,5 @@ class PositionsController extends Controller
         $position->delete();
         
         return $this->success('数据删除成功！', '');
-    }
-
-    /**
-     * 绑定相应专题
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
-     */
-    public function model(Request $request)
-    {
-        $model = $request->input('model');
-        
-        $data = $model::all();
-        
-        return $this->success($data, '');
     }
 }

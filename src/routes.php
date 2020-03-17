@@ -69,10 +69,10 @@ Route::middleware('web')->group(function () {
                                                                                                                                                         
                 // 推荐位管理
                 Route::resource('positions', 'Shengfai\LaravelAdmin\Controllers\PositionsController'); // 推荐位
-                Route::get('positions/{position}/datas', 'Shengfai\LaravelAdmin\Controllers\PositionDatasController@index')->name('positions.datas.index'); // 获取推荐内容
-                Route::get('positions/{position}/create', 'Shengfai\LaravelAdmin\Controllers\PositionDatasController@create')->name('positions.datas.create'); // 添加推送内容
-                Route::get('positions/datas/push', 'Shengfai\LaravelAdmin\Controllers\PositionDatasController@push')->name('positions.datas.push'); // 推送内容
-                Route::resource('positions/datas', 'Shengfai\LaravelAdmin\Controllers\PositionDatasController'); // 推荐位内容
+                Route::get('positions/{position}/datas', 'Shengfai\LaravelAdmin\Controllers\PositionablesController@index')->name('positions.datas.index'); // 获取推荐内容
+                Route::get('positions/{position}/create', 'Shengfai\LaravelAdmin\Controllers\PositionablesController@create')->name('positions.datas.create'); // 添加推送内容
+                Route::get('positions/datas/push', 'Shengfai\LaravelAdmin\Controllers\PositionablesController@push')->name('positions.datas.push'); // 推送内容
+                Route::resource('positions/datas', 'Shengfai\LaravelAdmin\Controllers\PositionablesController'); // 推荐位内容
                 Route::get('positions/models/types', 'Shengfai\LaravelAdmin\Controllers\PositionsController@model')->name('positions.models'); // 推荐内容的种类
                                                                                                                                                
                 // 插件其他

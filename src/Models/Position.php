@@ -36,6 +36,6 @@ class Position extends Model
      */
     public function datas(): HasMany
     {
-        return $this->hasMany(PositionData::class)->sorted()->recent();
+        return $this->hasMany(Positionable::class)->sorted()->recent();
     }
 }
