@@ -79,12 +79,10 @@ return [
     'types_title' => [],
                 
     // 可推荐模型
-    'position' => [
-        'available_models' => [
-            'user' => [
-                'name' => '用户模型',
-                'model' => User::class
-            ]
+    'available_positioned_models' => [
+        'user' => [
+            'name' => '用户模型',
+            'model' => User::class
         ]
     ]
 ];

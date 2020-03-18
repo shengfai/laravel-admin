@@ -48,9 +48,9 @@
                     <td class="text-left">{{ $vo->user->name }}</td>
                     <td class="text-left">
                         @if($vo->is_recommend)
-                        <span class="color-blue">是 </span>
+                        <a data-update="{{ $vo->id }}" data-field="is_recommend" data-value="0" data-csrf="{{ csrf_token() }}" data-action="{{ route('admin.types.update', $vo->id) }}">已推荐</a>
                         @else
-                            否
+                        <a data-update="{{ $vo->id }}" data-field="is_recommend" data-value="1" data-csrf="{{ csrf_token() }}" data-action="{{ route('admin.types.update', $vo->id) }}">未推荐</a>
                         @endif
                     </td>
                     <td class="text-left"><span class="color-desc">{{ $vo->created_at->diffForHumans() }}</span></td>

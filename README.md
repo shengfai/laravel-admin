@@ -5,9 +5,24 @@
 
 ## Installing
 
+### Required
+
+- PHP 7.0 +
+- Laravel 5.8 +
+
+> You can install the package using composer.
+
 ```shell
 $ composer require shengfai/laravel-admin -vvv
 ```
+
+> Then run following command to finish install.
+
+```php
+$ php artisan admin:install
+```
+
+Open `http://localhost/console/` in browser,use username `13123456789` and password `111111` to login. 
 
 ## Usage
 
