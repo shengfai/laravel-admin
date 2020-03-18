@@ -45,12 +45,12 @@ Route::middleware('web')->group(function () {
                 Route::get('dashboards', 'Shengfai\LaravelAdmin\Controllers\DashboardsController@index')->name('dashboards.index'); // 仪表盘
                                                                                                                                     
                 // 分类管理
-                Route::get('{model}/types', 'Shengfai\LaravelAdmin\Controllers\TypesController@index')->name('types.index');              // 列表
-                Route::get('{model}/types/create', 'Shengfai\LaravelAdmin\Controllers\TypesController@create')->name('types.create');     // 修改
-                Route::get('{model}/types/{type}', 'Shengfai\LaravelAdmin\Controllers\TypesController@edit')->name('types.edit');         // 详情
-                Route::post('{model}/types', 'Shengfai\LaravelAdmin\Controllers\TypesController@store')->name('types.store');             // 新增
-                Route::put('types/{type}', 'Shengfai\LaravelAdmin\Controllers\TypesController@update')->name('types.update');             // 更新
-                Route::delete('types/{type}', 'Shengfai\LaravelAdmin\Controllers\TypesController@destroy')->name('types.destroy');        // 删除
+                Route::get('{model}/types', 'Shengfai\LaravelAdmin\Controllers\TypesController@index')->name('types.index');                        // 列表
+                Route::get('{model}/types/create', 'Shengfai\LaravelAdmin\Controllers\TypesController@create')->name('types.create');               // 创建
+                Route::get('{model}/types/{type}', 'Shengfai\LaravelAdmin\Controllers\TypesController@edit')->name('types.edit');                   // 详情
+                Route::post('{model}/types', 'Shengfai\LaravelAdmin\Controllers\TypesController@store')->name('types.store');                       // 新增
+                Route::match(['put','patch'], 'types/{type}', 'Shengfai\LaravelAdmin\Controllers\TypesController@update')->name('types.update');    // 更新
+                Route::delete('types/{type}', 'Shengfai\LaravelAdmin\Controllers\TypesController@destroy')->name('types.destroy');                  // 删除
                 
                 // 系统设置
                 Route::resource('logs', 'Shengfai\LaravelAdmin\Controllers\LogsController'); // 日志

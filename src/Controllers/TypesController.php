@@ -107,8 +107,21 @@ class TypesController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            
+            // 获取记录
             $type = Type::query()->where('id', $id)->first();
-
+            
+            // 更新指定字段
+            if ($request->isMethod('Patch')) {
+                
+                tap($type)->update([
+                    $request->field => $request->value
+                ]);
+                
+                return $this->success('数据更新成功', '');
+            }
+            
+            // 全量更新
             $type->fill($request->all());
 
             $type->save();
