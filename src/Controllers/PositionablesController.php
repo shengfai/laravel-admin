@@ -67,7 +67,8 @@ class PositionablesController extends Controller
             
             // 获取推荐对象
             $target = with($request, function ($model) {
-                return $model->positionable_type::findOrFail($model->positionable_id);
+                $className = '\App\Models\\' . ucfirst($model->positionable_type);
+                return $className::findOrFail($model->positionable_id);
             });
             $data = collect($target->getPositionedData())->toJson();
             
@@ -125,7 +126,7 @@ class PositionablesController extends Controller
     public function edit(Positionable $data)
     {
         $this->assign('data', $data);
-        $this->view = 'admin.positiondatas.push';
+        $this->view = 'admin::positionables.push';
         return $this->view();
     }
 
