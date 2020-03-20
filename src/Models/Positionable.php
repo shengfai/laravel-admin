@@ -33,15 +33,6 @@ class Positionable extends Pivot
         'description',
         'sort'
     ];
-    
-    /**
-     * 追加到模型数组表单的访问器.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'link'
-    ];
 
     /**
      * 获得拥有此推荐的模型。
