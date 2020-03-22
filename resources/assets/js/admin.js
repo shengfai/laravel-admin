@@ -147,8 +147,8 @@ $(function () {
                         $.msg.tips(self.errMsg.replace('{status}', 'E500 - '));
                     },
                     422: function (res) {
-                    	$.msg.close(dialogIndex);
-                    	$.msg.tips('E422 - ' + res.responseJSON.message);
+                        $.msg.close(dialogIndex);
+                        $.msg.tips('E422 - ' + res.responseJSON.message);
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -250,7 +250,7 @@ $(function () {
             var self = this;
             // 左则二级菜单展示
             $('[data-submenu-layout]>a').on('click', function () {
-            	$(this).parent().siblings().removeClass('open');
+                $(this).parent().siblings().removeClass('open');
                 $(this).parent().toggleClass('open');
                 self.syncOpenStatus(1);
             });
@@ -608,26 +608,26 @@ $(function () {
         var token = $(this).attr('data-csrf');
         $.form.load(action, {id: id, _token: token}, 'get');
     });
-    
+
     /*! 注册 data-setting 事件行为 */
     $body.on('click', '[data-settings]', function () {
-    	var action = $(this).attr('data-action');
-    	var token = $(this).attr('data-csrf');
-    	var title = $(this).attr('data-title');
+        var action = $(this).attr('data-action');
+        var token = $(this).attr('data-csrf');
+        var title = $(this).attr('data-title');
         var ids = (function () {
             var data = [];
             return $($(this).attr('data-list-target') || 'input.list-check-box').map(function () {
                 (this.checked) && data.push(this.value);
             }), data.join(',');
         }).call(this);
-        
+
         if (ids.length < 1) {
             return $.msg.tips('请选择需要操作的数据！');
         }
 
         layer.prompt({title: title, formType: 0}, function(value, index){
-        	 $.form.load(action, {value: value, ids: ids, _token: token}, 'patch');
-        	 layer.close(index);
+             $.form.load(action, {value: value, ids: ids, _token: token}, 'patch');
+             layer.close(index);
         });
     });
 
@@ -651,35 +651,31 @@ $(function () {
             $.form.load(action, {id: id, status: value, _token: token}, 'patch');
         });
     });
-    
+
     /*! 注册 data-review 事件行为 */
     $body.on('click', '[data-review]', function () {
-        var id = $(this).attr('data-id');
-        var model = $(this).attr('data-model');
         var action = $(this).attr('data-action');
         var token = $(this).attr('data-csrf');
         var field = $(this).attr('data-field');
         var succeed = $(this).attr('data-succeed');
 
         layer.confirm('审核设置', {
-	        	icon: 3,
-	    		btn: ['通过', '拒绝']
-	    	},
-	    	function(index){
-                if((succeed == null) || (succeed == '')){
-                    $.form.load(action, {id: id, status: 4, _token: token}, 'patch', function() {
-                        layer.close(index);
-                        window.onhashchange.call(index);
-                    })
-                }else{
-                    ajaxRender(action,{id: id, status: 4, _token: token},'patch');
-                    $.form.modal(succeed, {field:field}, '通过后设置', null, false, null, 600);
-                }
-	        },
-	        function(index){
-	        	$.form.modal(window.ROOT_URL + model + '/' + id + '/reasonables', {field:field}, '选择拒绝原因', null, null, null, 600);
-	        }
-	    );
+                icon: 3,
+                btn: ['通过', '拒绝']
+            },
+            function(index){
+            	$.form.load(action, {field: field, value: 1, _token: token}, 'patch', function() {
+                    layer.close(index);
+                    window.onhashchange.call(index);
+                })
+            },
+            function(index){
+            	$.form.load(action, {field: field, value: 3, _token: token}, 'patch', function() {
+                    layer.close(index);
+                    window.onhashchange.call(index);
+                })
+            }
+        );
     });
 
     /*! 注册 data-href 事件行为 */

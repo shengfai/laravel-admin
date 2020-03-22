@@ -28,6 +28,7 @@ class AlterUsersTable extends Migration
             $table->date('birthdate')->nullable()->comment('出生日期')->after('password');
             $table->unsignedTinyInteger('gender')->default(0)->nullable()->comment('性别')->after('password');
             $table->string('signature', 128)->nullable()->comment('个性签名')->after('password');
+            $table->smallInteger('notification_count')->unsigned()->default(0)->after('password');
             $table->string('avatar', 200)->nullable()->comment('头像')->after('password');
             $table->softDeletes();
         });
@@ -44,6 +45,7 @@ class AlterUsersTable extends Migration
             $table->dropColumn('type');
             $table->dropColumn('phone');
             $table->dropColumn('avatar');
+            $table->dropColumn('notification_count');
             $table->dropColumn('signature');
             $table->dropColumn('gender');
             $table->dropColumn('birthdate');

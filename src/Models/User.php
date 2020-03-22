@@ -43,6 +43,7 @@ class User extends Authenticatable
         'email_verified_at',
         'password',
         'avatar',
+        'notification_count',
         'signature',
         'gender',
         'birthdate',
@@ -74,7 +75,8 @@ class User extends Authenticatable
     protected $casts = [
         'gender' => 'integer',
         'status' => 'integer',
-        'email_verified_at' => 'datetime'
+        'email_verified_at' => 'datetime',
+        'notification_count' => 'integer'
     ];
     
     /**
