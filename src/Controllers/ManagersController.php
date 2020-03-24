@@ -34,6 +34,12 @@ class ManagersController extends Controller
     {
         $queryBuilder = $user->where('type', User::TYPE_ADMINISTRATOR)->with('roles')->orderBy('updated_at', 'DESC');
         
+        // 手机号
+        if ($request->filled('phone')) {
+            $this->assign('phone', $request->phone);
+            $queryBuilder->where('phone', $request->phone);
+        }
+        
         return $this->list($queryBuilder);
     }
 }

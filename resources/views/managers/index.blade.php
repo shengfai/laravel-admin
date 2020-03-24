@@ -7,6 +7,19 @@
 @section('content')
 <div class="layui-card">
 	<div class="layui-card-body">
+	<!-- 表单搜索 开始 -->
+	<form class="layui-form layui-form-pane form-search" action="{{route('admin.managers.index')}}" onsubmit="return false" method="get">
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">手机号</label>
+            <div class="layui-input-inline">
+            	<input class="layui-input" type="number" name="phone" placeholder="搜索手机号" value="{{$phone ?? ''}}" />
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+        </div>
+    </form>
+    <!-- 表单搜索 结束 -->
     <form autocomplete="off" onsubmit="return false;" data-auto="true" method="post">
         @empty($list)
         <p class="help-block text-center well">没 有 记 录 哦！</p>
@@ -30,13 +43,13 @@
             <tr>
                 <td class='text-left'>{{ $vo->id }}</td>
                 <td class='text-left'>{{ $vo->name }}</td>
-                <td class='text-left'>{{ $vo->remark }}</td>
+                <td class='text-left'>{{ \Str::limit($vo->remark, 15) }}</td>
                 <td class='text-left'><span class="color-blue" data-tips-text="{{ optional($vo->roles->first())->remark }}">{{ optional($vo->roles->first())->name }}</span></td>
                 <td class='text-left'>{{ $vo->phone }}</td>
                 <td class="text-left">
                     @if ($vo->status == 0)<span>已禁用</span>@elseif ($vo->status == 1)<span class="color-green">使用中</span>@endif
                 </td>
-                <td class='text-left'>{{ $vo['created_at'] }}</td>
+                <td class='text-left'>{{ $vo->created_at->toDateString() }}</td>
                 <td class="text-left">
     
                     <span class="text-explode">|</span>
