@@ -72,7 +72,7 @@ class UsersController extends Controller
         }
         
         // 更新用户
-        $user->fill($request->all());
+        $user->fill(array_filter($request->all()));
         $user->type = User::TYPE_ADMINISTRATOR;
         $user->save();
         
