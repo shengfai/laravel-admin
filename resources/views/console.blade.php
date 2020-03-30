@@ -34,6 +34,12 @@
             </ul>
         </div>
     </div>
+	<a class="topbar-btn pull-right transition" data-tips-text="消息" data-open="{{ route('admin.notices.index') }}" style="width:50px">
+		<i class="layui-icon layui-icon-notice"></i>
+		@if(Auth::user()->unreadNotifications()->count() > 0)
+		<span class="layui-badge-dot"></span>
+		@endif
+	</a>
     <a class="topbar-btn pull-right transition" data-tips-text="刷新" data-reload="true" style="width:50px"><span class="glyphicon glyphicon-refresh font-s12"></span></a>
 </div>
 <!-- 顶部菜单区域 结束 -->

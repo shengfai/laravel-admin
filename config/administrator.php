@@ -84,5 +84,10 @@ return [
             'name' => '用户模型',
             'model' => User::class
         ]
+    ],
+                
+    // 消息主题
+    'available_notified_topics' => [
+        'remind' => '提醒'
     ]
 ];
