@@ -53,35 +53,35 @@ Route::middleware('web')->group(function () {
                 Route::delete('types/{type}', 'Shengfai\LaravelAdmin\Controllers\TypesController@destroy')->name('types.destroy');                  // 删除
                 
                 // 系统设置
-                Route::resource('logs', 'Shengfai\LaravelAdmin\Controllers\LogsController');                // 日志
-                Route::resource('menus', 'Shengfai\LaravelAdmin\Controllers\MenusController');              // 菜单
-                Route::resource('settings', 'Shengfai\LaravelAdmin\Controllers\SettingsController');        // 系统设置
-                Route::resource('notices', 'Shengfai\LaravelAdmin\Controllers\NoticesController');          // 消息
+                Route::resource('logs', 'Shengfai\LaravelAdmin\Controllers\LogsController');                                                        // 日志
+                Route::resource('menus', 'Shengfai\LaravelAdmin\Controllers\MenusController');                                                      // 菜单
+                Route::resource('settings', 'Shengfai\LaravelAdmin\Controllers\SettingsController');                                                // 系统设置
+                Route::resource('notices', 'Shengfai\LaravelAdmin\Controllers\NoticesController');                                                  // 消息
                                                                                                      
                 // 角色权限
-                Route::resource('users', 'Shengfai\LaravelAdmin\Controllers\UsersController');              // 用户
-                Route::get('managers', 'Shengfai\LaravelAdmin\Controllers\ManagersController@index')->name('managers.index'); // 管理员列表
-                Route::get('users/{user}/authorizations', 'Shengfai\LaravelAdmin\Controllers\UsersController@authorizations')->name('users.authorizations'); // 用户授权
-                Route::get('users/{user}/password', 'Shengfai\LaravelAdmin\Controllers\UsersController@password')->name('users.reset_password'); // 重置密码
-                Route::resource('roles', 'Shengfai\LaravelAdmin\Controllers\RolesController');              // 角色
-                Route::resource('permissions', 'Shengfai\LaravelAdmin\Controllers\PermissionsController');  // 权限
-                Route::get('authorizations/{role}', 'Shengfai\LaravelAdmin\Controllers\AuthorizationsController@show')->name('authorizations.show'); // 查看授权
-                Route::post('authorizations/{role}', 'Shengfai\LaravelAdmin\Controllers\AuthorizationsController@store')->name('authorizations.store'); // 角色授权
+                Route::resource('users', 'Shengfai\LaravelAdmin\Controllers\UsersController');                                                                  // 用户
+                Route::get('managers', 'Shengfai\LaravelAdmin\Controllers\ManagersController@index')->name('managers.index');                                   // 管理员列表
+                Route::get('users/{user}/authorizations', 'Shengfai\LaravelAdmin\Controllers\UsersController@authorizations')->name('users.authorizations');    // 用户授权
+                Route::get('users/{user}/password', 'Shengfai\LaravelAdmin\Controllers\UsersController@password')->name('users.reset_password');                // 重置密码
+                Route::resource('roles', 'Shengfai\LaravelAdmin\Controllers\RolesController');                                                                  // 角色
+                Route::resource('permissions', 'Shengfai\LaravelAdmin\Controllers\PermissionsController');                                                      // 权限
+                Route::get('authorizations/{role}', 'Shengfai\LaravelAdmin\Controllers\AuthorizationsController@show')->name('authorizations.show');            // 查看授权
+                Route::post('authorizations/{role}', 'Shengfai\LaravelAdmin\Controllers\AuthorizationsController@store')->name('authorizations.store');         // 角色授权
                                                                                                                                                         
                 // 推荐位管理
-                Route::resource('positions', 'Shengfai\LaravelAdmin\Controllers\PositionsController');      // 推荐位
-                Route::get('positions/{position}/datas', 'Shengfai\LaravelAdmin\Controllers\PositionablesController@index')->name('positions.datas.index'); // 获取推荐内容
-                Route::get('positions/{position}/create', 'Shengfai\LaravelAdmin\Controllers\PositionablesController@create')->name('positions.datas.create'); // 添加推送内容
-                Route::get('positions/datas/push', 'Shengfai\LaravelAdmin\Controllers\PositionablesController@push')->name('positions.datas.push'); // 推送内容
-                Route::resource('positions/datas', 'Shengfai\LaravelAdmin\Controllers\PositionablesController'); // 推荐位内容
-                Route::get('positions/models/types', 'Shengfai\LaravelAdmin\Controllers\PositionsController@model')->name('positions.models'); // 推荐内容的种类
+                Route::resource('positions', 'Shengfai\LaravelAdmin\Controllers\PositionsController');                                                          // 推荐位
+                Route::get('positions/{position}/datas', 'Shengfai\LaravelAdmin\Controllers\PositionablesController@index')->name('positions.datas.index');     // 获取推荐内容
+                Route::get('positions/{position}/create', 'Shengfai\LaravelAdmin\Controllers\PositionablesController@create')->name('positions.datas.create');  // 添加推送内容
+                Route::get('positions/datas/push', 'Shengfai\LaravelAdmin\Controllers\PositionablesController@push')->name('positions.datas.push');             // 推送内容
+                Route::resource('positions/datas', 'Shengfai\LaravelAdmin\Controllers\PositionablesController');                                                // 推荐位内容
+                Route::get('positions/models/types', 'Shengfai\LaravelAdmin\Controllers\PositionsController@model')->name('positions.models');                  // 推荐内容的种类
                                                                                                                                                
                 // 插件其他
-                Route::get('plugs/icon.html', 'Shengfai\LaravelAdmin\Controllers\PlugsController@icon')->name('plugs.icon'); // 选择图标
-                Route::get('plugs/upfile.html', 'Shengfai\LaravelAdmin\Controllers\PlugsController@upfile')->name('plugs.upfile'); // 上传文件
-                Route::get('plugs/map/poipicker.html', 'Shengfai\LaravelAdmin\Controllers\PlugsController@poipicker')->name('plugs.upfile'); // 选择POI点
-                Route::post('plugs/upload', 'Shengfai\LaravelAdmin\Controllers\PlugsController@upload')->name('plugs.upload'); // 文件上传
-                Route::post('plugs/upstate', 'Shengfai\LaravelAdmin\Controllers\PlugsController@upstate')->name('plugs.upstate'); // 文件状态检查
+                Route::get('plugs/icon.html', 'Shengfai\LaravelAdmin\Controllers\PlugsController@icon')->name('plugs.icon');                            // 选择图标
+                Route::get('plugs/upfile.html', 'Shengfai\LaravelAdmin\Controllers\PlugsController@upfile')->name('plugs.upfile');                      // 上传文件
+                Route::get('plugs/map/poipicker.html', 'Shengfai\LaravelAdmin\Controllers\PlugsController@poipicker')->name('plugs.map.poipicker');     // 选择POI点
+                Route::post('plugs/upload', 'Shengfai\LaravelAdmin\Controllers\PlugsController@upload')->name('plugs.upload');                          // 文件上传
+                Route::post('plugs/upstate', 'Shengfai\LaravelAdmin\Controllers\PlugsController@upstate')->name('plugs.upstate');                       // 文件状态检查
                                                                                                                                   
                 // 用户管理
                 Route::resource('consumers', 'Shengfai\LaravelAdmin\Controllers\ConsumersController');
