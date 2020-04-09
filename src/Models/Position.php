@@ -5,6 +5,7 @@ namespace Shengfai\LaravelAdmin\Models;
 use Illuminate\Database\Eloquent\Model;
 use Shengfai\LaravelAdmin\Traits\Scope;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Shengfai\LaravelAdmin\Models\Traits\Attributes;
 
 /**
  * 推荐位模型
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Position extends Model
 {
-    use Scope;
+    use Scope, Attributes;
     
     /**
      * The attributes that are mass assignable.
