@@ -6,7 +6,7 @@ use Shengfai\LaravelAdmin\Traits\Scope;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use Shengfai\LaravelAdmin\Handlers\FileHandler;
+use Shengfai\LaravelAdmin\Models\Traits\Attributes;
 
 /**
  * 推荐数据模型
@@ -18,7 +18,7 @@ use Shengfai\LaravelAdmin\Handlers\FileHandler;
  */
 class Positionable extends Pivot
 {
-    use Scope;
+    use Scope, Attributes;
     
     /**
      * 批量填充字段
@@ -53,33 +53,5 @@ class Positionable extends Pivot
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
-    }
-    
-    /**
-     * 封面获取器
-     *
-     * @param string $path
-     * @return string
-     */
-    public function getCoverPicAttribute($value)
-    {
-        // 处理图片域名
-        $url = FileHandler::startsWithUrlForResource($value, config('business.domains.images'));
-    
-        return $url;
-    }
-    
-    /**
-     * 封面设置器
-     *
-     * @param string $url
-     * @return string
-     */
-    public function setCoverPicAttribute($value)
-    {
-        // 处理图片域名
-        $url = FileHandler::exceptUrlForResource($value, config('business.domains.images'));
-    
-        $this->attributes['cover_pic'] = $url;
     }
 }
