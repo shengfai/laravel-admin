@@ -12,7 +12,7 @@ namespace Shengfai\LaravelAdmin\Contracts;
  */
 interface Conventions
 {
-    const VERSION               = '0.3.5';              // 版本
+    const VERSION               = '0.4.3';              // 版本
 
     /**
      * 通用状态
