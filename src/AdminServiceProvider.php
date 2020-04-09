@@ -46,6 +46,7 @@ class AdminServiceProvider extends ServiceProvider
             
             $this->publishes([
                 __DIR__ . '/../database/migrations/alter_activity_log_table.php' => database_path("/migrations/{$timestamp}_alter_activity_log_table.php"),
+                __DIR__ . '/../database/migrations/alter_notifications_table.php' => database_path("/migrations/{$timestamp}_alter_notifications_table.php"),
                 __DIR__ . '/../database/migrations/alter_permissions_table.php' => database_path("/migrations/{$timestamp}_alter_permissions_table.php"),
                 __DIR__ . '/../database/migrations/alter_users_table.php' => database_path("/migrations/{$timestamp}_alter_users_table.php"),
                 __DIR__ . '/../database/migrations/create_admin_tables.php' => database_path("/migrations/{$timestamp}_create_admin_tables.php"),
