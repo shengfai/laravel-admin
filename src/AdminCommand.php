@@ -59,6 +59,8 @@ class AdminCommand extends Command
         ]))->run();
         
         $this->info("Migrating the database tables into your application");
+        
+        $this->call('notifications:table');
         $this->call('migrate');
     }
 
