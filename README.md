@@ -2,6 +2,11 @@
 
 <p align="center"> An administrative interface package for Laravel.</p>
 
+## Screenshots
+![菜单管理](https://cdn.nlark.com/yuque/0/2020/png/1005404/1586675368840-9b08bf7f-b589-4933-b333-2c9f26103c83.png)
+![角色管理](https://cdn.nlark.com/yuque/0/2020/png/1005404/1586675369841-7e8f8aa1-8c02-44af-89f0-b882c72b3abb.png)
+
+[Look here for lots of screenshots for the application.](https://github.com/shengfai/laravel-admin/wiki/Screenshots)
 
 ## Installing
 

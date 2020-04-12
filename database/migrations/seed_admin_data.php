@@ -123,7 +123,11 @@ class SeedAdminData extends Migration
         // 添加配置
         DB::table('settings')->insert([
             ['name' => 'app_name', 'value' => 'LaravelAdmin'],
-            ['name' => 'app_version', 'value' => Conventions::VERSION]
+            ['name' => 'app_version', 'value' => Conventions::VERSION],
+            ['name' => 'site_name', 'value' => config('app.name')],
+            ['name' => 'site_description', 'value' => 'An administrative interface package for Laravel.'],
+            ['name' => 'site_copy', 'value' => '@ LaravelAdmin'],
+            ['name' => 'site_icon', 'value' => '/admin/favicon.ico']
         ]);
     }
 
