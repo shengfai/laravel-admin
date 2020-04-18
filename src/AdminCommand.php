@@ -49,6 +49,10 @@ class AdminCommand extends Command
             '--tag' => 'migrations'
         ]);
         $this->call('vendor:publish', [
+            '--provider' => 'Overtrue\LaravelOptions\OptionsServiceProvider',
+            '--force' => true
+        ]);
+        $this->call('vendor:publish', [
             '--provider' => 'Shengfai\LaravelAdmin\AdminServiceProvider',
             '--force' => true
         ]);

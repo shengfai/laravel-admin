@@ -31,14 +31,6 @@ class CreateAdminTables extends Migration
             $table->softDeletes();
         });
         
-        // 配置
-        Schema::create('settings', function (Blueprint $table) {
-            $table->smallIncrements('id');
-            $table->string('name', 64)->comment('配置名')->unique();
-            $table->string('value', 256)->comment('配置值');
-            $table->timestamps();
-        });
-        
         // 分类
         Schema::create('types', function (Blueprint $table) {
             $table->unsignedMediumInteger('id', true);
@@ -87,7 +79,6 @@ class CreateAdminTables extends Migration
     public function down()
     {
         Schema::dropIfExists('menus');
-        Schema::drop('settings');
         Schema::dropIfExists('types');
         Schema::dropIfExists('positions');
         Schema::dropIfExists('positionable');
