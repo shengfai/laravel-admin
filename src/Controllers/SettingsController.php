@@ -3,7 +3,6 @@
 namespace Shengfai\LaravelAdmin\Controllers;
 
 use Illuminate\Http\Request;
-use Shengfai\LaravelAdmin\Models\Setting;
 use Shengfai\LaravelAdmin\Exceptions\InvalidArgumentException;
 
 /**
@@ -20,14 +19,13 @@ class SettingsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Setting $setting
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function index(Setting $setting)
+    public function index()
     {
         $this->title = '站点配置';
         
-        $settings = Setting::get();
+        $settings = \Option::all();
         
         return $this->view(compact('settings'));
     }

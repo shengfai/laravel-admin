@@ -121,13 +121,13 @@ class SeedAdminData extends Migration
         ]);
         
         // 添加配置
-        DB::table('settings')->insert([
-            ['name' => 'app_name', 'value' => 'LaravelAdmin'],
-            ['name' => 'app_version', 'value' => Conventions::VERSION],
-            ['name' => 'site_name', 'value' => config('app.name')],
-            ['name' => 'site_description', 'value' => 'An administrative interface package for Laravel.'],
-            ['name' => 'site_copy', 'value' => '@ LaravelAdmin'],
-            ['name' => 'site_icon', 'value' => '/admin/favicon.ico']
+        \Option::set([
+            'app_name' => 'LaravelAdmin',
+            'app_version' => Conventions::VERSION,
+            'site_name' => config('app.name'),
+            'site_description' => 'An administrative interface package for Laravel.',
+            'site_copy' => '@ LaravelAdmin',
+            'site_icon' => '/admin/favicon.ico',
         ]);
     }
 
@@ -139,6 +139,6 @@ class SeedAdminData extends Migration
     public function down()
     {
         DB::table('menus')->truncate();
-        DB::table('settings')->truncate();
+        DB::table('options')->truncate();
     }
 }

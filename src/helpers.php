@@ -29,16 +29,12 @@ function settings($name, $value = null)
     
     // 设置参数
     if (!is_null($value)) {
-        return Setting::updateOrCreate([
-            'name' => $name
-        ], [
-            'value' => $value
-        ]);
+        return \Option::set($name, $value);
     }
     
     // 获取参数
     if (empty($settings)) {
-        $settings = Setting::pluck('value', 'name');
+        $settings = \Option::all();
     }
     return $settings[$name] ?? false;
 }
