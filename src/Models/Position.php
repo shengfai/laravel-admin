@@ -1,24 +1,33 @@
 <?php
 
+/*
+ * This file is part of the shengfai/laravel-admin.
+ *
+ * (c) shengfai <shengfai@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Shengfai\LaravelAdmin\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Shengfai\LaravelAdmin\Traits\Scope;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Shengfai\LaravelAdmin\Models\Traits\Attributes;
+use Shengfai\LaravelAdmin\Traits\Scope;
 
 /**
  * 推荐位模型
- * Class Position
+ * Class Position.
  *
- * @package \Shengfai\LaravelAdmin\Models
  * @author ShengFai <shengfai@qq.com>
+ *
  * @version 2020年3月10日
  */
 class Position extends Model
 {
-    use Scope, Attributes;
-    
+    use Scope;
+    use Attributes;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -27,7 +36,7 @@ class Position extends Model
     protected $fillable = [
         'name',
         'cover_pic',
-        'description'
+        'description',
     ];
 
     /**

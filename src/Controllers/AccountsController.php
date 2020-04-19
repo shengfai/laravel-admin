@@ -1,20 +1,28 @@
 <?php
 
+/*
+ * This file is part of the shengfai/laravel-admin.
+ *
+ * (c) shengfai <shengfai@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Shengfai\LaravelAdmin\Controllers;
 
 use App\Models\User;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Shengfai\LaravelAdmin\Contracts\Conventions;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Shengfai\LaravelAdmin\Handlers\ActivityHandler;
 
 /**
  * 登录界面
- * Class AccountsController
+ * Class AccountsController.
  *
- * @package \Shengfai\LaravelAdmin\Controllers
  * @author ShengFai <shengfai@qq.com>
+ *
  * @version 2020年3月10日
  */
 class AccountsController extends Controller
@@ -22,7 +30,7 @@ class AccountsController extends Controller
     use AuthenticatesUsers;
 
     /**
-     * 登录表单
+     * 登录表单.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -39,12 +47,12 @@ class AccountsController extends Controller
     public function sendFailedLoginResponse()
     {
         ActivityHandler::console()->log('授权失败');
-        
+
         return $this->error('输入的账号或者密码有误');
     }
 
     /**
-     * 用于登录的字段
+     * 用于登录的字段.
      *
      * @return string
      */
@@ -56,7 +64,6 @@ class AccountsController extends Controller
     /**
      * Get the needed authorization credentials from the request.
      *
-     * @param \Illuminate\Http\Request $request
      * @return array
      */
     protected function credentials(Request $request)
@@ -64,37 +71,34 @@ class AccountsController extends Controller
         // 状态及类型
         return array_merge($request->only($this->username(), 'password'), [
             'type' => User::TYPE_ADMINISTRATOR,
-            'status' => Conventions::STATUS_USABLE
+            'status' => Conventions::STATUS_USABLE,
         ]);
     }
 
     /**
      * The user has been authenticated.
      *
-     * @param Request $request
-     * @param User $user
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     protected function authenticated(Request $request, User $user)
     {
         ActivityHandler::console()->performedOn($user)->log('授权登录');
-        
+
         return $this->success('登录成功，正在进入系统...', route('admin.dashboards.console'));
     }
 
     /**
      * Log the user out of the application.
      *
-     * @param Request $request
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function logout(Request $request)
     {
         ActivityHandler::console()->performedOn($request->user())->log('退出登录');
-        
+
         $this->guard()->logout();
         $request->session()->invalidate();
-        
+
         return redirect(route('admin.login'));
     }
 
@@ -107,5 +111,4 @@ class AccountsController extends Controller
     {
         return Auth::guard();
     }
-
 }

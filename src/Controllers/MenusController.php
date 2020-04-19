@@ -1,27 +1,34 @@
 <?php
 
+/*
+ * This file is part of the shengfai/laravel-admin.
+ *
+ * (c) shengfai <shengfai@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Shengfai\LaravelAdmin\Controllers;
 
 use Illuminate\Http\Request;
-use Shengfai\LaravelAdmin\Models\Menu;
-use Spatie\Permission\Models\Permission;
 use Shengfai\LaravelAdmin\Handlers\DataHandler;
+use Shengfai\LaravelAdmin\Models\Menu;
 use Shengfai\LaravelAdmin\Services\MenuService;
 use Spatie\Permission\Exceptions\PermissionAlreadyExists;
+use Spatie\Permission\Models\Permission;
 
 /**
  * 菜单控制器
- * Class MenusController
+ * Class MenusController.
  *
- * @package \Shengfai\LaravelAdmin\Controllers
  * @author ShengFai <shengfai@qq.com>
+ *
  * @version 2020年3月10日
  */
 class MenusController extends Controller
 {
-    
     /**
-     * 页面标题
+     * 页面标题.
      *
      * @var string
      */
@@ -30,7 +37,6 @@ class MenusController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Menu $menu
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Shengfai\LaravelAdmin\Controllers\unknown[]|\Shengfai\LaravelAdmin\Controllers\string[]|\Shengfai\LaravelAdmin\Controllers\NULL[]|\Shengfai\LaravelAdmin\Controllers\number[]
      */
     public function index(Menu $menu)
@@ -39,9 +45,10 @@ class MenusController extends Controller
     }
 
     /**
-     * 列表数据处理
+     * 列表数据处理.
      *
      * @param array $data
+     *
      * @return array
      */
     protected function index_data_filter(&$data)
@@ -57,26 +64,22 @@ class MenusController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param Request $request
-     * @param MenuService $menuService
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create(Request $request, MenuService $menuService)
     {
         // 获取父节点
         $menus = $menuService->getUsedAsParentList();
-        
+
         return $this->view([
             'menus' => $menus,
-            'parent_id' => $request->parent_id
+            'parent_id' => $request->parent_id,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @param Menu $menu
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     public function store(Request $request, Menu $menu)
@@ -85,12 +88,11 @@ class MenusController extends Controller
             // 创建菜单
             $menu->fill($request->all());
             $menu->save();
-            
+
             // 创建权限
             $this->autoCreatePermission($menu);
-            
+
             return $this->success('数据保存成功', '');
-        
         } catch (PermissionAlreadyExists $e) {
             return $this->error('权限已存在，创建失败！');
         }
@@ -99,28 +101,25 @@ class MenusController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Menu $menu
-     * @param MenuService $menuService
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function edit(Menu $menu, MenuService $menuService)
     {
         // 获取父节点
         $menus = $menuService->getUsedAsParentList();
-        
+
         return $this->view([
             'menu' => $menu,
             'menus' => $menus,
-            'parent_id' => $menu->parent_id
+            'parent_id' => $menu->parent_id,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Menu $menu
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     *
      * @throws PermissionAlreadyExists
      */
     public function update(Request $request, Menu $menu)
@@ -128,15 +127,14 @@ class MenusController extends Controller
         try {
             // 获取对象
             $menu = $menu->fill($request->all());
-            
+
             // 更新菜单
             $menu->save();
-            
+
             // 更新权限
             $this->autoUpdatePermission($menu);
-            
+
             return $this->success('数据保存成功', '');
-        
         } catch (PermissionAlreadyExists $e) {
             return $this->error('权限已存在，创建失败！');
         }
@@ -145,7 +143,6 @@ class MenusController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Menu $menu
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     public function destroy(Menu $menu)
@@ -153,13 +150,13 @@ class MenusController extends Controller
         if ($menu->delete()) {
             return $this->success('菜单删除成功!', '');
         }
+
         return $this->error('菜单删除失败, 请稍候再试!');
     }
 
     /**
-     * 创建权限
+     * 创建权限.
      *
-     * @param Menu $menu
      * @return void
      */
     protected function autoCreatePermission(Menu $menu)
@@ -168,23 +165,22 @@ class MenusController extends Controller
         if (empty($menu->code)) {
             return;
         }
-        
+
         // 创建权限
         $permission = Permission::create([
             'name' => $menu->code,
-            'title' => $menu->name
+            'title' => $menu->name,
         ]);
-        
+
         // 更新菜单
         $menu->update([
-            'permission_id' => $permission->id
+            'permission_id' => $permission->id,
         ]);
     }
 
     /**
-     * 更新权限
+     * 更新权限.
      *
-     * @param Menu $menu
      * @return void
      */
     protected function autoUpdatePermission(Menu $menu)
@@ -193,16 +189,16 @@ class MenusController extends Controller
         if (empty($menu->code)) {
             return;
         }
-        
+
         // 未关联权限
         if (empty($menu->permission)) {
             return $this->autoCreatePermission($menu);
         }
-        
+
         // 更新权限
         $menu->permission->update([
             'name' => $menu->code,
-            'title' => $menu->name
+            'title' => $menu->name,
         ]);
     }
 }

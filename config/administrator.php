@@ -1,9 +1,16 @@
 <?php
 
+/*
+ * This file is part of the shengfai/laravel-admin.
+ *
+ * (c) shengfai <shengfai@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 use App\Models\User;
 
 return [
-    
     /*
      * Domain for routing.
      * @type string
@@ -59,10 +66,10 @@ return [
      * @type int
      */
     'global_rows_per_page' => 20,
-    
+
     // 自定义路由文件
     'custom_routes_file' => base_path('routes/administrator.php'),
-    
+
     // 运行上传文件后缀
     'allowed_upload_file_exts' => [
         'ico',
@@ -72,22 +79,22 @@ return [
         'jpeg',
         'mp4',
         'mov',
-        'mp3'
+        'mp3',
     ],
-    
+
     // 类别名称
     'types_title' => [],
-                
+
     // 可推荐模型
     'available_positioned_models' => [
         'user' => [
             'name' => '用户模型',
-            'model' => User::class
-        ]
+            'model' => User::class,
+        ],
     ],
-                
+
     // 消息主题
     'available_notified_topics' => [
-        'remind' => '提醒'
-    ]
+        'remind' => '提醒',
+    ],
 ];

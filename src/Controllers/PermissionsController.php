@@ -1,31 +1,39 @@
 <?php
 
+/*
+ * This file is part of the shengfai/laravel-admin.
+ *
+ * (c) shengfai <shengfai@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Shengfai\LaravelAdmin\Controllers;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Str;
 use Shengfai\LaravelAdmin\Handlers\ActivityHandler;
+use Spatie\Permission\Models\Permission;
 
 /**
  * 权限控制器
- * Class PermissionsController
+ * Class PermissionsController.
  *
- * @package \Shengfai\LaravelAdmin\Controllers
  * @author ShengFai <shengfai@qq.com>
+ *
  * @version 2020年3月10日
  */
 class PermissionsController extends Controller
 {
     /**
-     * 页面标题
+     * 页面标题.
      *
-     * @var string $title
+     * @var string
      */
     protected $title = '系统权限管理';
-    
+
     /**
-     * 守卫
+     * 守卫.
      *
      * @var web
      */
@@ -34,21 +42,20 @@ class PermissionsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Permission $permission
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index(Permission $permission)
     {
         // 获取权限列表
         $permissions = $permission->where('guard_name', $this->defaultGuardName)->get();
-        
+
         // 格式化分组
         $groupedPermissions = $permissions->groupBy(function ($item) {
             return Str::contains($item->name, '.') ? Str::before($item->name, '.') : 'pnode';
         });
-        
+
         return $this->view([
-            'groups' => $groupedPermissions->all()
+            'groups' => $groupedPermissions->all(),
         ]);
     }
 
@@ -65,8 +72,6 @@ class PermissionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @param Permission $permission
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     public function store(Request $request, Permission $permission)
@@ -74,19 +79,18 @@ class PermissionsController extends Controller
         // 添加记录
         $permission->fill($request->all());
         $permission = Permission::create($permission->toArray());
-        
+
         // 添加日志
         if ($permission->id) {
             ActivityHandler::console()->performedOn($permission)->log('添加权限');
         }
-        
+
         return $this->success('数据保存成功', '');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Permission $permission
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function edit(Permission $permission)
@@ -97,31 +101,32 @@ class PermissionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Permission $permission
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     public function update(Request $request, Permission $permission)
     {
         if ($permission->update($request->all())) {
             ActivityHandler::console()->performedOn($permission)->log('更新权限');
+
             return $this->success('恭喜, 数据保存成功!', '');
         }
+
         return $this->error('数据保存失败, 请稍候再试!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Permission $permission
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     public function destroy(Permission $permission)
     {
         if ($permission->delete()) {
             ActivityHandler::console()->performedOn($permission)->log('删除权限');
+
             return $this->success('权限删除成功!', '');
         }
+
         return $this->error('权限删除失败, 请稍候再试!');
     }
 }
