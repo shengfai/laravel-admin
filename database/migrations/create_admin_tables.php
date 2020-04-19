@@ -1,12 +1,19 @@
 <?php
 
+/*
+ * This file is part of the shengfai/laravel-admin.
+ *
+ * (c) shengfai <shengfai@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class CreateAdminTables extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -30,7 +37,7 @@ class CreateAdminTables extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        
+
         // 分类
         Schema::create('types', function (Blueprint $table) {
             $table->unsignedMediumInteger('id', true);
@@ -44,8 +51,8 @@ class CreateAdminTables extends Migration
             $table->unsignedTinyInteger('sort')->default(0)->comment('排序');
             $table->unsignedInteger('user_id');
             $table->timestamps();
-		});
-        
+        });
+
         // 推荐位
         Schema::create('positions', function (Blueprint $table) {
             $table->unsignedSmallInteger('id', true);
@@ -56,7 +63,7 @@ class CreateAdminTables extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-        
+
         // 推荐内容
         Schema::create('positionable', function (Blueprint $table) {
             $table->increments('id');

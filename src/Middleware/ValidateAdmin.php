@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of the shengfai/laravel-admin.
+ *
+ * (c) shengfai <shengfai@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Shengfai\LaravelAdmin\Middleware;
 
 use Closure;
@@ -8,20 +16,18 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * 后台权限校验中间件
- * Class ValidateAdmin
+ * Class ValidateAdmin.
  *
- * @package \Shengfai\LaravelAdmin\Middleware
  * @author ShengFai <shengfai@qq.com>
+ *
  * @version 2020年3月10日
  */
 class ValidateAdmin
 {
-
     /**
      * Handle an incoming request.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
      *
      * @return mixed
      */
@@ -31,7 +37,7 @@ class ValidateAdmin
         $permission = function () {
             return Auth::check() && Auth::user()->can(config('administrator.permission'));
         };
-        
+
         // if this is a simple false value, send the user to the login redirect
         if (!$response = $permission()) {
             $loginUrl = route(config('administrator.login_path'));
@@ -40,8 +46,9 @@ class ValidateAdmin
             $responseData = [
                 'code' => 0,
                 'msg' => '抱歉，您还没有登录获取访问权限！',
-                'url' => $loginUrl
+                'url' => $loginUrl,
             ];
+
             return $request->isXmlHttpRequest() ? response()->json($responseData) : redirect()->guest($loginUrl)->with($redirectKey, $redirectUri);
         }
 
@@ -54,10 +61,10 @@ class ValidateAdmin
         elseif (is_a($response, 'Illuminate\\Http\\RedirectResponse')) {
             $redirectKey = config('administrator.login_redirect_key');
             $redirectUri = $request->url();
-            
+
             return $response->with($redirectKey, $redirectUri);
         }
-        
+
         return $next($request);
     }
 }

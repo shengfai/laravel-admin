@@ -10,7 +10,7 @@ EOF;
 return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules(array(
-        '@Y' => true,
+        '@Symfony' => true,
         'header_comment' => array('header' => $header),
         'array_syntax' => array('syntax' => 'short'),
         'ordered_imports' => true,

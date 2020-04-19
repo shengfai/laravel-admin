@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of the shengfai/laravel-admin.
+ *
+ * (c) shengfai <shengfai@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Shengfai\LaravelAdmin;
 
 use Illuminate\Console\Command;
@@ -13,7 +21,7 @@ class AdminCommand extends Command
      * @var string
      */
     protected $signature = 'admin:install';
-    
+
     /**
      * The console command description.
      *
@@ -38,34 +46,33 @@ class AdminCommand extends Command
      */
     public function handle()
     {
-        $this->info("Publishing the assets");
-        
+        $this->info('Publishing the assets');
+
         $this->call('vendor:publish', [
             '--provider' => 'Spatie\Permission\PermissionServiceProvider',
-            '--force' => true
+            '--force' => true,
         ]);
         $this->call('vendor:publish', [
             '--provider' => 'Spatie\Activitylog\ActivitylogServiceProvider',
-            '--tag' => 'migrations'
+            '--tag' => 'migrations',
         ]);
         $this->call('vendor:publish', [
             '--provider' => 'Overtrue\LaravelOptions\OptionsServiceProvider',
-            '--force' => true
+            '--force' => true,
         ]);
         $this->call('vendor:publish', [
             '--provider' => 'Shengfai\LaravelAdmin\AdminServiceProvider',
-            '--force' => true
+            '--force' => true,
         ]);
-        
-        $this->info("Dumping the composer autoload");
+
+        $this->info('Dumping the composer autoload');
         (new Process([
-            'composer dump-autoload'
+            'composer dump-autoload',
         ]))->run();
-        
-        $this->info("Migrating the database tables into your application");
-        
+
+        $this->info('Migrating the database tables into your application');
+
         $this->call('notifications:table');
         $this->call('migrate');
     }
-
 }

@@ -1,28 +1,39 @@
 <?php
 
+/*
+ * This file is part of the shengfai/laravel-admin.
+ *
+ * (c) shengfai <shengfai@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Shengfai\LaravelAdmin\Models;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Shengfai\LaravelAdmin\Traits\Scope;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Support\Str;
 use Shengfai\LaravelAdmin\Contracts\Conventions;
 use Shengfai\LaravelAdmin\Traits\CustomActivityProperties;
+use Shengfai\LaravelAdmin\Traits\Scope;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Models\Permission;
 
 /**
  * 系统菜单模型
- * Class Menu
+ * Class Menu.
  *
- * @package \Shengfai\LaravelAdmin\Models
  * @author ShengFai <shengfai@qq.com>
+ *
  * @version 2020年3月10日
  */
 class Menu extends Model
 {
-    use SoftDeletes, Scope, LogsActivity, CustomActivityProperties;
-    
+    use SoftDeletes;
+    use Scope;
+    use LogsActivity;
+    use CustomActivityProperties;
+
     /**
      * 可以被批量赋值的属性。
      *
@@ -38,20 +49,20 @@ class Menu extends Model
         'params',
         'target',
         'sort',
-        'status'
+        'status',
     ];
-    
+
     /**
-     * 追加属性
+     * 追加属性.
      *
      * @var array
      */
     protected $appends = [
-        'full_url'
+        'full_url',
     ];
-    
+
     /**
-     * The attributes that need to be logged
+     * The attributes that need to be logged.
      *
      * @var array
      */
@@ -62,45 +73,44 @@ class Menu extends Model
         'permission_id',
         'url',
         'params',
-        'status'
+        'status',
     ];
-    
+
     /**
-     * customizing the log name
+     * customizing the log name.
      *
      * @var string
      */
     protected static $logName = Conventions::LOG_TYPE_CONSOLE;
 
     /**
-     * 是否拥有父菜单
+     * 是否拥有父菜单.
      *
      * @return boolean
      */
     public function hasParent()
     {
-        return $this->parent_id != 0;
+        return 0 != $this->parent_id;
     }
 
     /**
-     * customizing the description
+     * customizing the description.
      *
-     * @param string $eventName
      * @return string
      */
     public function getDescriptionForEvent(string $eventName): string
     {
-        if ($eventName == 'created') {
+        if ('created' == $eventName) {
             return '创建菜单';
-        } elseif ($eventName == 'deleted') {
+        } elseif ('deleted' == $eventName) {
             return '删除菜单';
-        } else {
-            return '更新菜单';
         }
+
+        return '更新菜单';
     }
 
     /**
-     * 关联权限
+     * 关联权限.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -110,7 +120,7 @@ class Menu extends Model
     }
 
     /**
-     * 关联父节点
+     * 关联父节点.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -120,20 +130,21 @@ class Menu extends Model
     }
 
     /**
-     * 路径获取器
+     * 路径获取器.
      *
      * @param string $value
      */
     public function getUrlAttribute($value)
     {
         if (Str::contains($value, '/')) {
-            $value = config('administrator.prefix') . $value;
+            $value = config('administrator.prefix').$value;
         }
+
         return $value;
     }
 
     /**
-     * 路径设置器
+     * 路径设置器.
      *
      * @param string $value
      */
@@ -146,23 +157,23 @@ class Menu extends Model
     }
 
     /**
-     * 获取菜单链接
+     * 获取菜单链接.
      *
      * @return string
      */
     public function getFullUrlAttribute()
     {
         $value = '';
-        if (!empty($this->attributes['url']) && $this->attributes['url'] !== '#') {
-            $value = $this->attributes['url'] .
+        if (!empty($this->attributes['url']) && '#' !== $this->attributes['url']) {
+            $value = $this->attributes['url'].
                      (empty($this->attributes['params']) ? '' : "?{$this->attributes['params']}");
         }
-        
+
         return $value;
     }
 
     /**
-     * 标识设置器
+     * 标识设置器.
      *
      * @param string $value
      */
@@ -171,7 +182,7 @@ class Menu extends Model
         if (is_null($value)) {
             $value = '';
         }
-        
+
         $this->attributes['code'] = $value;
     }
 }

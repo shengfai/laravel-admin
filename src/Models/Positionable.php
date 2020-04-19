@@ -1,27 +1,36 @@
 <?php
 
+/*
+ * This file is part of the shengfai/laravel-admin.
+ *
+ * (c) shengfai <shengfai@qq.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Shengfai\LaravelAdmin\Models;
 
-use Shengfai\LaravelAdmin\Traits\Scope;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Shengfai\LaravelAdmin\Models\Traits\Attributes;
+use Shengfai\LaravelAdmin\Traits\Scope;
 
 /**
  * 推荐数据模型
- * Class Positionable
+ * Class Positionable.
  *
- * @package \Shengfai\LaravelAdmin\Models
  * @author ShengFai <shengfai@qq.com>
+ *
  * @version 2020年3月10日
  */
 class Positionable extends Pivot
 {
-    use Scope, Attributes;
-    
+    use Scope;
+    use Attributes;
+
     /**
-     * 批量填充字段
+     * 批量填充字段.
      *
      * @var array
      */
@@ -32,7 +41,7 @@ class Positionable extends Pivot
         'title',
         'cover_pic',
         'description',
-        'sort'
+        'sort',
     ];
 
     /**
@@ -46,7 +55,7 @@ class Positionable extends Pivot
     }
 
     /**
-     * 关联的推荐位
+     * 关联的推荐位.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
