@@ -42,7 +42,12 @@ class SeedAdminData extends Migration
                 'parent_id' => $parent_id,
                 'name' => '我的资源',
                 'url' => '/dashboards',
-            ],
+            ],[
+                'code' => '',
+                'parent_id' => $parent_id,
+                'name' => '推荐位管理',
+                'url' => '/positions',
+            ]
         ]);
 
         // 顶级菜单
