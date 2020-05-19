@@ -15,7 +15,8 @@
         "spatie/laravel-permission": ">=3.0",
         "spatie/laravel-activitylog": ">=3.0",
         "laravel/ui": ">=2.0",
-        "overtrue/laravel-options": "^1.0"
+        "overtrue/laravel-options": "^1.0",
+        "overtrue/laravel-uploader": "^1.2"
     },
     "autoload": {
         "psr-4": {

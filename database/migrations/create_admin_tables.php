@@ -53,6 +53,21 @@ class CreateAdminTables extends Migration
             $table->timestamps();
         });
 
+        // 资源
+        Schema::create('files', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedMediumInteger('type_id')->nullable()->default(0);
+            $table->string('mime', 64);
+            $table->string('hash', 32);
+            $table->unsignedMediumInteger('size');
+            $table->string('relative_url', 128);
+            $table->string('original_name', 128);
+            $table->string('url', 128);
+            $table->string('remark', 64)->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         // 推荐位
         Schema::create('positions', function (Blueprint $table) {
             $table->unsignedSmallInteger('id', true);
@@ -87,6 +102,7 @@ class CreateAdminTables extends Migration
     {
         Schema::dropIfExists('menus');
         Schema::dropIfExists('types');
+        Schema::dropIfExists('files');
         Schema::dropIfExists('positions');
         Schema::dropIfExists('positionable');
     }
