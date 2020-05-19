@@ -61,6 +61,10 @@ class AdminCommand extends Command
             '--force' => true,
         ]);
         $this->call('vendor:publish', [
+            '--provider' => 'Overtrue\LaravelUploader\UploadServiceProvider',
+            '--force' => true,
+        ]);
+        $this->call('vendor:publish', [
             '--provider' => 'Shengfai\LaravelAdmin\AdminServiceProvider',
             '--force' => true,
         ]);

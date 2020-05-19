@@ -11,7 +11,9 @@
 namespace Shengfai\LaravelAdmin\Controllers;
 
 use Illuminate\Http\Request;
+use Overtrue\LaravelUploader\StrategyResolver;
 use Shengfai\LaravelAdmin\Handlers\FileHandler;
+use Shengfai\LaravelAdmin\Models\File;
 
 /**
  * 后台插件控制器
@@ -63,24 +65,20 @@ class PlugsController extends Controller
      */
     public function upstate(Request $request)
     {
-        // 存储路径
-        $fileStoragePath = file_storage_path($request->md5, pathinfo($request->filename, PATHINFO_EXTENSION));
-
         // 检查文件是否上传
-        if (($fileUrl = app(FileHandler::class)->getFileUrl($fileStoragePath))) {
+        $file_hash = $request->get('md5');
+        if (File::ofHash($file_hash)->exists()) {
+            $file = File::ofHash($file_hash)->first();
+
             return $this->result([
-                'url' => $fileUrl,
+                'url' => $file->url,
             ], 'IS_FOUND');
         }
 
-        // 需要上传文件，生成上传配置参数
-        $config = [
-            'file_path' => $fileStoragePath,
+        return $this->result([
             'server' => url('admin/plugs/upload'),
-            'token' => md5($fileStoragePath.session_id()),
-        ];
-
-        return $this->result($config, 'NOT_FOUND');
+            'token' => md5($request->md5.session_id()),
+        ], 'NOT_FOUND');
     }
 
     /**
@@ -90,42 +88,28 @@ class PlugsController extends Controller
      */
     public function upload(Request $request)
     {
-        // 校验扩展名
-        $ext = $request->file->getClientOriginalExtension();
-        if (!in_array($ext, app(FileHandler::class)->getAllowedExts())) {
-            return new_json_encode([
-                'code' => 'ERROR',
-                'msg' => trans('administrator.invalid_file_exts'),
-            ]);
-        }
+        $response = StrategyResolver::resolveFromRequest($request, $request->get('strategy', 'default'))->upload();
 
-        // 存储路径
-        $fileStoragePath = file_storage_path($request->md5, $ext);
+        File::create([
+            'type_id' => $request->get('type_id', 0),
+            'hash' => $request->get('md5'),
+            'mime' => $response->mime,
+            'size' => $response->size,
+            'relative_url' => $response->relativeUrl,
+            'original_name' => $response->originalName,
+            'url' => $response->url,
+        ]);
 
-        // 文件上传Token验证
-        if ($request->token !== md5($fileStoragePath.session_id())) {
-            return new_json_encode([
-                'code' => 'ERROR',
-                'msg' => '文件上传验证失败',
-            ]);
-        }
-
-        // 将图片移动到我们的目标存储路径中
-        if ($request->file->storeAs(dirname($fileStoragePath), pathinfo($fileStoragePath, PATHINFO_BASENAME))) {
-            if (($url = app(FileHandler::class)->getFileUrl($fileStoragePath))) {
-                return new_json_encode([
-                    'data' => [
-                        'url' => $url,
-                    ],
-                    'code' => 'SUCCESS',
-                    'msg' => '文件上传成功',
-                ]);
-            }
-        }
-
-        return new_json_encode([
-            'code' => 'ERROR',
-            'msg' => '文件上传失败',
+        return response()->json([
+            'data' => [
+                'url' => $response->url,
+                'mime' => $response->mime,
+                'size' => $response->size,
+                'filename' => $response->filename,
+                'relative_url' => $response->relativeUrl,
+            ],
+            'code' => 'SUCCESS',
+            'msg' => '文件上传成功',
         ]);
     }
 

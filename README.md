@@ -246,6 +246,7 @@ _The code contribution process is not very formal. You just need to make sure th
 - [laravel-permission](https://github.com/spatie/laravel-permission)
 - [laravel-activitylog](https://github.com/spatie/laravel-activitylog)
 - [laravel-options](https://github.com/overtrue/laravel-options)
+- [laravel-uploader](https://github.com/overtrue/laravel-uploader)
 
 ## License
 
