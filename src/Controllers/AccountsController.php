@@ -1,13 +1,5 @@
 <?php
 
-/*
- * This file is part of the shengfai/laravel-admin.
- *
- * (c) shengfai <shengfai@qq.com>
- *
- * This source file is subject to the MIT license that is bundled.
- */
-
 namespace Shengfai\LaravelAdmin\Controllers;
 
 use App\Models\User;
@@ -22,7 +14,6 @@ use Shengfai\LaravelAdmin\Handlers\ActivityHandler;
  * Class AccountsController.
  *
  * @author ShengFai <shengfai@qq.com>
- *
  * @version 2020年3月10日
  */
 class AccountsController extends Controller
@@ -36,7 +27,7 @@ class AccountsController extends Controller
      */
     public function showLoginForm()
     {
-        return $this->view([], 'login');
+        return $this->view([], 'admin::accounts.login');
     }
 
     /**
@@ -84,7 +75,7 @@ class AccountsController extends Controller
     {
         ActivityHandler::console()->performedOn($user)->log('授权登录');
 
-        return $this->success('登录成功，正在进入系统...', route('admin.dashboards.console'));
+        return $this->success('登录成功，正在进入系统...', route('admin.main'));
     }
 
     /**

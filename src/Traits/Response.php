@@ -1,13 +1,5 @@
 <?php
 
-/*
- * This file is part of the shengfai/laravel-admin.
- *
- * (c) shengfai <shengfai@qq.com>
- *
- * This source file is subject to the MIT license that is bundled.
- */
-
 namespace Shengfai\LaravelAdmin\Traits;
 
 /**
@@ -15,66 +7,10 @@ namespace Shengfai\LaravelAdmin\Traits;
  * trait Response.
  *
  * @author ShengFai <shengfai@qq.com>
- *
  * @version 2020年3月8日
  */
 trait Response
 {
-    /**
-     * 默认返回资源类型.
-     *
-     * @var string
-     */
-    protected $restDefaultType = 'json';
-
-    /**
-     * 设置响应类型.
-     *
-     * @return \App\Http\Traits\Response
-     */
-    public function setType(string $type = '')
-    {
-        $this->restType = (!empty($type)) ? $type : $this->restDefaultType;
-
-        return $this;
-    }
-
-    /**
-     * 失败响应.
-     *
-     * @param int    $code
-     * @param int    $error_code
-     * @param string $message
-     * @param string $debug
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
-     */
-    public function error(array $data, array $headers = [])
-    {
-        $responseData = [
-            'error_code' => $data['error_code'],
-            'message' => $data['message'],
-        ];
-
-        // Debug信息
-        if (('production' !== config('app.env')) && isset($data['debug'])) {
-            $responseData['debug'] = $data['debug'];
-        }
-
-        return $this->write($responseData, $data['code'], $headers);
-    }
-
-    /**
-     * 成功响应.
-     *
-     * @param number $code
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
-     */
-    public function success(array $responseData = [], int $code = 200, array $headers = [])
-    {
-        return $this->write($responseData, $code, $headers);
-    }
 
     /**
      * 重定向.
@@ -101,12 +37,10 @@ trait Response
         if (\request()->has('callback')) {
             return response()->json($responseData)->setCallback(\request()->input('callback'));
         }
-
+        
         // 获取响应格式
-        if (!isset($this->restType) || empty($this->restType)) {
-            $this->setType();
+        if (\request()->expectsJson() || \request()->wantsJson()) {
+            return response($responseData, $code, $headers)->header('Content-Type', 'application/json');
         }
-
-        return response($responseData, $code, $headers)->header('Content-Type', $this->restType);
     }
 }

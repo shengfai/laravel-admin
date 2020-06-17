@@ -1,21 +1,12 @@
 <?php
 
-/*
- * This file is part of the shengfai/laravel-admin.
- *
- * (c) shengfai <shengfai@qq.com>
- *
- * This source file is subject to the MIT license that is bundled.
- */
-
 namespace Shengfai\LaravelAdmin\Contracts;
 
 /**
  * 约定
- * Class Conventions.
+ * Interface Conventions.
  *
  * @author ShengFai <shengfai@qq.com>
- *
  * @version 2020年3月10日
  */
 interface Conventions
@@ -34,8 +25,6 @@ interface Conventions
     const STATUS_INSUFFICIENT   = 6;                    // 状态不可用/数量不足
     const STATUS_EXPIRED        = 7;                    // 状态不可以/已过期
 
-    const STATUS_ON             = 'on';                 // 状态可用/审核通过
-    const STATUS_OFF            = 'off';                // 状态不可用
     const STATUS_SUCCESSFUL     = 'successful';         // 成功
     const STATUS_FAILED         = 'failed';             // 失败
 

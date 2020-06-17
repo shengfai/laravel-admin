@@ -2,15 +2,14 @@
 
 /*
  * This file is part of the shengfai/laravel-admin.
- *
  * (c) shengfai <shengfai@qq.com>
- *
  * This source file is subject to the MIT license that is bundled.
  */
 
 use App\Models\User;
 
 return [
+    
     /*
      * Domain for routing.
      * @type string
@@ -25,18 +24,25 @@ return [
     'prefix' => env('CONSOLE_PREFIX', 'console'),
 
     /*
-     * URI name Prefix
-     *
-     * @type string
-     */
-    'name' => 'admin.',
-
-    /*
      * Namespace for controllers.
      *
      * @type string
      */
     'namespace' => '\App\Http\Controllers\Admin',
+                
+    /*
+     * The path to your model config directory
+     *
+     * @type string
+     */
+    'model_config_path' => config_path('administrator'),
+    
+    /*
+     * The path to your settings config directory
+     *
+     * @type string
+     */
+    'settings_config_path' => config_path('administrator/settings'),
 
     /*
      * The permission option is the highest-level authentication check that lets you define a closure that should return true if the current user
@@ -44,8 +50,32 @@ return [
      *
      * @type closure
      */
-    'permission' => 'dashboards',
+    'permission' => function () {
+        return Auth::check();
+    },
 
+    /*
+     * This determines if you will have a dashboard (whose view you provide in the dashboard_view option) or a non-dashboard home
+     * page (whose menu item you provide in the home_page option)
+     *
+     * @type bool
+     */
+    'use_dashboard' => true,
+    
+    /*
+     * If you want to create a dashboard view, provide the view string here.
+     *
+     * @type string
+     */
+    'dashboard_view' => 'admin::console',
+    
+    /*
+     * The menu item that should be used as the default landing page of the administrative section
+     *
+     * @type string
+     */
+    'home_page' => 'page.dashboards',
+    
     /*
      * The login path is the path where Administrator will send the user if they fail a permission check
      *
@@ -59,7 +89,7 @@ return [
      * @type string
      */
     'login_redirect_key' => 'redirect',
-
+                
     /*
      * Global default rows per page
      *
@@ -67,34 +97,49 @@ return [
      */
     'global_rows_per_page' => 20,
 
-    // 自定义路由文件
+    /*
+     * Custom routes file
+     *
+     * @type string
+     */
     'custom_routes_file' => base_path('routes/administrator.php'),
-
-    // 运行上传文件后缀
-    'allowed_upload_file_exts' => [
-        'ico',
-        'png',
-        'jpg',
-        'gif',
-        'jpeg',
-        'mp4',
-        'mov',
-        'mp3',
+                
+    /*
+     * The models
+     *
+     * @type array
+     */
+    'models' => [
+        'settings.system',
+        'roles',
+        'activities'
     ],
-
-    // 类别名称
+    
+    /*
+     * The types title
+     *
+     * @type array
+     */
     'types_title' => [],
 
-    // 可推荐模型
+    /*
+     * Available positioned models
+     *
+     * @type array
+     */
     'available_positioned_models' => [
         'user' => [
             'name' => '用户模型',
-            'model' => User::class,
-        ],
+            'model' => User::class
+        ]
     ],
 
-    // 消息主题
+    /*
+     * Available notified topics
+     *
+     * @type array
+     */
     'available_notified_topics' => [
-        'remind' => '提醒',
-    ],
+        'remind' => '提醒'
+    ]
 ];

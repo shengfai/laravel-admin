@@ -41,7 +41,7 @@ class SeedAdminData extends Migration
                 'code' => '',
                 'parent_id' => $parent_id,
                 'name' => '我的资源',
-                'url' => '/dashboards',
+                'url' => '/dashboard',
             ], [
                 'code' => '',
                 'parent_id' => $parent_id,
@@ -97,7 +97,7 @@ class SeedAdminData extends Migration
             [
                 'parent_id' => $parent_id,
                 'name' => '系统参数',
-                'url' => '/settings',
+                'url' => '/settings/system',
                 'icon' => 'fa fa-gear',
                 'sort' => 20,
             ],
@@ -127,7 +127,7 @@ class SeedAdminData extends Migration
         DB::table('menus')->insert([
             'parent_id' => $parent_id,
             'name' => '系统日志',
-            'url' => '/logs',
+            'url' => '/activities',
             'icon' => 'fa fa-code',
         ]);
 

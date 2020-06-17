@@ -23,7 +23,6 @@ use Spatie\Permission\Traits\HasPermissions;
  * Class AuthorizationsController.
  *
  * @author ShengFai <shengfai@qq.com>
- *
  * @version 2020年3月10日
  */
 class AuthorizationsController extends Controller
