@@ -1,13 +1,5 @@
 <?php
 
-/*
- * This file is part of the shengfai/laravel-admin.
- *
- * (c) shengfai <shengfai@qq.com>
- *
- * This source file is subject to the MIT license that is bundled.
- */
-
 namespace Shengfai\LaravelAdmin\Controllers;
 
 use Shengfai\LaravelAdmin\Handlers\DataHandler;
@@ -18,7 +10,6 @@ use Shengfai\LaravelAdmin\Services\MenuService;
  * Class DashboardsController.
  *
  * @author ShengFai <shengfai@qq.com>
- *
  * @version 2020年3月10日
  */
 class DashboardsController extends Controller
@@ -31,7 +22,7 @@ class DashboardsController extends Controller
     public function console(MenuService $service)
     {
         // 获取登录用户授权菜单
-        $collection = $service->getAuthorizedMenusByUser();
+        $collection = $service->getAvailableMenusByUser();
 
         // 转化为树形结构
         $menus = DataHandler::arr2tree($collection->toArray());

@@ -3,7 +3,6 @@ body{width:100%;font-size:12px;font-family:'\5FAE\8F6F\96C5\9ED1','Microsoft YaH
 a{color:#06C;cursor:pointer}
 a:hover{color:#039}
 input::-ms-clear{display:none}
-button{border-radius:0 !important}
 .text-left{text-align:left !important}
 .text-right{text-align:right !important}
 .text-center{text-align:center !important}
@@ -187,7 +186,7 @@ label{font-size:100%;font-weight:500;margin-bottom:0}
 .framework-body > .layui-content > .layui-header span:after{content:'/';padding-left:3px;padding-right:3px}
 .framework-body > .layui-content > .layui-header span:last-child:after{content:''}
 .framework-body .layui-fluid{padding:15px}
-.framework-body .form-search{background:#fff;padding-top:5px}
+.framework-body .form-search{background:#fff;}
 .framework-body .form-search .layui-btn{height:32px;line-height:30px;font-size:12px;padding:0 10px}
 .framework-body .form-search .layui-form-label{width:auto !important;border-radius:0;padding:0 6px;height:32px;line-height:30px}
 .framework-body .form-search .layui-input-inline{width:170px}

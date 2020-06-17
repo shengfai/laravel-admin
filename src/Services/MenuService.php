@@ -10,9 +10,8 @@
 
 namespace Shengfai\LaravelAdmin\Services;
 
-use App\Models\User;
 use Auth;
-use Shengfai\LaravelAdmin\Contracts\Conventions;
+use App\Models\User;
 use Shengfai\LaravelAdmin\Handlers\DataHandler;
 use Shengfai\LaravelAdmin\Models\Menu;
 
@@ -33,7 +32,7 @@ class MenuService
      *
      * @return Illuminate\Database\Eloquent\Collection $menus
      */
-    public function getAuthorizedMenusByUser(User $user = null)
+    public function getAvailableMenusByUser(User $user = null)
     {
         // 当前登录用户
         if (blank($user)) {
@@ -46,7 +45,7 @@ class MenuService
         // 授权菜单
         $menus = Menu::where(function ($query) use ($permissions) {
             return $query->whereIn('code', $permissions)->orWhere('permission_id', 0);
-        })->ofStatus(Conventions::STATUS_USABLE)->sorted()->get();
+        })->usable()->sorted()->get();
 
         return $menus;
     }
@@ -59,7 +58,7 @@ class MenuService
     public function getUsedAsParentList()
     {
         // 获取记录
-        $menus = Menu::ofStatus(Conventions::STATUS_USABLE)->sorted('ASC')->get()->prepend([
+        $menus = Menu::usable()->sorted('ASC')->get()->prepend([
             'name' => '顶级菜单',
             'id' => '0',
             'parent_id' => '-1',

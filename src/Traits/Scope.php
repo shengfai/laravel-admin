@@ -11,6 +11,7 @@
 namespace Shengfai\LaravelAdmin\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use Shengfai\LaravelAdmin\Contracts\Conventions;
 
 /**
  * 本地查询作用域
@@ -22,6 +23,18 @@ use Illuminate\Database\Eloquent\Builder;
  */
 trait Scope
 {
+    /**
+     * 查询指定状态记录.
+     *
+     * @param mixed $status
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeUsable(Builder $query)
+    {
+        return $query->where('status', Conventions::STATUS_USABLE);
+    }
+    
     /**
      * 查询指定状态记录.
      *

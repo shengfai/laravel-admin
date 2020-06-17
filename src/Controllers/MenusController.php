@@ -1,13 +1,5 @@
 <?php
 
-/*
- * This file is part of the shengfai/laravel-admin.
- *
- * (c) shengfai <shengfai@qq.com>
- *
- * This source file is subject to the MIT license that is bundled.
- */
-
 namespace Shengfai\LaravelAdmin\Controllers;
 
 use Illuminate\Http\Request;
@@ -22,7 +14,6 @@ use Spatie\Permission\Models\Permission;
  * Class MenusController.
  *
  * @author ShengFai <shengfai@qq.com>
- *
  * @version 2020年3月10日
  */
 class MenusController extends Controller

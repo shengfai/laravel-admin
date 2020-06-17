@@ -1,13 +1,5 @@
 <?php
 
-/*
- * This file is part of the shengfai/laravel-admin.
- *
- * (c) shengfai <shengfai@qq.com>
- *
- * This source file is subject to the MIT license that is bundled.
- */
-
 namespace Shengfai\LaravelAdmin\Controllers;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -21,7 +13,6 @@ use Shengfai\LaravelAdmin\Models\Positionable;
  * Class PositionablesController.
  *
  * @author ShengFai <shengfai@qq.com>
- *
  * @version 2020年3月10日
  */
 class PositionablesController extends Controller
@@ -123,10 +114,7 @@ class PositionablesController extends Controller
      */
     public function edit(Positionable $data)
     {
-        $this->assign('data', $data);
-        $this->view = 'admin::positionables.push';
-
-        return $this->view();
+        return $this->view(compact('data'), 'admin::positionables.push');
     }
 
     /**

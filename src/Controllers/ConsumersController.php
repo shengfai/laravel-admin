@@ -1,13 +1,5 @@
 <?php
 
-/*
- * This file is part of the shengfai/laravel-admin.
- *
- * (c) shengfai <shengfai@qq.com>
- *
- * This source file is subject to the MIT license that is bundled.
- */
-
 namespace Shengfai\LaravelAdmin\Controllers;
 
 use App\Models\User;
@@ -18,7 +10,6 @@ use Illuminate\Http\Request;
  * Class ConsumersController.
  *
  * @author ShengFai <shengfai@qq.com>
- *
  * @version 2020年3月10日
  */
 class ConsumersController extends Controller

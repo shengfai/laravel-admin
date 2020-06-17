@@ -1,13 +1,5 @@
 <?php
 
-/*
- * This file is part of the shengfai/laravel-admin.
- *
- * (c) shengfai <shengfai@qq.com>
- *
- * This source file is subject to the MIT license that is bundled.
- */
-
 namespace Shengfai\LaravelAdmin\Controllers;
 
 use Illuminate\Http\Request;
@@ -19,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
  * Class NoticesController.
  *
  * @author ShengFai <shengfai@qq.com>
- *
  * @version 2020年3月29日
  */
 class NoticesController extends Controller
