@@ -2,9 +2,7 @@
 
 /*
  * This file is part of the shengfai/laravel-admin.
- *
  * (c) shengfai <shengfai@qq.com>
- *
  * This source file is subject to the MIT license that is bundled.
  */
 
@@ -17,7 +15,6 @@ use Illuminate\Support\Str;
  * Class FileHandler.
  *
  * @author ShengFai <shengfai@qq.com>
- *
  * @version 2020年3月10日
  */
 class FileHandler
@@ -27,7 +24,7 @@ class FileHandler
     /**
      * 根据文件后缀获取文件MINE.
      *
-     * @param array $ext  文件后缀
+     * @param array $ext 文件后缀
      * @param array $mine 文件后缀MINE信息
      *
      * @return string
@@ -41,42 +38,42 @@ class FileHandler
                 $mine[] = is_array($_exinfo) ? join(',', $_exinfo) : $_exinfo;
             }
         }
-
+        
         return join(',', array_unique($mine));
     }
 
     /**
      * 填充资源域名.
      *
+     * @param string $url
      * @param string $path
-     *
      * @return string
      */
-    public static function startsWithUrlForResource(string $path = null, string $url)
+    public static function startsWithUrlForResource(string $url, string $path = null)
     {
         // 未设置
         if (empty($path) || Str::is('http*', $path)) {
             return $path;
         }
-
+        
         // 填充域名
-        return $url.$path;
+        return $url . $path;
     }
 
     /**
      * 排除资源域名.
      *
+     * @param string $url
      * @param string $path
-     *
      * @return string
      */
-    public static function exceptUrlForResource(string $path = null, string $url)
+    public static function exceptUrlForResource(string $url, string $path = null)
     {
         // 处理图片域名
         if (Str::startsWith($path, $url)) {
             $path = Str::after($path, $url);
         }
-
+        
         return $path;
     }
 }

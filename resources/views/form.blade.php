@@ -14,6 +14,10 @@
             <textarea name="{{$field_name}}" class="layui-textarea" required="required" placeholder="请输入{{$title}}" title="请输入{{$title}}">{{$model->{$field_name} ?? ''}}</textarea>
             @elseif($vo->getOption('type') === 'switch')
             <input type="checkbox" name="{{$field_name}}" lay-skin="switch" @if($value) checked @endif lay-text="{{ implode('|', \Arr::pluck($vo->getOption('options'), 'text')) }}">
+            @elseif($vo->getOption('type') === 'image')
+            <input type="text" class="layui-input validate-error" required="required" onchange="$(this).nextAll('img').attr('src', this.value);" value="{{$model->{$field_name} ?? ''}}" name="{{$field_name}}" title="请上传图片或输入图片URL地址">
+            <p class="help-block">{!! $vo->getOption('tips') !!}</p>
+            <img style="width: 30px; height: auto;" data-tips-image="" src="{{$model->{$field_name} ?? '/admin/images/image.png'}}"> <a data-file="one" data-type="ico,png,jpeg,jpg" data-field="{{$field_name}}" class="btn btn-link">上传图片</a>
             @endif
         </div>
     </div>
