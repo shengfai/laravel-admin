@@ -39,7 +39,8 @@ class File extends Field {
 
 		//set the upload url depending on the type of config this is
 		$url = $this->validator->getUrlInstance();
-		$route = $this->config->getType() === 'settings' ? 'admin.plugs.upfile' : 'admin.file_upload';
+		// $route = $this->config->getType() === 'settings' ? 'admin.plugs.upfile' : 'admin.file_upload';
+		$route = 'admin.plugs.upfile';
 
 		//set the upload url to the proper route
 		$this->suppliedOptions['upload_url'] = $url->route($route, [$this->config->getOption('name'), $this->suppliedOptions['field_name']]);
