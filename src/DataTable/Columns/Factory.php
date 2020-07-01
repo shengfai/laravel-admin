@@ -205,14 +205,16 @@ class Factory
         $columns = $this->getVisibleColumns();
         
         $columns = $columns->transform(function ($item) {
-            return [
+            $column = [
                 'field' => $item['column_name'],
                 'title' => $item['title'],
                 'sort' => $item['sortable'],
                 'checkable' => $item['checkable'],
-                'width' => $item['width'],
                 'templet' => $item['template'] ?? '<div>{{d.' . $item['column_name'] . '.rendered}}</div>'
             ];
+            if ($item['width'] > 0) $column['width'] = $item['width'];
+            
+            return $column;
         });
         
         $columns = $this->openCheckableColumn($columns);
