@@ -9,7 +9,6 @@ class Presenter
 {
 
     /**
-     *
      * @param int $id
      * @param int $sort
      * @return string
@@ -21,7 +20,6 @@ class Presenter
     }
 
     /**
-     *
      * @param Model $model
      * @param string $name
      * @return string
@@ -38,13 +36,12 @@ class Presenter
     }
 
     /**
-     *
      * @param string $url
      * @param string $target
      */
-    public static function linkable(string $url, string $target = 'modal')
+    public static function linkable(string $url, string $target = 'modal', $title = '链接')
     {
-        return '<a data-title="查看角色" data-' . $target . '="' . $url . '">查看</a>';
+        return '<a data-title="' . $title . '" data-' . $target . '="' . $url . '">' . $title . '</a>';
     }
 
     public static function getUserinfo($user)
@@ -56,7 +53,6 @@ class Presenter
     }
 
     /**
-     *
      * @return string
      */
     public static function getFullName()

@@ -32,7 +32,10 @@ class MenusController extends Controller
      */
     public function index(Menu $menu)
     {
-        return $this->list(Menu::class, false);
+        $menus = $this->list(Menu::class, false, false);
+        $this->index_data_filter($menus['list']);
+        
+        return $this->view($menus);
     }
 
     /**
