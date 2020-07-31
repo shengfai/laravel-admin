@@ -42,11 +42,6 @@ class SeedAdminData extends Migration
                 'parent_id' => $parent_id,
                 'name' => '我的资源',
                 'url' => '/dashboard',
-            ], [
-                'code' => '',
-                'parent_id' => $parent_id,
-                'name' => '推荐位管理',
-                'url' => '/positions',
             ],
         ]);
 
@@ -129,6 +124,39 @@ class SeedAdminData extends Migration
             'name' => '系统日志',
             'url' => '/activities',
             'icon' => 'fa fa-code',
+        ]);
+        
+        // 顶级菜单
+        $parent_id = DB::table('menus')->insertGetId([
+            'code' => 'contents',
+            'parent_id' => 0,
+            'name' => '内容管理',
+            'url' => '#',
+            'sort' => 90,
+        ]);
+        
+        $parent_id = DB::table('menus')->insertGetId([
+            'code' => '',
+            'parent_id' => $parent_id,
+            'name' => '推荐管理',
+            'url' => '#',
+        ]);
+        
+        DB::table('menus')->insert([
+            [
+                'parent_id' => $parent_id,
+                'name' => '推荐位管理',
+                'url' => '/positions',
+                'icon' => 'fa fa-paw',
+                'sort' => 20,
+            ],
+            [
+                'parent_id' => $parent_id,
+                'name' => '标签管理',
+                'url' => '/tags',
+                'icon' => 'fa fa-hashtag',
+                'sort' => 10,
+            ],
         ]);
 
         // 添加配置
