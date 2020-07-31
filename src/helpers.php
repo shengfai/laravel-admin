@@ -1,10 +1,6 @@
 <?php
 
-/*
- * This file is part of the shengfai/laravel-admin.
- * (c) shengfai <shengfai@qq.com>
- * This source file is subject to the MIT license that is bundled.
- */
+use Overtrue\Pinyin\Pinyin;
 
 if (!function_exists('new_json_encode')) {
 
@@ -18,6 +14,20 @@ if (!function_exists('new_json_encode')) {
     function new_json_encode($value)
     {
         return json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    }
+}
+
+if (!function_exists('slugger')) {
+
+    /**
+     * 处理 Slug
+     *
+     * @param string $str
+     * @return string
+     */
+    function slugger($str)
+    {
+        return (new Pinyin())->permalink($str);
     }
 }
 

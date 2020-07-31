@@ -68,6 +68,10 @@ class AdminCommand extends Command
             '--provider' => 'Shengfai\LaravelAdmin\AdminServiceProvider',
             '--force' => true,
         ]);
+        $this->call('vendor:publish', [
+            '--provider' => 'Spatie\Tags\TagsServiceProvider',
+            '--force' => true,
+        ]);
 
         $this->info('Dumping the composer autoload');
         (new Process([

@@ -52,6 +52,10 @@ class SeedPermissionsData extends Migration
             'name' => 'dashboards.manages',
             'title' => '管理控制台',
         ]);
+        Permission::create([
+            'name' => 'contents',
+            'title' => '内容管理',
+        ]);
 
         // 创建站长角色，并赋予权限
         $founder = Role::create([
@@ -65,6 +69,7 @@ class SeedPermissionsData extends Migration
             'systems.logs',
             'dashboards',
             'dashboards.manages',
+            'contents'
         ]);
 
         // 授权

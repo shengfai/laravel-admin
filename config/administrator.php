@@ -112,7 +112,8 @@ return [
     'models' => [
         'settings.system',
         'roles',
-        'activities'
+        'activities',
+        'tags'
     ],
     
     /*

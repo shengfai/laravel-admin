@@ -266,39 +266,16 @@ abstract class Controller extends BaseController
         
         // 分页数据处理
         if (($total = $page->total()) > 0) {
-            list($rowHTML, $curPage, $maxNum) = [
-                [],
-                $page->currentPage(),
-                $page->lastPage()
-            ];
-            foreach ([
-                20,
-                30,
-                50,
-                60,
-                90,
-                100,
-                120,
-                150,
-                200
-            ] as $num) {
-                list($query['per_page'], $query['page']) = [
-                    $num,
-                    1
-                ];
+            list($rowHTML, $curPage, $maxNum) = [[], $page->currentPage(), $page->lastPage()];
+            foreach ([20, 50, 100, 150, 200, 300, 500, 1000] as $num) {
+                list($query['per_page'], $query['page']) = [$num, 1];
                 $url = url(request()->getPathInfo()) . '?' . http_build_query($query);
                 $rowHTML[] = "<option data-url='{$url}' " . ($per_page === $num ? 'selected' : '') .
                          " value='{$num}'>{$num}</option>";
             }
             list($pattern, $replacement) = [
-                [
-                    '|href="(.*?)"|',
-                    '|pagination|'
-                ],
-                [
-                    'data-open="$1"',
-                    'pagination pull-right'
-                ]
+                ['|href="(.*?)"|', '|pagination|'],
+                ['data-open="$1"', 'pagination pull-right']
             ];
             $html = "<span class='pagination-trigger nowrap'>共 {$total} 条记录，每页显示 <select data-auto-none>" .
                      join('', $rowHTML) . "</select> 条，共 {$maxNum} 页当前显示第 {$curPage} 页。</span>";
@@ -308,11 +285,7 @@ abstract class Controller extends BaseController
                 $html . preg_replace($pattern, $replacement, $page->render())
             ];
         } else {
-            list($result['total'], $result['list'], $result['page']) = [
-                $total,
-                $page->all(),
-                $page->render()
-            ];
+            list($result['total'], $result['list'], $result['page']) = [$total, $page->all(), $page->render()];
         }
         
         return $result;
@@ -334,15 +307,12 @@ abstract class Controller extends BaseController
         }
         
         // 更新排序
+        $order_column = method_exists($model, 'getOrderColumnName') ? $model->getOrderColumnName() : 'sort';
         foreach (request()->input() as $key => $value) {
             if (preg_match('/^_\d{1,}$/', $key) && preg_match('/^\d{1,}$/', $value)) {
                 list($where, $update) = [
-                    [
-                        'id' => trim($key, '_')
-                    ],
-                    [
-                        'sort' => $value
-                    ]
+                    ['id' => trim($key, '_')],
+                    [$order_column => $value]
                 ];
                 
                 if (false === $model->where($where)->update($update)) {
@@ -368,10 +338,7 @@ abstract class Controller extends BaseController
         // 操作视图
         if (empty($view) || !Str::contains($view, 'admin::')) {
             $method = \Route::current()->getActionMethod();
-            $action = empty($view) ? in_array($method, [
-                'create',
-                'edit'
-            ]) ? 'form' : $method : $view;
+            $action = empty($view) ? in_array($method, ['create', 'edit']) ? 'form' : $method : $view;
             $controller = $this->getCurrentControllerName(true);
             $view = "admin::{$controller}.{$action}";
         }
