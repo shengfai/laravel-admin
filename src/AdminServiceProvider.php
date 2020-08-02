@@ -171,6 +171,7 @@ class AdminServiceProvider extends ServiceProvider
                 __DIR__ . '/../database/migrations/alter_notifications_table.php' => database_path("/migrations/{$timestamp}_alter_notifications_table.php"),
                 __DIR__ . '/../database/migrations/alter_permissions_table.php' => database_path("/migrations/{$timestamp}_alter_permissions_table.php"),
                 __DIR__ . '/../database/migrations/alter_users_table.php' => database_path("/migrations/{$timestamp}_alter_users_table.php"),
+                __DIR__ . '/../database/migrations/alter_tags_table.php' => database_path("/migrations/{$timestamp}_alter_tags_table.php"),
                 __DIR__ . '/../database/migrations/create_admin_tables.php' => database_path("/migrations/{$timestamp}_create_admin_tables.php"),
                 __DIR__ . '/../database/migrations/seed_admin_data.php' => database_path("/migrations/{$timestamp}_seed_admin_data.php"),
                 __DIR__ . '/../database/migrations/seed_permissions_data.php' => database_path("/migrations/{$timestamp}_seed_permissions_data.php")
