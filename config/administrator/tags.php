@@ -17,35 +17,59 @@ return [
                 return Presenter::sortable($model->id, $model->order_column);
             }
         ],
+        'id' => [
+            'title' => 'ID',
+            'width' => 60
+        ],
         'name' => [
             'title' => '名称',
-            'width' => '',
+            'width' => 100,
             'output' => function ($value, $model) {
                 return $model->name;
             }
         ],
         'slug' => [
             'title' => '固定链接',
-            'width' => '',
+            'width' => 120,
             'output' => function ($value, $model) {
                 return $model->slug;
             }
         ],
         'type' => [
-            'title' => '所属分类',
-            'width' => 150
+            'title' => '维度',
+            'width' => 80,
+            'output' => function ($value, $model) {
+                return '<span class="color-blue">' . $model->type . '</span>';
+            }
+        ],
+        'parent_id' => [
+            'title' => '父标签',
+            'width' => 100,
+            'output' => function ($value, $model) {
+                return '<span class="color-blue">' . $model->parent->name . '</span>';
+            }
         ],
         'taggables_count' => [
             'title' => '关联数',
-            'width' => 100,
+            'width' => 80,
             'output' => function ($value, $model) {
                 return $model->taggables()->count();
+            }
+        ],
+        'remark' => [
+            'title' => '备注',
+            'width' => '',
+            'output' => function ($value, $model) {
+                return '<span class="color-desc">' . $model->remark . '</span>';
             }
         ],
         'created_at' => [
             'title' => '创建时间',
             'width' => 150,
-            'sortable' => true
+            'sortable' => true,
+            'output' => function ($value, $model) {
+                return '<span class="color-desc">' . $model->created_at . '</span>';
+            }
         ],
         'operation' => [
             'title' => '管理',
@@ -69,13 +93,26 @@ return [
     ],
     
     'edit_fields' => [
+        'parent_id' => [
+            'title' => '父标签',
+            'type' => 'tag',
+            'customized' => false,
+            'maxselection' => 1,
+            'options' => function () {
+                return Tag::ofParent(0)->pluck('name', 'id')->toArray();
+            }
+        ],
         'name' => [
             'title' => '名称',
             'type' => 'text'
         ],
         'type' => [
-            'title' => '分类',
+            'title' => '维度',
             'type' => 'text'
+        ],
+        'remark' => [
+            'title' => '备注',
+            'type' => 'textarea'
         ]
     ]
 ];
