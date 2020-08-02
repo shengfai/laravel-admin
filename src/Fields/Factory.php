@@ -32,6 +32,7 @@ class Factory
         'image' => 'Shengfai\\LaravelAdmin\\Fields\\Image',
         'file' => 'Shengfai\\LaravelAdmin\\Fields\\File',
         'color' => 'Shengfai\\LaravelAdmin\\Fields\\Color',
+        'tag' => 'Shengfai\\LaravelAdmin\\Fields\\Tag',
         
         // relationships
         'belongs_to' => 'Shengfai\\LaravelAdmin\\Fields\\Relationships\\BelongsTo',
