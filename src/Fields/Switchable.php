@@ -50,7 +50,7 @@ class Switchable extends Field
      */
     public function fillModel(&$model, $input)
     {
-        $value = $input === self::AVAILABLE ? Conventions::STATUS_USABLE : Conventions::STATUS_UNUSABLE;
+        $value = $input === self::AVAILABLE ? Conventions::STATUS_USABLE : $input == Conventions::STATUS_USABLE ?  : Conventions::STATUS_UNUSABLE;
         $model->{$this->getOption('field_name')} = $value;
     }
 
