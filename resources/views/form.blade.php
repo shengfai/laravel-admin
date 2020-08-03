@@ -14,8 +14,14 @@
             <input type="number" name="{{$field_name}}" value="{{$model->{$field_name} ?? ''}}" class="layui-input" required="required" title="请输入{{$title}}" placeholder="请输入{{$title}}">
             @elseif($vo->getOption('type') === 'textarea')
             <textarea name="{{$field_name}}" class="layui-textarea" required="required" placeholder="请输入{{$title}}" title="请输入{{$title}}">{{$model->{$field_name} ?? ''}}</textarea>
+            @elseif($vo->getOption('type') === 'enum')
+            <select class="layui-input" required="required" name="{{$field_name}}">
+                @foreach ($vo->getOption('options') as $option)
+                <option @if($value == $option['id']) selected @endif value="{{ $option['id'] }}">{{ $option['text'] }}</option>
+                @endforeach
+            </select>
             @elseif($vo->getOption('type') === 'tag')
-            <select class="layui-input {{$field_name}}-multiple-limit" required="required" multiple="multiple" name="{{$field_name}}">
+            <select class="layui-input {{$field_name}}-multiple-limit" required="required" multiple="multiple" name="{{$field_name}}{{ $vo->getOption('maxselection')>1 ? '[]' : '' }}">
                 @foreach ($vo->getOption('options') as $option)
                 <option @if($value == $option['id']) selected @endif value="{{ $option['id'] }}">{{ $option['text'] }}</option>
                 @endforeach
