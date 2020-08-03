@@ -28,10 +28,16 @@ class MenusController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
+     * @param Menu $menu
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Shengfai\LaravelAdmin\Controllers\unknown[]|\Shengfai\LaravelAdmin\Controllers\string[]|\Shengfai\LaravelAdmin\Controllers\NULL[]|\Shengfai\LaravelAdmin\Controllers\number[]
      */
-    public function index(Menu $menu)
+    public function index(Request $request, Menu $menu)
     {
+        if ($request->has('action')) {
+            return $this->list(Menu::class, false, false);
+        }
+        
         $menus = $this->list(Menu::class, false, false);
         $this->index_data_filter($menus['list']);
         
@@ -64,10 +70,10 @@ class MenusController extends Controller
     {
         // 获取父节点
         $menus = $menuService->getUsedAsParentList();
-
+        
         return $this->view([
             'menus' => $menus,
-            'parent_id' => $request->parent_id,
+            'parent_id' => $request->parent_id
         ]);
     }
 
@@ -82,10 +88,10 @@ class MenusController extends Controller
             // 创建菜单
             $menu->fill($request->all());
             $menu->save();
-
+            
             // 创建权限
             $this->autoCreatePermission($menu);
-
+            
             return $this->success('数据保存成功', '');
         } catch (PermissionAlreadyExists $e) {
             return $this->error('权限已存在，创建失败！');
@@ -101,11 +107,11 @@ class MenusController extends Controller
     {
         // 获取父节点
         $menus = $menuService->getUsedAsParentList();
-
+        
         return $this->view([
             'menu' => $menu,
             'menus' => $menus,
-            'parent_id' => $menu->parent_id,
+            'parent_id' => $menu->parent_id
         ]);
     }
 
@@ -121,13 +127,13 @@ class MenusController extends Controller
         try {
             // 获取对象
             $menu = $menu->fill($request->all());
-
+            
             // 更新菜单
             $menu->save();
-
+            
             // 更新权限
             $this->autoUpdatePermission($menu);
-
+            
             return $this->success('数据保存成功', '');
         } catch (PermissionAlreadyExists $e) {
             return $this->error('权限已存在，创建失败！');
@@ -144,7 +150,7 @@ class MenusController extends Controller
         if ($menu->delete()) {
             return $this->success('菜单删除成功!', '');
         }
-
+        
         return $this->error('菜单删除失败, 请稍候再试!');
     }
 
@@ -159,16 +165,16 @@ class MenusController extends Controller
         if (empty($menu->code)) {
             return;
         }
-
+        
         // 创建权限
         $permission = Permission::create([
             'name' => $menu->code,
-            'title' => $menu->name,
+            'title' => $menu->name
         ]);
-
+        
         // 更新菜单
         $menu->update([
-            'permission_id' => $permission->id,
+            'permission_id' => $permission->id
         ]);
     }
 
@@ -183,16 +189,16 @@ class MenusController extends Controller
         if (empty($menu->code)) {
             return;
         }
-
+        
         // 未关联权限
         if (empty($menu->permission)) {
             return $this->autoCreatePermission($menu);
         }
-
+        
         // 更新权限
         $menu->permission->update([
             'name' => $menu->code,
-            'title' => $menu->name,
+            'title' => $menu->name
         ]);
     }
 }
