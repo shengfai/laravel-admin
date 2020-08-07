@@ -24,7 +24,7 @@ class HasOneOrMany extends Relationship
 
         $where = $this->tablePrefix.$relationship->getQualifiedParentKeyName().
                 ' = '.
-                $field_table.'.'.$relationship->getPlainForeignKey()
+                $field_table.'.'.$relationship->getForeignKeyName()
                 .($relationshipWheres ? ' AND '.$relationshipWheres : '');
 
         $selects[] = $this->db->raw('(SELECT '.$this->getOption('select').'
