@@ -60,7 +60,8 @@ abstract class Field
         'min_value'    => '',
         'max_value'    => '',
         'min_max'      => false,
-        'tips'         => ''
+        'tips'         => '',
+        'required'     => true
     ];
 
     /**

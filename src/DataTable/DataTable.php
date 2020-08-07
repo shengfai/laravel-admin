@@ -162,7 +162,7 @@ class DataTable
         $querySql = $query->toSql();
 
         //order the set by the model table's id
-        $query->orderBy($sort['field'], $sort['direction']);
+        $query->orderBy($sort['field'], $sort['direction'])->orderBy('id', 'DESC');
 
         //then retrieve the rows
         $query->getQuery()->select($selects);
