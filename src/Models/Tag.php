@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 /**
  * 标签模型
- * Class Tag.
+ * Class Tag
  *
  * @author ShengFai <shengfai@qq.com>
  * @version 2020年7月31日
@@ -15,27 +15,40 @@ use Illuminate\Database\Eloquent\Builder;
 class Tag extends OriginalTag
 {
     /**
-     * the column of order
-     *
-     * @var string $order_column
-     */
-    protected $sortable = [
-        'order_column_name' => 'order_column'
-    ];
-    
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
+        'dimension_id',
         'parent_id',
         'name',
         'slug',
         'type',
         'order_column',
-        'remark'
+        'remark',
+        'sort'
     ];
+    
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = [
+        'parent'
+    ];
+
+    /**
+     * 模型事件
+     */
+    public static function boot()
+    {
+        parent::boot();
+        static::saving(function ($model) {
+            $model->type = $model->dimension->name;
+        });
+    }
 
     /**
      * 获取可排序字段
@@ -59,6 +72,16 @@ class Tag extends OriginalTag
         $locale = $locale ?? app()->getLocale();
         
         return static::query()->where("name->{$locale}", $name)->withType($type)->first();
+    }
+
+    /**
+     * 所属维度
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function dimension()
+    {
+        return $this->belongsTo(Dimension::class);
     }
 
     /**

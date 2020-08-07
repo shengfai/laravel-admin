@@ -41,6 +41,10 @@ class SeedPermissionsData extends Migration
             'title' => '访问权限',
         ]);
         Permission::create([
+            'name' => 'systems.contents',
+            'title' => '内容体系设置',
+        ]);
+        Permission::create([
             'name' => 'systems.logs',
             'title' => '日志管理',
         ]);
@@ -66,6 +70,7 @@ class SeedPermissionsData extends Migration
             'systems',
             'systems.settings',
             'systems.permissions',
+            'systems.contents',
             'systems.logs',
             'dashboards',
             'dashboards.manages',

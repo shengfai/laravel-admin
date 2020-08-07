@@ -15,7 +15,8 @@ class AlterTagsTable extends Migration
     {
         Schema::table('tags', function (Blueprint $table) {
             $table->unsignedInteger('parent_id')->default(0)->after('id');
-            $table->string('remark', 128)->nullable()->after('order_column');
+            $table->unsignedTinyInteger('sort')->default(0)->after('order_column');
+            $table->string('remark', 512)->nullable()->after('order_column');
         });
     }
 
@@ -28,6 +29,7 @@ class AlterTagsTable extends Migration
     {
         Schema::table('tags', function (Blueprint $table) {
             $table->dropColumn('parent_id');
+            $table->dropColumn('sort');
             $table->dropColumn('remark');
         });
     }

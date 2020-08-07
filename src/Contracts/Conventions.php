@@ -11,7 +11,7 @@ namespace Shengfai\LaravelAdmin\Contracts;
  */
 interface Conventions
 {
-    const VERSION = '0.8.0';                            // 版本
+    const VERSION = '0.9.0';                            // 版本
 
     /**
      * 通用状态

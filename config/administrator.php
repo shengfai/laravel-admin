@@ -113,6 +113,8 @@ return [
         'settings.system',
         'roles',
         'activities',
+        'modules',
+        'dimensions',
         'tags'
     ],
     

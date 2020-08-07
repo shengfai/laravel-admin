@@ -52,7 +52,7 @@ class CreateAdminTables extends Migration
             $table->unsignedInteger('user_id');
             $table->timestamps();
         });
-
+        
         // 资源
         Schema::create('files', function (Blueprint $table) {
             $table->id();
@@ -67,7 +67,39 @@ class CreateAdminTables extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        
+        // 内容体系
+        Schema::create('modules', function (Blueprint $table) {
+            $table->unsignedSmallInteger('id', true);
+            $table->string('name', 16)->comment('名称');
+            $table->string('namespace', 32)->comment('路径');
+            $table->unsignedTinyInteger('sort')->default(0)->comment('排序');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+            
+        Schema::create('dimensions', function (Blueprint $table) {
+            $table->unsignedMediumInteger('id', true);
+            $table->string('name', 32)->comment('名称');
+            $table->string('slug', 64)->comment('固定连接');
+            $table->unsignedTinyInteger('limits')->default(1)->comment('限制数');
+            $table->unsignedTinyInteger('sort')->default(0)->comment('排序');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+        
+        Schema::create('module_dimension', function (Blueprint $table) {
+            $table->unsignedSmallInteger('module_id')->comment('模型');
+            $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
+            $table->unsignedMediumInteger('dimension_id')->comment('维度');
+            $table->foreign('dimension_id')->references('id')->on('dimensions')->onDelete('cascade');
+        });
 
+        Schema::table('tags', function (Blueprint $table) {
+            $table->unsignedMediumInteger('dimension_id')->after('id');
+            $table->foreign('dimension_id')->references('id')->on('dimensions')->onDelete('cascade');
+        });
+        
         // 推荐位
         Schema::create('positions', function (Blueprint $table) {
             $table->unsignedSmallInteger('id', true);
@@ -103,7 +135,15 @@ class CreateAdminTables extends Migration
         Schema::dropIfExists('menus');
         Schema::dropIfExists('types');
         Schema::dropIfExists('files');
+        Schema::dropIfExists('modules');
+        Schema::dropIfExists('dimensions');
+        Schema::dropIfExists('module_dimension');
         Schema::dropIfExists('positions');
         Schema::dropIfExists('positionable');
+        
+        Schema::table('tags', function (Blueprint $table) {
+            $table->dropForeign('tags_dimension_id_foreign');
+            $table->dropColumn('dimension_id');
+        });
     }
 }

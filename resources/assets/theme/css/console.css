@@ -1,4 +1,5 @@
-@charset "UTF-8";html{overflow:auto;background-color:#f2f2f2}
+@charset "UTF-8";
+html{overflow:auto;background-color:#f2f2f2}
 body{width:100%;font-size:12px;font-family:'\5FAE\8F6F\96C5\9ED1','Microsoft YaHei','Helvetica Neue','Luxi Sans','DejaVu Sans','Hiragino Sans GB',serif}
 a{color:#06C;cursor:pointer}
 a:hover{color:#039}
@@ -154,12 +155,12 @@ label{font-size:100%;font-weight:500;margin-bottom:0}
 .framework{height:100%;position:relative}
 .framework.mini .framework-body{left:0}
 .framework.mini .framework-leftbar{display:none}
-.framework-topbar{font-size:14px;clear:both;height:50px;z-index:9999;background:#2494f2}
+.framework-topbar{font-size:14px;clear:both;height:45px;z-index:9999;background:#2494f2}
 .framework-topbar a{text-decoration:none}
 .framework-topbar a:focus{outline:none}
-.framework-topbar .topbar-head{z-index:3;height:50px;position:relative;width:220px;-webkit-box-shadow:0 1px 3px 0 rgba(0,0,0,0.1);box-shadow:0 1px 3px 0 rgba(0,0,0,0.1)}
-.framework-topbar .topbar-head .topbar-logo{color:#fff;display:block;font-size:18px;line-height:50px;text-align:center;width:100%}
-.framework-topbar .topbar-btn{background:none;color:#fff;font-size:14px;height:50px;line-height:50px;z-index:2;display:block;padding:0 20px}
+.framework-topbar .topbar-head{z-index:3;height:50px;position:relative;width:150px;-webkit-box-shadow:0 1px 3px 0 rgba(0,0,0,0.1);box-shadow:0 1px 3px 0 rgba(0,0,0,0.1)}
+.framework-topbar .topbar-head .topbar-logo{color:#fff;display:block;font-size:18px;line-height:45px;text-align:center;width:100%}
+.framework-topbar .topbar-btn{background:none;color:#fff;font-size:14px;height:45px;line-height:45px;z-index:2;display:block;padding:0 20px}
 .framework-topbar .topbar-btn:hover,.framework-topbar .topbar-btn.active{background:#36a3ff}
 .framework-topbar .topbar-btn .layui-badge-dot {top: -60px;}
 .framework-topbar .dropdown-backdrop{display:none !important}
@@ -168,7 +169,7 @@ label{font-size:100%;font-weight:500;margin-bottom:0}
 .framework-topbar .dropdown .dropdown-menu .topbar-btn a{padding:0;line-height:45px;text-align:center}
 .framework-topbar .dropdown.open .toggle-icon{transform:rotate(180deg);-o-transform:rotate(180deg);-ms-transform:rotate(180deg);-moz-transform:rotate(180deg);-webkit-transform:rotate(180deg)}
 .framework-topbar .dropdown.open .topbar-btn{color:#333;background:#fff}
-.framework-leftbar{font-size:13px;top:50px;bottom:0;width:220px;position:fixed;overflow:auto;overflow-x:hidden;background:#293038;-webkit-box-shadow:1px 0 3px 0 rgba(0,0,0,0.08);box-shadow:1px 0 3px 0 rgba(0,0,0,0.08);z-index:3}
+.framework-leftbar{font-size:13px;top:45px;bottom:0;width:150px;position:fixed;overflow:auto;overflow-x:hidden;background:#293038;-webkit-box-shadow:1px 0 3px 0 rgba(0,0,0,0.08);box-shadow:1px 0 3px 0 rgba(0,0,0,0.08);z-index:3}
 .framework-leftbar .leftbar-container .line-top{font-size:10px;color:#ccc;text-align:center;letter-spacing:2px}
 .framework-leftbar .leftbar-container .font-icon{min-width:15px;text-align:center;margin-right:5px;display:inline-block;font-size:14px}
 .framework-leftbar .leftbar-container a{line-height:40px;display:block;background:#22282e;color:#fff;padding:0 15px;border-bottom:1px solid rgba(0,0,0,0.05)}
@@ -178,14 +179,14 @@ label{font-size:100%;font-weight:500;margin-bottom:0}
 .framework-leftbar .leftbar-container div.open div{display:block}
 .framework-leftbar .leftbar-container div div a{padding-left:30px;background:none}
 .framework-leftbar .leftbar-container > a.active,.framework-leftbar .leftbar-container div div a.active{background:#2494f2}
-.framework-body{right:0;bottom:0;top:50px;left:220px;position:fixed;overflow-y:scroll;z-index:1}
+.framework-body{right:0;bottom:0;top:45px;left:150px;position:fixed;overflow-y:scroll;z-index:1}
 .framework-body > .layui-content{-webkit-box-shadow:none;box-shadow:none}
 .framework-body > .layui-content > .layui-header{height:50px;line-height:50px;font-size:14px;background:#fff;padding-left:15px;border-bottom:1px solid #e7eaec;z-index:2;position:relative}
 .framework-body > .layui-content > .layui-header h5{display:inline-block;font-size:16px;margin:16px 0px;font-weight:500;text-indent:8px;text-overflow:ellipsis;border-left:2px solid #2494f2}
 .framework-body > .layui-content > .layui-header span{color:#333;padding:3px 0}
 .framework-body > .layui-content > .layui-header span:after{content:'/';padding-left:3px;padding-right:3px}
 .framework-body > .layui-content > .layui-header span:last-child:after{content:''}
-.framework-body .layui-fluid{padding:15px}
+.framework-body .layui-fluid{padding:6px}
 .framework-body .form-search{background:#fff;}
 .framework-body .form-search .layui-btn{height:32px;line-height:30px;font-size:12px;padding:0 10px}
 .framework-body .form-search .layui-form-label{width:auto !important;border-radius:0;padding:0 6px;height:32px;line-height:30px}
@@ -208,7 +209,8 @@ label{font-size:100%;font-weight:500;margin-bottom:0}
 
 /* 页面标签 */
 .layui-fluid{top:40px;}
-.layadmin-pagetabs{position: fixed; z-index: 1000; left: 220px; top: 50px; right: 0; height: 40px; line-height: 40px; padding: 0 40px 0 40px; background-color: #fff; box-sizing: border-box; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); -webkit-transition: all .3s;}
+.layui-card-body{padding: 1px 10px;}
+.layadmin-pagetabs{position: fixed; z-index: 1000; left: 150px; top: 45px; right: 0; height: 40px; line-height: 40px; padding: 0 40px 0 40px; background-color: #fff; box-sizing: border-box; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); -webkit-transition: all .3s;}
 .layadmin-pagetabs .layui-tab{margin:0;overflow:hidden}
 .layadmin-pagetabs .layui-tab-title{height:40px;border:none}
 .layadmin-pagetabs .layui-tab-title li{min-width:0;line-height:40px;max-width:160px;text-overflow:ellipsis;padding-right:30px;overflow:hidden;border-right:1px solid #f6f6f6;vertical-align:top}
@@ -226,4 +228,11 @@ label{font-size:100%;font-weight:500;margin-bottom:0}
 .layadmin-pagetabs .layui-icon-down{right:0}
 
 /* 页面标题  */
-.page-subject{background: #fff; height: 42px; line-height: 42px; padding: 0 15px; border-bottom: 1px solid #f6f6f6; color: #333; border-radius: 2px 2px 0 0; font-size: 14px;}
+.page-subject{background: #fff; height: 42px; line-height: 42px; padding: 0 10px; border-bottom: 1px solid #f6f6f6; color: #333; border-radius: 2px 2px 0 0; font-size: 16px;}
+.page-subject .layui-btn-sm{padding: 0 8px;height: 28px; line-height: 28px;}
+
+/* tabale */
+.layui-table-tool{min-height: 40px; padding: 5px 15px;}
+.layui-table-tool-self{top: 3px;}
+.layui-table-cell{text-align:center}
+.layui-textarea{min-height: 60px;}
