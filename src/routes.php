@@ -68,6 +68,9 @@ Route::group([
         Route::get('authorizations/{role}', 'Shengfai\LaravelAdmin\Controllers\AuthorizationsController@show')->name('authorizations.show');            // 查看授权
         Route::post('authorizations/{role}', 'Shengfai\LaravelAdmin\Controllers\AuthorizationsController@store')->name('authorizations.store');         // 角色授权
 
+        // 内容体系
+        Route::match(['get', 'post'], 'dimensions/{dimension}/modules', 'Shengfai\LaravelAdmin\Controllers\DimensionsController@modules')->name('dimensions.modules');
+        
         // 推荐位管理
         Route::resource('positions', 'Shengfai\LaravelAdmin\Controllers\PositionsController');                                                          // 推荐位
         Route::get('positions/{position}/datas', 'Shengfai\LaravelAdmin\Controllers\PositionablesController@index')->name('positions.datas.index');     // 获取推荐内容

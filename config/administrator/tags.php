@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Support\Arr;
 use Shengfai\LaravelAdmin\Models\Tag;
+use Shengfai\LaravelAdmin\Models\Dimension;
 use Shengfai\LaravelAdmin\Fields\Presenter;
 
 return [
@@ -12,48 +14,41 @@ return [
     'columns' => [
         'sortable' => [
             'title' => '<button type="submit" class="layui-btn layui-btn-normal layui-btn-xs">排 序</button>',
-            'width' => 100,
+            'width' => 80,
             'output' => function ($value, $model) {
-                return Presenter::sortable($model->id, $model->order_column);
+                return Presenter::sortable($model->id, $model->sort);
             }
-        ],
-        'id' => [
-            'title' => 'ID',
-            'width' => 60
         ],
         'name' => [
             'title' => '名称',
-            'width' => 100,
+            'width' => 180,
             'output' => function ($value, $model) {
                 return $model->name;
             }
         ],
-        'slug' => [
-            'title' => '固定链接',
+        'dimension_id' => [
+            'title' => '维度',
+            'relationship' => 'dimension',
+            'select' => '(:table).name',
             'width' => 120,
             'output' => function ($value, $model) {
-                return $model->slug;
-            }
-        ],
-        'type' => [
-            'title' => '维度',
-            'width' => 80,
-            'output' => function ($value, $model) {
-                return '<span class="color-blue">' . $model->type . '</span>';
+                return '<span class="color-blue">' . $value . '</span>';
             }
         ],
         'parent_id' => [
             'title' => '父标签',
-            'width' => 100,
+            'width' => 180,
             'output' => function ($value, $model) {
                 return '<span class="color-blue">' . $model->parent->name . '</span>';
             }
         ],
         'taggables_count' => [
             'title' => '关联数',
+            'relationship' => 'taggables',
+            'select' => 'COUNT((:table).tag_id)',
             'width' => 80,
             'output' => function ($value, $model) {
-                return $model->taggables()->count();
+                return $value;
             }
         ],
         'remark' => [
@@ -99,16 +94,22 @@ return [
             'customized' => false,
             'maxselection' => 1,
             'options' => function () {
-                return Tag::ofParent(0)->pluck('name', 'id')->toArray();
+                $tags = Tag::ofParent(0)->pluck('name', 'id');
+                return Arr::prepend($tags->toArray(), '无', 0);
             }
         ],
         'name' => [
             'title' => '名称',
             'type' => 'text'
         ],
-        'type' => [
+        'dimension_id' => [
             'title' => '维度',
-            'type' => 'text'
+            'type' => 'tag',
+            'customized' => false,
+            'maxselection' => 1,
+            'options' => function () {
+                return Dimension::pluck('name', 'id')->toArray();
+            }
         ],
         'remark' => [
             'title' => '备注',
