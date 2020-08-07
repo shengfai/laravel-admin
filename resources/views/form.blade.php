@@ -4,24 +4,25 @@
 	$title = $vo->getOption('title');
 	$field_name = $vo->getOption('field_name');
 	$value = $model->{$field_name} ?? '';
+	$required = $vo->getOption('required');
 	@endphp
     <div class="layui-form-item">
         <label class="layui-form-label">{{ $vo->getOption('title') }}</label>
         <div class="layui-input-block">
         	@if($vo->getOption('type') === 'text')
-            <input type="text" name="{{$field_name}}" value="{{$model->{$field_name} ?? ''}}" class="layui-input" required="required" title="请输入{{$title}}" placeholder="请输入{{$title}}">
+            <input type="text" name="{{$field_name}}" value="{{$model->{$field_name} ?? ''}}" class="layui-input" @if($required)required="required"@endif title="请输入{{$title}}" placeholder="请输入{{$title}}">
             @elseif($vo->getOption('type') === 'number')
-            <input type="number" name="{{$field_name}}" value="{{$model->{$field_name} ?? ''}}" class="layui-input" required="required" title="请输入{{$title}}" placeholder="请输入{{$title}}">
+            <input type="number" name="{{$field_name}}" value="{{$model->{$field_name} ?? ''}}" class="layui-input" @if($required)required="required"@endif title="请输入{{$title}}" placeholder="请输入{{$title}}">
             @elseif($vo->getOption('type') === 'textarea')
-            <textarea name="{{$field_name}}" class="layui-textarea" required="required" placeholder="请输入{{$title}}" title="请输入{{$title}}">{{$model->{$field_name} ?? ''}}</textarea>
+            <textarea name="{{$field_name}}" class="layui-textarea" @if($required)required="required"@endif placeholder="请输入{{$title}}" title="请输入{{$title}}">{{$model->{$field_name} ?? ''}}</textarea>
             @elseif($vo->getOption('type') === 'enum')
-            <select class="layui-input" required="required" name="{{$field_name}}">
+            <select class="layui-input" @if($required)required="required"@endif name="{{$field_name}}">
                 @foreach ($vo->getOption('options') as $option)
                 <option @if($value == $option['id']) selected @endif value="{{ $option['id'] }}">{{ $option['text'] }}</option>
                 @endforeach
             </select>
             @elseif($vo->getOption('type') === 'tag')
-            <select class="layui-input {{$field_name}}-multiple-limit" required="required" multiple="multiple" name="{{$field_name}}{{ $vo->getOption('maxselection')>1 ? '[]' : '' }}">
+            <select class="layui-input {{$field_name}}-multiple-limit" @if($required)required="required"@endif multiple="multiple" name="{{$field_name}}{{ $vo->getOption('maxselection')>1 ? '[]' : '' }}">
                 @foreach ($vo->getOption('options') as $option)
                 <option @if($value == $option['id']) selected @endif value="{{ $option['id'] }}">{{ $option['text'] }}</option>
                 @endforeach
@@ -38,18 +39,18 @@
             });
             </script>
             @elseif($vo->getOption('type') === 'switch')
-            <input type="checkbox" name="{{$field_name}}" lay-skin="switch" @if($value) checked @endif lay-text="{{ implode('|', \Arr::pluck($vo->getOption('options'), 'text')) }}">
+            <input type="checkbox" name="{{$field_name}}" @if($required)required="required"@endif lay-skin="switch" @if($value) checked @endif lay-text="{{ implode('|', \Arr::pluck($vo->getOption('options'), 'text')) }}">
             @elseif($vo->getOption('type') === 'image')
-            <input type="text" class="layui-input validate-error" required="required" onchange="$(this).nextAll('img').attr('src', this.value);" value="{{$model->{$field_name} ?? ''}}" name="{{$field_name}}" title="请上传图片或输入图片URL地址">
+            <input type="text" class="layui-input validate-error" @if($required)required="required"@endif onchange="$(this).nextAll('img').attr('src', this.value);" value="{{$model->{$field_name} ?? ''}}" name="{{$field_name}}" title="请上传图片或输入图片URL地址">
             <p class="help-block">{!! $vo->getOption('tips') !!}</p>
             <img style="width: 30px; height: auto;" data-tips-image="" src="{{$model->{$field_name} ?? '/admin/images/image.png'}}"> <a data-file="one" data-type="ico,png,jpeg,jpg" data-field="{{$field_name}}" class="btn btn-link">上传图片</a>
             @elseif($vo->getOption('type') === 'datetime')
-            <input type="text" id="{{$field_name}}"  name="{{$field_name}}" value="{{$model->{$field_name} ?? ''}}" required="required" title="请选择{{$title}}" placeholder="请选择{{$title}}" class="layui-input">
+            <input type="text" id="{{$field_name}}"  name="{{$field_name}}" value="{{$model->{$field_name} ?? ''}}" @if($required)required="required"@endif title="请选择{{$title}}" placeholder="请选择{{$title}}" class="layui-input">
             <script type="text/javascript">
             window.laydate.render({type: 'datetime', elem: '#{{$field_name}}', trigger: 'click', format: 'yyyy-MM-dd HH:mm:ss'});
             </script>
             @elseif($vo->getOption('type') === 'date')
-            <input type="text" id="{{$field_name}}"  name="{{$field_name}}" value="{{$model->{$field_name} ?? ''}}" required="required" title="请选择{{$title}}" placeholder="请选择{{$title}}" class="layui-input">
+            <input type="text" id="{{$field_name}}"  name="{{$field_name}}" value="{{$model->{$field_name} ?? ''}}" @if($required)required="required"@endif title="请选择{{$title}}" placeholder="请选择{{$title}}" class="layui-input">
             <script type="text/javascript">
             window.laydate.render({type: 'date', elem: '#{{$field_name}}', trigger: 'click', format: 'yyyy-MM-dd'});
             </script>
