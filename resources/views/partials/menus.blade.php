@@ -42,9 +42,11 @@
     @foreach ($menus as $menu)
     @isset($menu['sub'])
     <div class="leftbar-container hide notselect" data-menu-layout="m-{{ $menu['id'] }}">
+    	@if(false)
         <div class="line-top">
             <i class="layui-icon font-s12">&#xe65f;</i>
         </div>
+        @endif
         @foreach ($menu['sub'] as $subMenu)
         @if (!isset($subMenu['sub']))
         <a class="transition" data-menu-node="m-{{ $menu['id'] }}-{{ $subMenu['id'] }}" data-open="{{ url($subMenu['url']) }}?{{ $subMenu['params'] }}">
