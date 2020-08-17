@@ -208,6 +208,7 @@ class Factory
             $column = [
                 'field' => $item['column_name'],
                 'title' => $item['title'],
+                'align' => $item['align'],
                 'sort' => $item['sortable'],
                 'checkable' => $item['checkable'],
                 'templet' => $item['template'] ?? '<div>{{d.' . $item['column_name'] . '.rendered}}</div>'
