@@ -49,7 +49,7 @@ class File extends Model
     public static function get(string $url = null)
     {
         if (filled($url) && self::whereUrl($url)->exists()) {
-            self::whereUrl($url)->first();
+            return self::whereUrl($url)->first();
         }
         
         return $url;
