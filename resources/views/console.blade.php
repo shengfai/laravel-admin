@@ -11,9 +11,11 @@
     <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
     <div class="layui-tab" lay-unauto="" lay-allowclose="true" lay-filter="layadmin-layout-tabs">
         <ul class="layui-tab-title" id="LAY_app_tabsheader">
+        	@if(false)
             <li lay-id="dashboards" lay-attr="dashboards" class="">
                 <a data-open="{{ route('admin.dashboard') }}"><i class="layui-icon layui-icon-home"></i></a>
             </li>
+            @endif
         </ul>
     </div>
 </div>

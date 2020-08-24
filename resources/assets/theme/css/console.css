@@ -187,7 +187,7 @@ label{font-size:100%;font-weight:500;margin-bottom:0}
 .framework-body > .layui-content > .layui-header span:after{content:'/';padding-left:3px;padding-right:3px}
 .framework-body > .layui-content > .layui-header span:last-child:after{content:''}
 .framework-body .layui-fluid{padding:6px}
-.framework-body .form-search{background:#fff;}
+.framework-body .form-search{background:#fff; margin-top: 9px;}
 .framework-body .form-search .layui-btn{height:32px;line-height:30px;font-size:12px;padding:0 10px}
 .framework-body .form-search .layui-form-label{width:auto !important;border-radius:0;padding:0 6px;height:32px;line-height:30px}
 .framework-body .form-search .layui-input-inline{width:170px}
@@ -234,5 +234,4 @@ label{font-size:100%;font-weight:500;margin-bottom:0}
 /* tabale */
 .layui-table-tool{min-height: 40px; padding: 5px 15px;}
 .layui-table-tool-self{top: 3px;}
-.layui-table-cell{text-align:center}
 .layui-textarea{min-height: 60px;}

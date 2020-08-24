@@ -66,7 +66,8 @@ class Column
         'raw_output'      => false,
         'checkable'       => null,
         'template'        => null,
-        'width'           => 80
+        'width'           => 80,
+        'align'           => 'left'
     ];
 
     /**

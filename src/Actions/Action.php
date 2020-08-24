@@ -44,6 +44,7 @@ class Action
         'title'          => 'Custom Action',
         'has_permission' => true,
         'confirmation'   => false,
+        'click'          => 'data-modal',
         'messages'       => [
             'active'  => 'Just a moment...',
             'success' => 'Success!',
