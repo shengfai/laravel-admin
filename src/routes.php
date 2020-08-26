@@ -70,6 +70,7 @@ Route::group([
 
         // 内容体系
         Route::match(['get', 'post'], 'dimensions/{dimension}/modules', 'Shengfai\LaravelAdmin\Controllers\DimensionsController@modules')->name('dimensions.modules');
+        Route::match(['get', 'post'], 'taggables/{model}/{id}', 'Shengfai\LaravelAdmin\Controllers\TagsController@attach')->name('tags.attach');    // 关联标签
         
         // 推荐位管理
         Route::resource('positions', 'Shengfai\LaravelAdmin\Controllers\PositionsController');                                                          // 推荐位

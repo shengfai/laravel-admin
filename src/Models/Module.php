@@ -2,6 +2,7 @@
 
 namespace Shengfai\LaravelAdmin\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -23,7 +24,19 @@ class Module extends Model
         'namespace',
         'sort'
     ];
-    
+
+    /**
+     * 获取模型
+     *
+     * @param string $class_name
+     * @return \Shengfai\LaravelAdmin\Models\Module
+     */
+    public static function getModelByClassName(string $class_name)
+    {
+        $class = 'App\Models\\' . Str::of($class_name)->singular()->ucfirst();
+        return self::where('namespace', $class)->first();
+    }
+
     /**
      * 关联维度
      *
