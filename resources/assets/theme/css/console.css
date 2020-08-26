@@ -194,6 +194,7 @@ label{font-size:100%;font-weight:500;margin-bottom:0}
 .framework-body .form-search .layui-input-inline input,.framework-body .form-search .layui-input-inline select{border-radius:0;padding:0 5px;height:32px;line-height:30px;width:100%}
 .framework-body .form-search .layui-form-select{border-radius:0}
 .framework-body .form-search .layui-form-select dl{top:31px;padding:0}
+.framework-body .form-filters{margin-top: 10px;}
 .framework-body .layui-footer{height:44px;line-height:44px;text-align:center}
 
 .layui-col-space15>* {padding: 7.5px;}
