@@ -25,6 +25,7 @@ class Factory
         'date' => 'Shengfai\\LaravelAdmin\\Fields\\Time',
         'time' => 'Shengfai\\LaravelAdmin\\Fields\\Time',
         'datetime' => 'Shengfai\\LaravelAdmin\\Fields\\Time',
+        'year' => 'Shengfai\\LaravelAdmin\\Fields\\Text',
         'number' => 'Shengfai\\LaravelAdmin\\Fields\\Number',
         'bool' => 'Shengfai\\LaravelAdmin\\Fields\\Boolean',
         'enum' => 'Shengfai\\LaravelAdmin\\Fields\\Enum',

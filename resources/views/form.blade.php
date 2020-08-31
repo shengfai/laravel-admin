@@ -54,6 +54,11 @@
             <script type="text/javascript">
             window.laydate.render({type: 'date', elem: '#{{$field_name}}', trigger: 'click', format: 'yyyy-MM-dd'});
             </script>
+            @elseif($vo->getOption('type') === 'year')
+            <input type="text" id="{{$field_name}}"  name="{{$field_name}}" value="{{$model->{$field_name} ?? ''}}" @if($required)required="required"@endif title="请选择{{$title}}" placeholder="请选择{{$title}}" class="layui-input">
+            <script type="text/javascript">
+            window.laydate.render({type: 'year', elem: '#{{$field_name}}', trigger: 'click', format: 'yyyy'});
+            </script>
             @endif
         </div>
     </div>
