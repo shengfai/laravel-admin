@@ -120,20 +120,10 @@ class AdminController extends Controller
                 $save = $config->save($this->request, $fieldFactory->getEditFields(), $actionFactory->getActionPermissions(), $id);
             }
             
-            // override the config options so that we can get the latest
-            app('admin.config_factory')->updateConfigOptions();
-            
-            // grab the latest model data
             $columnFactory = app('admin.column_factory');
             $fields = $fieldFactory->getEditFields();
             $model = $config->getModel($id, $fields, $columnFactory->getIncludedColumns($fields));
-            
-            if ($model->exists) {
-                $model = $config->updateModel($model, $fieldFactory, $actionFactory);
-                ActivityHandler::console()->performedOn($model)->log('更新' . $config->getOption('single'));
-            } else {
-                ActivityHandler::console()->performedOn($model)->log('创建' . $config->getOption('single'));
-            }
+            ActivityHandler::console()->performedOn($model)->log($id ? '更新' : '创建' . $config->getOption('single'));
             
             return $this->success();
         
