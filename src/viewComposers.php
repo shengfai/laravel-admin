@@ -14,7 +14,7 @@ View::composer('admin::grid', function ($view) {
 
     //add the view fields
     $view->config = $config;
-    $view->modelName = Str::of(class_basename($model))->plural()->lower();
+    $view->modelName = Str::of(class_basename($model))->plural()->snake()->lower();
     $view->primaryKey = $model->getKeyName();
     $view->title = $view->title ?? $config->getOption('heading');
     $view->editFields = $fieldFactory->getEditFields();
@@ -36,7 +36,7 @@ View::composer(['admin::detail', 'admin::form'], function ($view) {
     $fieldFactory = app('admin.field_factory');
     $model = $config->getDataModel();
 
-    $view->modelName = Str::of(class_basename($model))->plural()->lower();
+    $view->modelName = Str::of(class_basename($model))->plural()->snake()->lower();
     $view->columns = $columnFactory->getColumnOptions();
     $view->editFields = $fieldFactory->getEditFields();
     $view->arrayFields = $fieldFactory->getEditFieldsArrays();
