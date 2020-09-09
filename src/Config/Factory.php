@@ -75,12 +75,12 @@ class Factory
         'model_config_path'    => 'required|string|directory',
         'settings_config_path' => 'required|string|directory',
         'models'                 => 'required|array|not_empty',
-        'permission'           => 'required|callable',
+        'permission'           => 'callable',
 //         'use_dashboard'        => 'required',
         'dashboard_view'       => 'string',
         'home_page'            => 'string',
         'login_path'           => 'required|string',
-        'login_redirect_key'   => 'required|string',
+        'login_redirect_key'   => 'string',
     ];
 
     /**
