@@ -14,7 +14,7 @@
             	@elseif($vo->getOption('type') === 'image')
             	<img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{{\Option::get($vo->getOption('field_name'))}}"/>
                 <input type="hidden" name="{{$vo->getOption('field_name')}}" onchange="$(this).prev('img').attr('src', this.value)"
-                       value="{{settings('site_icon')}}" class="layui-input">
+                       value="{{\Option::get($vo->getOption('field_name'))}}" class="layui-input">
                 <a class="btn btn-link" data-file="one" data-type="ico,jpg,jpeg,png" data-field="{{$vo->getOption('field_name')}}">上传图片</a>
                 <p class="help-block">{!! $vo->getOption('tips') !!}</p>
             	@else
@@ -25,16 +25,6 @@
         </div>
         @endforeach
         
-    	{{--
-        <div class="layui-form-item">
-            <label class="layui-form-label">统计代码</label>
-            <div class='layui-input-block'>
-                <input type="text" name="tongji_baidu_key" maxlength="32" pattern="^[0-9a-z]{32}$" title="请输入32位百度统计应用ID" placeholder="请输入32位百度统计应用ID" value="{{settings('tongji_baidu_key')}}" class="layui-input">
-                <p class="help-block">百度统计应用ID，可以在<a target="_blank" href="https://tongji.baidu.com">百度网站统计</a>申请并获取</p>
-            </div>
-        </div>
-        --}}
-    
         <div class="hr-line-dashed"></div>
         <div class="layui-form-item">
             <div class="layui-footer">
