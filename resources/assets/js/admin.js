@@ -87,7 +87,7 @@ $(function () {
         // 自动处理显示Think返回的Json数据
         this.auto = function (data, time) {
             return (parseInt(data.code) === 1) ? self.success(data.msg, time, function () {
-                !!data.url ? (window.location.href = data.url) : $.form.reload();
+            	!!data.url ? $.form.href(data.url) : $.form.reload();
                 for (var i in self.dialogIndexs) {
                     layer.close(self.dialogIndexs[i]);
                 }
@@ -119,6 +119,11 @@ $(function () {
         };
         // 以hash打开网页
         this.href = function (url, obj) {
+        	var curUrl = window.location.href;
+        	if((curUrl.indexOf('login') !== -1) || (curUrl.indexOf('logout') !== -1)) {
+        		window.location.href = url;
+        		return;
+        	}
             if (url !== '#') {
                 window.location.href = '#' + $.menu.parseUri(url, obj);
             } else if (obj && obj.getAttribute('data-menu-node')) {

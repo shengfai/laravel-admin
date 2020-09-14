@@ -454,7 +454,7 @@ elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
             // set the layout content and title
             if ($this->request->isMethod('Get')) {
                 $this->title = $config->getOption('title');
-                return $this->view(compact('settings'), 'admin::settings');
+                return $this->view([], 'admin::settings');
             }
             
             // POST save settings method
