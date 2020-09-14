@@ -119,6 +119,11 @@ $(function () {
         };
         // 以hash打开网页
         this.href = function (url, obj) {
+        	var curUrl = window.location.href;
+        	if((curUrl.indexOf('login') !== -1) || (curUrl.indexOf('logout') !== -1)) {
+        		window.location.href = url;
+        		return;
+        	}
             if (url !== '#') {
                 window.location.href = '#' + $.menu.parseUri(url, obj);
             } else if (obj && obj.getAttribute('data-menu-node')) {
