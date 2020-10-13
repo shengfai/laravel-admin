@@ -24,7 +24,7 @@ class Enum extends Field
 
         $options = $this->suppliedOptions;
 
-        $dataOptions        = $options['options'];
+        $dataOptions = ($options['options'] instanceof \Closure) ? $options['options']() : $options['options'];
         $options['options'] = [];
 
         //iterate over the options to create the options assoc array

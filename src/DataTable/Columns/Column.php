@@ -244,7 +244,7 @@ class Column
         // default is xss secured untill u open `raw_output` option
         // e() is laravel blade `{{ }}` for printing data
         if ( ! $this->getOption('raw_output')) {
-            $value = e($value);
+            $value = is_string($value) ? e($value) : e(new_json_encode($value));
         }
 
         if (is_callable($output)) {
