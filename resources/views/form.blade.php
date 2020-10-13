@@ -14,7 +14,8 @@
             @elseif($vo->getOption('type') === 'number')
             <input type="number" name="{{$field_name}}" value="{{$model->{$field_name} ?? ''}}" class="layui-input" @if($required)required="required"@endif title="请输入{{$title}}" placeholder="请输入{{$title}}">
             @elseif($vo->getOption('type') === 'textarea')
-            <textarea name="{{$field_name}}" class="layui-textarea" @if($required)required="required"@endif placeholder="请输入{{$title}}" title="请输入{{$title}}">{{$model->{$field_name} ?? ''}}</textarea>
+            <textarea name="{{$field_name}}" class="layui-textarea" @if($required)required="required"@endif placeholder="请输入{{$title}}" title="请输入{{$title}}">{{isset($model->{$field_name}) ? is_string($value) ? $value : new_json_encode($value) : ''}}</textarea>
+            @if($vo->getOption('tips'))<p class="help-block">{!! $vo->getOption('tips') !!}</p>@endif
             @elseif($vo->getOption('type') === 'enum')
             <select class="layui-input" @if($required)required="required"@endif name="{{$field_name}}">
                 @foreach ($vo->getOption('options') as $option)
