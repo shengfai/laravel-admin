@@ -19,12 +19,11 @@
                     <th class='list-table-sort-td'>
                         <button type="submit" class="layui-btn layui-btn-normal layui-btn-xs">排 序</button>
                     </th>
-                    <th class='text-left'>关联模型</th>
-                    <th class='text-left'>标题</th>
-                    <th class='text-left'>封面</th>
-                    <th class='text-left'>摘要</th>
-                    <th class='text-left'>推送时间</th>
-                    <th class='text-left'>操作</th>
+                    <th class='text-left' width="80px">关联模型</th>
+                    <th class='text-left' width="20%">标题</th>
+                    <th class='text-left' width="40%">摘要</th>
+                    <th class='text-left' width="90px">推送时间</th>
+                    <th class='text-left' width="90px">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,15 +32,13 @@
                     <td class="list-table-sort-td">
                         <input name="_{{ $vo->id }}" value="{{ $vo->sort }}" class="list-sort-input">
                     </td>
-                    <td class='text-left'>{{ class_basename($vo->positionable_type) }}</a></td>
-                    <td class='text-left'>{{$vo->title}}</td>
+                    <td class='text-left'>{{$vo->getPositionableModel('name')}}</a></td>
                     <td class='text-left'>
-                    	<div class="inline-block text-top margin-right-5">
-                            <img style="height:30px;" data-tips-text="{{ $vo->title }}缩略图" data-tips-image src="{{ $vo->cover_pic }}">
-                        </div>
+                    	<img style="height:22px; vertical-align: text-bottom;" data-tips-text="{{ $vo->title }}缩略图" data-tips-image src="{{ $vo->cover_pic ? : '/admin/images/image.png' }}">
+                    	{{$vo->title}}
                     </td>
                     <td class='text-left'><span class="color-desc">{{ $vo->description }}</span></td>
-                    <td class='text-left'><span class="color-desc">{{ $vo->updated_at }}</span></td>
+                    <td class='text-left'><span class="color-desc">{{ $vo->updated_at->diffForHumans() }}</span></td>
                     <td class='text-left'>
                         <a data-modal="{{ route('admin.datas.edit', $vo->id) }}">编辑</a>
                         <span class="text-explode">|</span>

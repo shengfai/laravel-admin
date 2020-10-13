@@ -33,7 +33,7 @@
         <div class="layui-input-block">
             <input type="text" class="layui-input" onchange="$(this).nextAll('img').attr('src', this.value);" value="{{ $data->original_cover_pic ??  ''}}" name="cover_pic" title="请上传图片或输入图片URL地址" />
             <p class="help-block">文件最大2Mb，支持png/jpeg/jpg格式，建议上传图片的尺寸为300px300px。</p>
-            <img style="width: 45px; height: auto;" data-tips-image src="{{ $data->cover_pic ??  '/admin/images/image.png' }}" /> <a data-file="one" data-type="png,jpeg,jpg,gif" data-field="cover_pic" class='btn btn-link'>上传图片</a>
+            <img style="width: 45px; height: auto;" data-tips-image src="{{ $data->cover_pic ? : '/admin/images/image.png' }}" /> <a data-file="one" data-type="png,jpeg,jpg,gif" data-field="cover_pic" class='btn btn-link'>上传图片</a>
         </div>
     </div>
     <div class="layui-form-item">

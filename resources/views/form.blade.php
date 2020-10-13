@@ -14,7 +14,8 @@
             @elseif($vo->getOption('type') === 'number')
             <input type="number" name="{{$field_name}}" value="{{$model->{$field_name} ?? ''}}" class="layui-input" @if($required)required="required"@endif title="请输入{{$title}}" placeholder="请输入{{$title}}">
             @elseif($vo->getOption('type') === 'textarea')
-            <textarea name="{{$field_name}}" class="layui-textarea" @if($required)required="required"@endif placeholder="请输入{{$title}}" title="请输入{{$title}}">{{$model->{$field_name} ?? ''}}</textarea>
+            <textarea name="{{$field_name}}" class="layui-textarea" @if($required)required="required"@endif placeholder="请输入{{$title}}" title="请输入{{$title}}">{{isset($model->{$field_name}) ? is_string($value) ? $value : new_json_encode($value) : ''}}</textarea>
+            @if($vo->getOption('tips'))<p class="help-block">{!! $vo->getOption('tips') !!}</p>@endif
             @elseif($vo->getOption('type') === 'enum')
             <select class="layui-input" @if($required)required="required"@endif name="{{$field_name}}">
                 @foreach ($vo->getOption('options') as $option)
@@ -43,7 +44,7 @@
             @elseif($vo->getOption('type') === 'image')
             <input type="text" class="layui-input validate-error" @if($required)required="required"@endif onchange="$(this).nextAll('img').attr('src', this.value);" value="{{$model->{$field_name} ?? ''}}" name="{{$field_name}}" title="请上传图片或输入图片URL地址">
             <p class="help-block">{!! $vo->getOption('tips') !!}</p>
-            <img style="width: 30px; height: auto;" data-tips-image="" src="{{$model->{$field_name} ?? '/admin/images/image.png'}}"> <a data-file="one" data-type="ico,png,jpeg,jpg" data-field="{{$field_name}}" class="btn btn-link">上传图片</a>
+            <img style="width: 30px; height: auto;" data-tips-image="" src="{{isset($model) ? $model->{$field_name} ? : '/admin/images/image.png' : '/admin/images/image.png'}}"> <a data-file="one" data-type="ico,png,jpeg,jpg" data-field="{{$field_name}}" class="btn btn-link">上传图片</a>
             @elseif($vo->getOption('type') === 'datetime')
             <input type="text" id="{{$field_name}}"  name="{{$field_name}}" value="{{$model->{$field_name} ?? ''}}" @if($required)required="required"@endif title="请选择{{$title}}" placeholder="请选择{{$title}}" class="layui-input">
             <script type="text/javascript">
