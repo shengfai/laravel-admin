@@ -9,7 +9,7 @@
 use App\Models\User;
 
 return [
-    
+
     /*
      * Domain for routing.
      * @type string
@@ -29,14 +29,14 @@ return [
      * @type string
      */
     'namespace' => '\App\Http\Controllers\Admin',
-                
+
     /*
      * The path to your model config directory
      *
      * @type string
      */
     'model_config_path' => config_path('administrator'),
-    
+
     /*
      * The path to your settings config directory
      *
@@ -61,21 +61,21 @@ return [
      * @type bool
      */
     'use_dashboard' => true,
-    
+
     /*
      * If you want to create a dashboard view, provide the view string here.
      *
      * @type string
      */
     'dashboard_view' => 'admin::console',
-    
+
     /*
      * The menu item that should be used as the default landing page of the administrative section
      *
      * @type string
      */
     'home_page' => 'page.dashboards',
-    
+
     /*
      * The login path is the path where Administrator will send the user if they fail a permission check
      *
@@ -89,7 +89,7 @@ return [
      * @type string
      */
     'login_redirect_key' => 'redirect',
-                
+
     /*
      * Global default rows per page
      *
@@ -103,7 +103,7 @@ return [
      * @type string
      */
     'custom_routes_file' => base_path('routes/administrator.php'),
-                
+
     /*
      * The models
      *
@@ -113,11 +113,12 @@ return [
         'settings.system',
         'roles',
         'activities',
+        'positions',
         'modules',
         'dimensions',
         'tags'
     ],
-    
+
     /*
      * The types title
      *

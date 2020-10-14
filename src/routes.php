@@ -23,7 +23,7 @@ Route::group([
     ],
 ], function () {
     Route::name('admin.')->group(function () {
-        
+
         // 登录页
         Route::get('login', 'Shengfai\LaravelAdmin\Controllers\AccountsController@showLoginForm')->name('login');
         Route::post('login', 'Shengfai\LaravelAdmin\Controllers\AccountsController@login');
@@ -31,7 +31,7 @@ Route::group([
         //Admin Dashboard
         Route::get('/', ['as' => 'main', 'uses' => 'Shengfai\LaravelAdmin\Controllers\AdminController@main']);
         Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'Shengfai\LaravelAdmin\Controllers\DashboardsController@index']);
-        
+
         // 自定义路由
         Route::group([
             'namespace' => config('administrator.namespace'),
@@ -42,7 +42,7 @@ Route::group([
                 }
             });
         });
-        
+
         // 登录/登出
         Route::post('logout', 'Shengfai\LaravelAdmin\Controllers\AccountsController@logout')->name('logout');                               // 登出
 
@@ -71,10 +71,9 @@ Route::group([
         // 内容体系
         Route::match(['get', 'post'], 'dimensions/{dimension}/modules', 'Shengfai\LaravelAdmin\Controllers\DimensionsController@modules')->name('dimensions.modules');
         Route::match(['get', 'post'], 'taggables/{model}/{id}', 'Shengfai\LaravelAdmin\Controllers\TagsController@attach')->name('tags.attach');    // 关联标签
-        
+
         // 推荐位管理
-        Route::resource('positions', 'Shengfai\LaravelAdmin\Controllers\PositionsController');                                                          // 推荐位
-        Route::get('positions/{position}/datas', 'Shengfai\LaravelAdmin\Controllers\PositionablesController@index')->name('positions.datas.index');     // 获取推荐内容
+        Route::get('positions/{position}/datas', 'Shengfai\LaravelAdmin\Controllers\PositionsController@show')->name('positions.datas');                // 推荐位详情
         Route::get('positions/{position}/create', 'Shengfai\LaravelAdmin\Controllers\PositionablesController@create')->name('positions.datas.create');  // 添加推送内容
         Route::get('positions/datas/push', 'Shengfai\LaravelAdmin\Controllers\PositionablesController@push')->name('positions.datas.push');             // 推送内容
         Route::resource('positions/datas', 'Shengfai\LaravelAdmin\Controllers\PositionablesController');                                                // 推荐位内容
@@ -89,66 +88,66 @@ Route::group([
 
         // 用户管理
         Route::resource('consumers', 'Shengfai\LaravelAdmin\Controllers\ConsumersController');
-        
+
         Route::group(['middleware' => ['Shengfai\LaravelAdmin\Http\Middleware\ValidateSettings', 'Shengfai\LaravelAdmin\Http\Middleware\PostValidate']], function () {
-            
+
             //Settings Pages
             Route::get('settings/{settings}',[
                 'as'   => 'settings',
                 'uses' => 'Shengfai\LaravelAdmin\Controllers\AdminController@settings',
             ]);
-            
+
             //Save Item
             Route::post('settings/{settings}/save', [
                 'as'   => 'settings.save',
                 'uses' => 'Shengfai\LaravelAdmin\Controllers\AdminController@settings',
             ]);
         });
-        
+
         //The route group for all other requests needs to validate admin, model, and add assets
         Route::group(['middleware' => ['Shengfai\LaravelAdmin\Http\Middleware\ValidateModel', 'Shengfai\LaravelAdmin\Http\Middleware\PostValidate']], function () {
-            
+
             //Model Index
             Route::get('{model}', [
                 'as'   => 'model.index',
                 'uses' => 'Shengfai\LaravelAdmin\Controllers\AdminController@index',
             ]);
-            
+
             //Get results
             Route::get('{model}/results', [
                 'as'   => 'model.results',
                 'uses' => 'Shengfai\LaravelAdmin\Controllers\AdminController@results',
             ]);
-            
+
             //New Item
             Route::get('{model}/new', [
                 'as'   => 'model.new',
                 'uses' => 'Shengfai\LaravelAdmin\Controllers\AdminController@create',
             ]);
-            
+
             //Get Item
             Route::get('{model}/{id}', [
                 'as'   => 'model.item',
                 'uses' => 'Shengfai\LaravelAdmin\Controllers\AdminController@item',
             ]);
-            
+
             //Save Item
             Route::post('{model}/{id?}/save', [
                 'as'   => 'model.save',
                 'uses' => 'Shengfai\LaravelAdmin\Controllers\AdminController@save',
             ]);
-            
+
             //Batch Delete Item
             Route::delete('{model}/batch_delete', [
                 'as'   => 'model.batch_delete',
                 'uses' => 'Shengfai\LaravelAdmin\Controllers\AdminController@delete',
             ]);
-            
+
             Route::delete('{model}/{id}/delete', [
                 'as'   => 'model.delete',
                 'uses' => 'Shengfai\LaravelAdmin\Controllers\AdminController@delete',
             ]);
-            
+
         });
     });
 });
