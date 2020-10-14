@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 use Shengfai\LaravelAdmin\Models\Traits\Attributes;
 use Shengfai\LaravelAdmin\Traits\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 /**
  * 推荐数据模型
@@ -27,7 +28,7 @@ class Positionable extends Pivot
 {
     use Scope;
     use Attributes;
-    
+
     /**
      * 批量填充字段.
      *
@@ -51,9 +52,9 @@ class Positionable extends Pivot
      */
     public function getPositionableModel(string $key = null)
     {
-        $class_name = strtolower(class_basename($this->positionable_type));
-        $available_positioned_models = config('administrator.available_positioned_models');
-        return $key ? $available_positioned_models[$class_name][$key] : $available_positioned_models[$class_name];
+        $availablePositionedModels = config('administrator.available_positioned_models');
+        $modelName = Str::of(class_basename($this->positionable_type))->snake()->lower()->__toString();
+        return $key ? $availablePositionedModels[$modelName][$key] : $availablePositionedModels[$modelName];
     }
 
     /**
@@ -88,7 +89,7 @@ class Positionable extends Pivot
         if (is_null($position_id)) {
             return $query;
         }
-        
+
         return $query->where('position_id', $position_id);
     }
 }

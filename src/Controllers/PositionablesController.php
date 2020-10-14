@@ -2,43 +2,21 @@
 
 namespace Shengfai\LaravelAdmin\Controllers;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Shengfai\LaravelAdmin\Contracts\Conventions;
 use Shengfai\LaravelAdmin\Models\Position;
 use Shengfai\LaravelAdmin\Models\Positionable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * 推荐位控制器
- * Class PositionablesController.
+ * Class PositionablesController
  *
+ * @package \Shengfai\LaravelAdmin\Controllers
  * @author ShengFai <shengfai@qq.com>
- * @version 2020年3月10日
  */
 class PositionablesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Shengfai\LaravelAdmin\Controllers\unknown[]|\Shengfai\LaravelAdmin\Controllers\string[]|\Shengfai\LaravelAdmin\Controllers\NULL[]|\Shengfai\LaravelAdmin\Controllers\number[]
-     */
-    public function index(Position $position, Positionable $positionable)
-    {
-        $this->title = $position->name;
-
-        // 提示信息
-        $alert = [
-            'type' => Conventions::VIEW_ALERT_INFO,
-            'content' => '',
-        ];
-        $this->assign('alert', $alert);
-
-        // 关联模板主题
-        $this->assign('position', $position);
-        $queryBuilder = $positionable->where('position_id', '=', $position->id);
-
-        return $this->list($queryBuilder);
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -60,7 +38,8 @@ class PositionablesController extends Controller
         try {
             // 获取推荐对象
             $target = with($request, function ($model) {
-                $className = '\App\Models\\'.ucfirst($model->positionable_type);
+
+                $className = '\App\Models\\' . Str::of($model->positionable_type)->singular()->studly();
 
                 return $className::findOrFail($model->positionable_id);
             });
@@ -94,11 +73,11 @@ class PositionablesController extends Controller
             $positionable = Positionable::updateOrCreate([
                 'position_id' => $request->position_id,
                 'positionable_type' => $request->positionable_type,
-                'positionable_id' => $request->positionable_id,
+                'positionable_id' => $request->positionable_id
             ], [
                 'title' => $request->title,
                 'cover_pic' => $request->cover_pic,
-                'description' => $request->description,
+                'description' => $request->description
             ]);
 
             return $this->success('恭喜, 数据保存成功!', '');
