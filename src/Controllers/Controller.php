@@ -75,11 +75,29 @@ abstract class Controller extends BaseController
     protected $data = [];
 
     /**
+     * 初始化
      *
      * @param \Illuminate\Http\Request $request
      * @param \Illuminate\Session\SessionManager $session
      */
     public function __construct(Request $request, Session $session)
+    {
+        // 加载系统级参数
+        $this->loadSysParameters($request, $session);
+        
+        // 加载业务级参数
+        if (method_exists($this, 'loadBizParameters')) {
+            $this->loadBizParameters($request);
+        }
+    }
+    
+    /**
+     * 系统参数初始化
+     *
+     * @param Request $request
+     * @param \Illuminate\Session\SessionManager $session
+     */
+    final protected function loadSysParameters(Request $request, Session $session)
     {
         $this->request = $request;
         $this->session = $session;
@@ -89,7 +107,7 @@ abstract class Controller extends BaseController
         
         // $this->formRequestErrors = $this->resolveDynamicFormRequestErrors($request);
     }
-
+    
     /**
      * POST method to capture any form request errors.
      *
