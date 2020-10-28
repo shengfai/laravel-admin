@@ -4,6 +4,8 @@ namespace Shengfai\LaravelAdmin\Controllers;
 
 use Illuminate\Http\Request;
 use Shengfai\LaravelAdmin\Models\Module;
+use Shengfai\LaravelAdmin\Events\Tagged;
+use Illuminate\Support\Facades\Event;
 
 /**
  * 标签控制器
@@ -40,6 +42,10 @@ class TagsController extends Controller
         }
     
         $taggable->tags()->sync($request->tags);
+        
+        // 添加事件
+        Event::dispatch(new Tagged($taggable));
+        
         return $this->success();
     }
 }
