@@ -60,15 +60,8 @@ class PlugsController extends Controller
         // 检查文件是否上传
         $file_hash = $request->get('md5');
         
-        if (File::ofHash($file_hash)->exists()) {
-            $file = File::ofHash($file_hash)->first();
-            return $this->write([
-                'code' => 'IS_FOUND',
-                'data' => [
-                    'url' => $file->url
-                ]
-            ]);
-        }
+        // 校验文件是否存在
+        if ($data = $this->validateFileExists($file_hash)) return $data;
         
         return $this->write([
             'code' => 'NOT_FOUND',
@@ -86,11 +79,18 @@ class PlugsController extends Controller
      */
     public function upload(Request $request)
     {
+        // 检查文件是否上传
+        $file_hash = md5_file($request->file('file')->path());
+        
+        // 校验文件是否存在
+        if ($data = $this->validateFileExists($file_hash)) return $data;
+        
         $response = StrategyResolver::resolveFromRequest($request, $request->get('strategy', 'default'))->upload();
         
+        // 创建文件
         File::create([
             'type_id' => $request->get('type_id', 0),
-            'hash' => $request->get('md5'),
+            'hash' => md5_file($response->strategy->getFile()->getRealPath()),
             'mime' => $response->mime,
             'size' => $response->size,
             'relative_url' => $response->relativeUrl,
@@ -104,6 +104,7 @@ class PlugsController extends Controller
                 'mime' => $response->mime,
                 'size' => $response->size,
                 'filename' => $response->filename,
+                'original_name' => $response->originalName,
                 'relative_url' => $response->relativeUrl
             ],
             'code' => 'SUCCESS',
@@ -119,5 +120,29 @@ class PlugsController extends Controller
     public function poipicker()
     {
         return $this->view();
+    }
+
+    /**
+     * 校验文件是否存在
+     *
+     * @param string $file_hash
+     */
+    protected function validateFileExists(string $file_hash)
+    {
+        // 文件存在
+        if (File::ofHash($file_hash)->exists()) {
+            $file = File::ofHash($file_hash)->first();
+            return $this->write([
+                'code' => 'SUCCESS',
+                'data' => [
+                    'url' => $file->url,
+                    'mime' => $file->mime,
+                    'size' => $file->size,
+                    'filename' => \class_basename($file->relative_url),
+                    'original_name' => $file->original_name,
+                    'relative_url' => $file->relative_url
+                ]
+            ]);
+        }
     }
 }
