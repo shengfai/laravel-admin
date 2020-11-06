@@ -113,7 +113,7 @@ class BelongsTo extends Relationship
         $from_table         = $this->tablePrefix.$relationship_model->getTable();
         $field_table        = $columnName.'_'.$from_table;
 
-        $where = $this->tablePrefix.$first_model->getTable().'.'.$relationship_model->getForeignKey().
+        $where = $this->tablePrefix.$first_model->getTable().'.'.$first_relationship->getForeignKeyName().
                     ' = '.
                     $field_table.'.'.$first_relationship->getOwnerKeyName();
 
