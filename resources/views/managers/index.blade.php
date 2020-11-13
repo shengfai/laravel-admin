@@ -1,7 +1,7 @@
 @extends('admin::layouts.content')
 
 @section('button')
-<button data-modal="{{ route('admin.users.create') }}" data-title="添加管理员" class="layui-btn layui-btn-sm">添加管理员</button>
+<button data-modal="{{ route('admin.managers.create') }}" data-title="添加管理员" class="layui-btn layui-btn-sm">添加管理员</button>
 @stop
 
 @section('content')
@@ -49,25 +49,16 @@
                 <td class="text-left">
                     @if ($vo->status == 0)<span>已禁用</span>@elseif ($vo->status == 1)<span class="color-green">使用中</span>@endif
                 </td>
-                <td class='text-left'>{{ $vo->created_at->toDateString() }}</td>
-                <td class="text-left">
-    
+                <td class='text-left'>{{ $vo->created_at->toDateTimeString() }}</td>
+                <td class="text-left" width="200px">
                     <span class="text-explode">|</span>
-                    <a data-title="用户编辑" data-modal="{{ route('admin.users.edit', $vo->id) }}">编辑</a>
-                    
+                    <a data-title="用户编辑" data-modal="{{ route('admin.managers.edit', $vo->id) }}">编辑</a>
                     <span class="text-explode">|</span>
                     <a data-title="设置密码" data-modal="{{ route('admin.users.reset_password', $vo->id) }}">密码</a>
-                    
                     <span class="text-explode">|</span>
-                    <a data-title="用户授权" data-modal="{{ route('admin.users.authorizations', $vo->id) }}">授权</a>
-    
-                    @if ($vo->status == 1)
+                    <a data-title="用户授权" data-modal="{{ route('admin.managers.authorizations', $vo->id) }}">授权</a>
                     <span class="text-explode">|</span>
-                    <a data-status="{{ $vo->id }}" data-value="0" data-csrf="{{ csrf_token() }}" data-action="{{ route('admin.users.update', $vo->id) }}">禁用</a>
-                    @else
-                    <span class="text-explode">|</span>
-                    <a data-status="{{ $vo->id }}" data-value="1" data-csrf="{{ csrf_token() }}" data-action="{{ route('admin.users.update', $vo->id) }}">启用</a>
-                    @endif
+                    <a data-delete="{{ $vo->id }}" data-field="delete" data-csrf="{{ csrf_token() }}" data-action="{{ route('admin.managers.destroy', $vo->id) }}">移除</a>
                 </td>
             </tr>
             @endforeach

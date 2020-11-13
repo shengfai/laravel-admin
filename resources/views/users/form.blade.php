@@ -44,24 +44,6 @@
         </div>
     </div>
 
-	@if (Auth::user()->id !== $user['id'])
-    <div class="layui-form-item">
-        <label class="layui-form-label">所属角色</label>
-        <div class="layui-input-block">
-            @foreach ($roles as $key => $role)
-            <label class="think-checkbox">
-                @if (isset($role['checked']) && $role['checked'])
-                <input type="checkbox" checked name="roles[]" value="{{ $role['id'] }}" lay-ignore> {{ $role['name'] }}
-                @else
-                <input type="checkbox" name="roles[]" value="{{ $role['id'] }}" lay-ignore> {{ $role['name'] }}
-                @endif
-            </label>
-            @endforeach
-            @empty($roles)<span class="color-desc" style="line-height:36px">未配置角色</span>@endif
-        </div>
-    </div>
-    @endif
-    
     <div class="layui-form-item">
         <label class="layui-form-label">用户描述</label>
         <div class="layui-input-block">

@@ -1,14 +1,15 @@
-<form autocomplete="off" class="layui-form layui-box modal-form-box" action="{{ route('admin.users.update', $user['id']) }}" data-auto="true" method="POST">
+<form autocomplete="off" class="layui-form layui-box modal-form-box" action="{{ route('admin.managers.update', $manager->id) }}" data-auto="true" method="POST">
 	<input type="hidden" name="_method" value="PUT">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
     <div class="layui-form-item">
         <label class="layui-form-label">用户名称</label>
         <div class="layui-input-block">
-            <input type="text" name="name" readonly disabled value="{{ $user->name }}" required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input layui-bg-gray">
+            <input type="text" name="name" readonly disabled value="{{ $manager->name }}" required="required" title="请输入用户名称" placeholder="请输入用户名称" class="layui-input layui-bg-gray">
         </div>
     </div>
 
+	@if (auth()->user()->hasRole('Founder'))
     <div class="layui-form-item">
         <label class="layui-form-label">所属角色</label>
         <div class="layui-input-block">
@@ -24,6 +25,7 @@
             @empty($roles)<span class="color-desc" style="line-height:36px">未配置角色</span>@endif
         </div>
     </div>
+    @endif
 
     <div class="hr-line-dashed"></div>
 
