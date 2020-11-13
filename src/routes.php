@@ -60,8 +60,8 @@ Route::group([
 
         // 角色权限
         Route::resource('users', 'Shengfai\LaravelAdmin\Controllers\UsersController');                                                                  // 用户
-        Route::get('managers', 'Shengfai\LaravelAdmin\Controllers\ManagersController@index')->name('managers.index');                                   // 管理员列表
-        Route::get('users/{user}/authorizations', 'Shengfai\LaravelAdmin\Controllers\UsersController@authorizations')->name('users.authorizations');    // 用户授权
+        Route::resource('managers', 'Shengfai\LaravelAdmin\Controllers\ManagersController');                                                            // 管理员列表
+        Route::get('managers/{manager}/authorizations', 'Shengfai\LaravelAdmin\Controllers\ManagersController@authorizations')->name('managers.authorizations');    // 用户授权
         Route::get('users/{user}/password', 'Shengfai\LaravelAdmin\Controllers\UsersController@password')->name('users.reset_password');                // 重置密码
         Route::resource('permissions', 'Shengfai\LaravelAdmin\Controllers\PermissionsController');                                                      // 权限
         Route::get('role/{role}', 'Shengfai\LaravelAdmin\Controllers\RolesController@show')->name('roles.show')->where(['role' => '[0-9]+']);          // 查看角色
