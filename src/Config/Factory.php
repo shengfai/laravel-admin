@@ -76,7 +76,7 @@ class Factory
         'settings_config_path' => 'required|string|directory',
         'models'               => 'required|array|not_empty',
         'permission'           => 'callable',
-        'use_dashboard'        => 'string',
+        'use_dashboard'        => 'boolean',
         'dashboard_view'       => 'string',
         'home_page'            => 'string',
         'login_path'           => 'required|string',
