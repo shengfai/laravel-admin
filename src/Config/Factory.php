@@ -71,12 +71,12 @@ class Factory
      * @var array
      */
     protected $rules = [
-        'prefix'               => 'required|string',
+        'prefix'               => 'string',
         'model_config_path'    => 'required|string|directory',
         'settings_config_path' => 'required|string|directory',
-        'models'                 => 'required|array|not_empty',
+        'models'               => 'required|array|not_empty',
         'permission'           => 'callable',
-//         'use_dashboard'        => 'required',
+        'use_dashboard'        => 'string',
         'dashboard_view'       => 'string',
         'home_page'            => 'string',
         'login_path'           => 'required|string',
