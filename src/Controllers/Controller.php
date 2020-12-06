@@ -5,6 +5,7 @@ namespace Shengfai\LaravelAdmin\Controllers;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Session\SessionManager as Session;
 use Illuminate\Database\Eloquent\Model;
@@ -424,6 +425,16 @@ abstract class Controller extends BaseController
         return $this->write($result, 200, $header);
     }
 
+    /**
+     * Get the authenticated user.
+     *
+     * @return \App\Models\User
+     */
+    protected function user()
+    {
+        return Auth::user();
+    }
+    
     /**
      * 获取当前控制器名.
      *
