@@ -42,13 +42,13 @@
             <td class="text-center nowrap notselect">
 
                 <span class="text-explode">|</span>
-                <a data-title="用户编辑" data-modal="{{ route('admin.admin.users.edit', $vo['id']) }}">编辑</a>
+                <a data-title="用户编辑" data-modal="{{ route('admin.users.edit', $vo['id']) }}">编辑</a>
                 
                 <span class="text-explode">|</span>
-                <a data-title="设置密码" data-modal="{{ route('admin.admin.users.reset_password', $vo['id']) }}">密码</a>
+                <a data-title="设置密码" data-modal="{{ route('admin.users.reset_password', $vo['id']) }}">密码</a>
                 
                 <span class="text-explode">|</span>
-                <a data-title="用户授权" data-modal="{{ route('admin.admin.users.authorizations', $vo['id']) }}">授权</a>
+                <a data-title="用户授权" data-modal="{{ route('admin.users.authorizations', $vo['id']) }}">授权</a>
 
                 @if ($vo['status'] === 1)
                 <span class="text-explode">|</span>
