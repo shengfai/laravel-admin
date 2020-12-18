@@ -11,8 +11,14 @@ namespace Shengfai\LaravelAdmin\Contracts;
  */
 interface Conventions
 {
-    const VERSION = '0.9.0';                            // 版本
+    const VERSION = '1.0.7';                            // 版本
 
+    /**
+     * 注册通道
+     */
+    const REGISTERED_CHANNEL_WXAMP = 1;                 // 小程序
+    const REGISTERED_CHANNEL_CONSOLE = 10;              // 导入用户
+    
     /**
      * 通用状态
      */
