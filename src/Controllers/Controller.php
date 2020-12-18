@@ -69,6 +69,13 @@ abstract class Controller extends BaseController
     protected $title;
     
     /**
+     * 操作视图
+     *
+     * @var string
+     */
+    protected $view;
+    
+    /**
      * 模板变量.
      *
      * @var array
@@ -355,6 +362,7 @@ abstract class Controller extends BaseController
         $data = array_merge($data, $this->data);
         
         // 操作视图
+        $view = $this->view ?? $view;
         if (empty($view) || !Str::contains($view, 'admin::')) {
             $method = \Route::current()->getActionMethod();
             $action = empty($view) ? in_array($method, ['create', 'edit']) ? 'form' : $method : $view;
