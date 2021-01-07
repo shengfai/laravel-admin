@@ -360,8 +360,7 @@ class DataTable
     public function setRowsPerPage(\Illuminate\Session\Store $session, $globalPerPage, $override = null)
     {
         if ($override) {
-            $perPage = (int) $override;
-            $session->put('administrator_'.$this->config->getOption('name').'_rows_per_page', $perPage);
+            $session->put('administrator_'.$this->config->getOption('name').'_rows_per_page', $globalPerPage);
         }
 
         $perPage = $session->get('administrator_'.$this->config->getOption('name').'_rows_per_page');

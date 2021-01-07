@@ -361,6 +361,9 @@ elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
         }
         
         // return the rows
+        if (config('administrator.global_rows_per_page') !== $this->perPage) {
+            $dataTable->setRowsPerPage(app('session.store'), $this->perPage, true);
+        }
         $rows = $dataTable->getRows(app('db'), $filters, $page, $sortOptions);
         
         return response()->json([
@@ -368,7 +371,7 @@ elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
             'data' => $rows['results'],
             'meta' => [
                 'total' => $rows['total'],
-                'per_page' => $this->perPage,
+                'per_page' => $dataTable->getRowsPerPage(),
                 'current_page' => $this->page,
                 'last_page' => $rows['last']
             ]
