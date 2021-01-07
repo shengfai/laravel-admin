@@ -61,7 +61,7 @@ class CreateAdminTables extends Migration
             $table->string('hash', 32);
             $table->unsignedMediumInteger('size');
             $table->string('relative_url', 256);
-            $table->string('original_name', 128);
+            $table->string('original_name', 256);
             $table->string('url', 256);
             $table->string('remark', 128)->nullable();
             $table->timestamps();
