@@ -67,7 +67,8 @@ class Column
         'checkable'       => null,
         'template'        => null,
         'width'           => 80,
-        'align'           => 'left'
+        'align'           => 'left',
+        'fixed'           => null
     ];
 
     /**

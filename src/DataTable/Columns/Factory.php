@@ -211,9 +211,12 @@ class Factory
                 'align' => $item['align'],
                 'sort' => $item['sortable'],
                 'checkable' => $item['checkable'],
-                'templet' => $item['template'] ?? '<div>{{d.' . $item['column_name'] . '.rendered}}</div>'
+                'templet' => $item['template'] ?? '<div>{{d.' . $item['column_name'] . '.rendered}}</div>',
+                'fixed' => $item['fixed']
             ];
-            if ($item['width'] > 0) $column['width'] = $item['width'];
+            if ($item['width'] > 0) {
+                $column['width'] = $item['width'];
+            }
             
             return $column;
         });
