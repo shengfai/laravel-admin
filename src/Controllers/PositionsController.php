@@ -1,5 +1,4 @@
 <?php
-
 namespace Shengfai\LaravelAdmin\Controllers;
 
 use Illuminate\Http\Request;
@@ -12,6 +11,14 @@ use Shengfai\LaravelAdmin\Models\Positionable;
  *
  * @author ShengFai <shengfai@qq.com>
  * @version 2020年3月10日
+ */
+
+/**
+ * 推荐位控制器
+ * Class PositionsController
+ *
+ * @package \Shengfai\LaravelAdmin\Controllers
+ * @author ShengFai <shengfai@qq.com>
  */
 class PositionsController extends Controller
 {
@@ -29,9 +36,9 @@ class PositionsController extends Controller
             $queryBuilder = Positionable::ofPosition($position->id);
             return $this->list($queryBuilder);
         }
-
-        $this->title = $position->name . '内容管理';
-
+        
+        $this->title = '【' . $position->name . '】内容管理';
+        
         return $this->view(compact('position'));
     }
 }

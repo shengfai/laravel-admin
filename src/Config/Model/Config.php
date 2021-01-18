@@ -4,8 +4,8 @@ namespace Shengfai\LaravelAdmin\Config\Model;
 
 use Shengfai\LaravelAdmin\Config\Config as ConfigBase;
 use Shengfai\LaravelAdmin\Config\ConfigInterface;
-use Shengfai\LaravelAdmin\Fields\Factory as FieldFactory;
 use Shengfai\LaravelAdmin\Fields\Field as Field;
+use Shengfai\LaravelAdmin\Fields\Factory as FieldFactory;
 use Shengfai\LaravelAdmin\Actions\Factory as ActionFactory;
 
 /**

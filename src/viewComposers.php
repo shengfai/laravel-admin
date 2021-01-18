@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 //admin index view
 View::composer('admin::grid', function ($view) {
     //get a model instance that we'll use for constructing stuff
-    $config = app('itemconfig');
+    $config = app('admin.item_config');
     $fieldFactory = app('admin.field_factory');
     $columnFactory = app('admin.column_factory');
     $actionFactory = app('admin.action_factory');
@@ -31,7 +31,7 @@ View::composer('admin::grid', function ($view) {
 
 // admin detail view
 View::composer(['admin::detail', 'admin::form'], function ($view) {
-    $config = app('itemconfig');
+    $config = app('admin.item_config');
     $columnFactory = app('admin.column_factory');
     $fieldFactory = app('admin.field_factory');
     $model = $config->getDataModel();
@@ -44,7 +44,7 @@ View::composer(['admin::detail', 'admin::form'], function ($view) {
 
 //admin settings view
 View::composer('admin::settings', function ($view) {
-    $config = app('itemconfig');
+    $config = app('admin.item_config');
     $fieldFactory = app('admin.field_factory');
     $actionFactory = app('admin.action_factory');
 

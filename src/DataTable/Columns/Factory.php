@@ -1,99 +1,55 @@
 <?php
-
 namespace Shengfai\LaravelAdmin\DataTable\Columns;
 
+use Illuminate\Support\Collection;
 use Shengfai\LaravelAdmin\Validator;
 use Shengfai\LaravelAdmin\Config\ConfigInterface;
 use Illuminate\Database\DatabaseManager as DB;
-use Shengfai\LaravelAdmin\DataTable\Columns\Relationships\BelongsTo;
-use Shengfai\LaravelAdmin\DataTable\Columns\Relationships\BelongsToMany;
-use Illuminate\Support\Collection;
 
 class Factory
 {
+
     /**
      * The validator instance.
      *
      * @var \Shengfai\LaravelAdmin\Validator
      */
     protected $validator;
-    
+
     /**
      * The config instance.
      *
      * @var \Shengfai\LaravelAdmin\Config\ConfigInterface
      */
     protected $config;
-    
+
     /**
      * The config instance.
      *
      * @var \Illuminate\Database\DatabaseManager
      */
     protected $db;
-    
+
     /**
      * The column objects.
      *
      * @var array
      */
     protected $columns = [];
-    
+
     /**
      * The column options arrays.
      *
      * @var array
      */
     protected $columnOptions = [];
-    
+
     /**
      * The included column (used for pulling a certain range of selects from the DB).
      *
      * @var array
      */
     protected $includedColumns = [];
-    
-    /**
-     * The relationship columns.
-     *
-     * @var array
-     */
-    protected $relatedColumns = [];
-    
-    /**
-     * The computed columns (either an accessor or a select was supplied).
-     *
-     * @var array
-     */
-    protected $computedColumns = [];
-    
-    /**
-     * The class name of a BelongsTo relationship.
-     *
-     * @var string
-     */
-    const BELONGS_TO = 'Illuminate\\Database\\Eloquent\\Relations\\BelongsTo';
-    
-    /**
-     * The class name of a BelongsToMany relationship.
-     *
-     * @var string
-     */
-    const BELONGS_TO_MANY = 'Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany';
-    
-    /**
-     * The class name of a HasMany relationship.
-     *
-     * @var string
-     */
-    const HAS_MANY = 'Illuminate\\Database\\Eloquent\\Relations\\HasMany';
-    
-    /**
-     * The class name of a HasOne relationship.
-     *
-     * @var string
-     */
-    const HAS_ONE = 'Illuminate\\Database\\Eloquent\\Relations\\HasOne';
 
     /**
      * Create a new action Factory instance.
@@ -148,22 +104,6 @@ class Factory
         $model = $this->config->getDataModel();
         $namespace = __NAMESPACE__ . '\\';
         
-        // if the relationship is set
-        if ($method = $this->validator->arrayGet($options, 'relationship')) {
-            if (method_exists($model, $method)) {
-                $relationship = $model->{$method}();
-                
-                if (is_a($relationship, self::BELONGS_TO_MANY)) {
-                    return $namespace . 'Relationships\BelongsToMany';
-                } elseif (is_a($relationship, self::HAS_ONE) || is_a($relationship, self::HAS_MANY)) {
-                    return $namespace . 'Relationships\HasOneOrMany';
-                }
-            }
-            
-            // assume it's a nested relationship
-            return $namespace . 'Relationships\BelongsTo';
-        }
-        
         return $namespace . 'Column';
     }
 
@@ -182,11 +122,9 @@ class Factory
             $options = [];
         }
         
-        // if the name is not a string or the options is not an array at this point, throw an error because we can't do
-        // anything with it
-        if (!is_string($name) || !is_array($options)) {
-            throw new \InvalidArgumentException('One of the columns in your ' . $this->config->getOption('name') .
-                     ' model configuration file is invalid');
+        // if the name is not a string or the options is not an array at this point, throw an error because we can't do anything with it
+        if (! is_string($name) || ! is_array($options)) {
+            throw new \InvalidArgumentException('One of the columns in your ' . $this->config->getOption('name') . ' model configuration file is invalid');
         }
         
         // in any case, make sure the 'column_name' option is set
@@ -211,9 +149,13 @@ class Factory
                 'align' => $item['align'],
                 'sort' => $item['sortable'],
                 'checkable' => $item['checkable'],
-                'templet' => $item['template'] ?? '<div>{{d.' . $item['column_name'] . '.rendered}}</div>'
+                'templet' => $item['template'] ?? '<div>{{d.' . $item['column_name'] . '.rendered}}</div>',
+                'fixed' => $item['fixed'],
+                'hide' => ! $item['visible']
             ];
-            if ($item['width'] > 0) $column['width'] = $item['width'];
+            if ($item['width'] > 0) {
+                $column['width'] = $item['width'];
+            }
             
             return $column;
         });
@@ -274,67 +216,16 @@ class Factory
             $model = $this->config->getDataModel();
             
             foreach ($this->getColumns() as $column) {
-                if ($column->getOption('is_related')) {
-                    $this->includedColumns = array_merge($this->includedColumns, $column->getIncludedColumn());
-                } elseif (!$column->getOption('is_computed')) {
-                    $this->includedColumns[$column->getOption('column_name')] = $model->getTable() . '.' .
-                             $column->getOption('column_name');
-                }
+                $this->includedColumns[$column->getOption('column_name')] = $model->getTable() . '.' . $column->getOption('column_name');
             }
             
             // make sure the table key is included
-            if (!$this->validator->arrayGet($this->includedColumns, $model->getKeyName())) {
+            if (! $this->validator->arrayGet($this->includedColumns, $model->getKeyName())) {
                 $this->includedColumns[$model->getKeyName()] = $model->getTable() . '.' . $model->getKeyName();
-            }
-            
-            // make sure any belongs_to fields that aren't on the columns list are included
-            foreach ($fields as $field) {
-                if (is_a($field, 'Shengfai\\LaravelAdmin\\Fields\\Relationships\\BelongsTo')) {
-                    $this->includedColumns[$field->getOption('foreign_key')] = $model->getTable() . '.' .
-                             $field->getOption('foreign_key');
-                }
             }
         }
         
         return $this->includedColumns;
-    }
-
-    /**
-     * Gets the columns that are relationship columns.
-     *
-     * @return array
-     */
-    public function getRelatedColumns()
-    {
-        // make sure we only run this once and then return the cached version
-        if (empty($this->relatedColumns)) {
-            foreach ($this->getColumns() as $column) {
-                if ($column->getOption('is_related')) {
-                    $this->relatedColumns[$column->getOption('column_name')] = $column->getOption('column_name');
-                }
-            }
-        }
-        
-        return $this->relatedColumns;
-    }
-
-    /**
-     * Gets the columns that are computed.
-     *
-     * @return array
-     */
-    public function getComputedColumns()
-    {
-        // make sure we only run this once and then return the cached version
-        if (empty($this->computedColumns)) {
-            foreach ($this->getColumns() as $column) {
-                if (!$column->getOption('is_related') && $column->getOption('is_computed')) {
-                    $this->computedColumns[$column->getOption('column_name')] = $column->getOption('column_name');
-                }
-            }
-        }
-        
-        return $this->computedColumns;
     }
 
     /**
@@ -343,9 +234,7 @@ class Factory
      */
     protected function getVisibleColumns()
     {
-        return collect($this->getColumnOptions())->filter(function ($item) {
-            return $item['visible'];
-        });
+        return collect($this->getColumnOptions());
     }
 
     /**

@@ -1,5 +1,4 @@
 <?php
-
 namespace Shengfai\LaravelAdmin\Actions;
 
 use Shengfai\LaravelAdmin\Validator;
@@ -7,6 +6,7 @@ use Shengfai\LaravelAdmin\Config\ConfigInterface;
 
 class Action
 {
+
     /**
      * The validator instance.
      *
@@ -41,15 +41,15 @@ class Action
      * @var array
      */
     protected $defaults = [
-        'title'          => 'Custom Action',
+        'title' => 'Custom Action',
         'has_permission' => true,
-        'confirmation'   => false,
-        'click'          => 'data-modal',
-        'messages'       => [
-            'active'  => 'Just a moment...',
+        'confirmation' => false,
+        'click' => 'data-modal',
+        'messages' => [
+            'active' => 'Just a moment...',
             'success' => 'Success!',
-            'error'   => 'There was an error performing this action',
-        ],
+            'error' => 'There was an error performing this action'
+        ]
     ];
 
     /**
@@ -58,23 +58,23 @@ class Action
      * @var array
      */
     protected $rules = [
-        'title'        => 'string_or_callable',
+        'title' => 'string_or_callable',
         'confirmation' => 'string_or_callable',
-        'messages'     => 'array|array_with_all_or_none:active,success,error',
-        'action'       => 'required|callable',
+        'messages' => 'array|array_with_all_or_none:active,success,error',
+        'action' => 'required|callable'
     ];
 
     /**
      * Create a new action Factory instance.
      *
-     * @param \Shengfai\LaravelAdmin\Validator              $validator
+     * @param \Shengfai\LaravelAdmin\Validator $validator
      * @param \Shengfai\LaravelAdmin\Config\ConfigInterface $config
-     * @param array                                            $options
+     * @param array $options
      */
     public function __construct(Validator $validator, ConfigInterface $config, array $options)
     {
-        $this->config          = $config;
-        $this->validator       = $validator;
+        $this->config = $config;
+        $this->validator = $validator;
         $this->suppliedOptions = $options;
     }
 
@@ -83,13 +83,12 @@ class Action
      */
     public function validateOptions()
     {
-        //override the config
+        // override the config
         $this->validator->override($this->suppliedOptions, $this->rules);
-
-        //if the validator failed, throw an exception
+        
+        // if the validator failed, throw an exception
         if ($this->validator->fails()) {
-            throw new \InvalidArgumentException("There are problems with your '".$this->suppliedOptions['action_name']."' action in the ".
-                                    $this->config->getOption('name').' model: '.implode('. ', $this->validator->messages()->all()));
+            throw new \InvalidArgumentException("There are problems with your '" . $this->suppliedOptions['action_name'] . "' action in the " . $this->config->getOption('name') . ' model: ' . implode('. ', $this->validator->messages()->all()));
         }
     }
 
@@ -99,40 +98,47 @@ class Action
     public function build()
     {
         $options = $this->suppliedOptions;
-
-        //build the string or callable values for title and confirmation
-        $this->buildStringOrCallable($options, ['confirmation', 'title']);
-
-        //build the string or callable values for the messages
+        
+        // build the string or callable values for title and confirmation
+        $this->buildStringOrCallable($options, [
+            'confirmation',
+            'title'
+        ]);
+        
+        // build the string or callable values for the messages
         $messages = $this->validator->arrayGet($options, 'messages', []);
-        $this->buildStringOrCallable($messages, ['active', 'success', 'error']);
+        $this->buildStringOrCallable($messages, [
+            'active',
+            'success',
+            'error'
+        ]);
         $options['messages'] = $messages;
-
-        //override the supplied options
+        
+        // override the supplied options
         $this->suppliedOptions = $options;
     }
 
     /**
      * Sets up the values of all the options that can be either strings or closures.
      *
-     * @param array $options //the passed-by-reference array on which to do the transformation
-     * @param array $keys    //the keys to check
+     * @param array $options
+     *            //the passed-by-reference array on which to do the transformation
+     * @param array $keys
+     *            //the keys to check
      */
     public function buildStringOrCallable(array &$options, array $keys)
     {
         $model = $this->config->getDataModel();
-
-        //iterate over the keys
+        
+        // iterate over the keys
         foreach ($keys as $key) {
-            //check if the key's value was supplied
+            // check if the key's value was supplied
             $suppliedValue = $this->validator->arrayGet($options, $key);
-
-            //if it's a string, simply set it
+            
+            // if it's a string, simply set it
             if (is_string($suppliedValue)) {
                 $options[$key] = $suppliedValue;
-            }
-            //if it's callable pass it the current model and run it
-            elseif (is_callable($suppliedValue)) {
+            } elseif (is_callable($suppliedValue)) {
                 $options[$key] = $suppliedValue($model);
             }
         }
@@ -148,7 +154,7 @@ class Action
     public function perform(&$data)
     {
         $action = $this->getOption('action');
-
+        
         return $action($data);
     }
 
@@ -161,17 +167,17 @@ class Action
      */
     public function getOptions($override = false)
     {
-        //if override is true, unset the current options
+        // if override is true, unset the current options
         $this->options = $override ? [] : $this->options;
-
-        //make sure the supplied options have been merged with the defaults
+        
+        // make sure the supplied options have been merged with the defaults
         if (empty($this->options)) {
-            //validate the options and build them
+            // validate the options and build them
             $this->validateOptions();
             $this->build();
             $this->options = array_merge($this->defaults, $this->suppliedOptions);
         }
-
+        
         return $this->options;
     }
 
@@ -185,11 +191,11 @@ class Action
     public function getOption($key)
     {
         $options = $this->getOptions();
-
-        if (!array_key_exists($key, $options)) {
-            throw new \InvalidArgumentException("An invalid option was searched for in the '".$options['action_name']."' action");
+        
+        if (! array_key_exists($key, $options)) {
+            throw new \InvalidArgumentException("An invalid option was searched for in the '" . $options['action_name'] . "' action");
         }
-
+        
         return $options[$key];
     }
 }

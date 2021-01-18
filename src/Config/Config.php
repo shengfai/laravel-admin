@@ -1,5 +1,4 @@
 <?php
-
 namespace Shengfai\LaravelAdmin\Config;
 
 use Shengfai\LaravelAdmin\Validator;
@@ -9,41 +8,42 @@ use Shengfai\LaravelAdmin\Contracts\ErrorCodes;
 
 abstract class Config
 {
+
     /**
      * The validator instance.
      *
      * @var \Shengfai\LaravelAdmin\Validator
      */
     protected $validator;
-    
+
     /**
      * The site's normal validator instance.
      *
      * @var \Illuminate\Validation\Validator
      */
     protected $customValidator;
-    
+
     /**
      * The user supplied options array.
      *
      * @var array
      */
     protected $suppliedOptions = [];
-    
+
     /**
      * The original configuration options that were supplied.
      *
      * @var array
      */
     protected $options;
-    
+
     /**
      * The defaults property.
      *
      * @var array
      */
     protected $defaults = [];
-    
+
     /**
      * The rules property.
      *
@@ -75,8 +75,7 @@ abstract class Config
         
         // if the validator failed, throw an exception
         if ($this->validator->fails()) {
-            throw new \InvalidArgumentException('There are problems with your ' . $this->suppliedOptions['name'] .
-                     ' config: ' . implode('. ', $this->validator->messages()->all()));
+            throw new \InvalidArgumentException('There are problems with your ' . $this->suppliedOptions['name'] . ' config: ' . implode('. ', $this->validator->messages()->all()));
         }
     }
 
@@ -133,12 +132,11 @@ abstract class Config
     {
         $options = $this->getOptions();
         
-        if (!array_key_exists($key, $options)) {
+        if (! array_key_exists($key, $options)) {
             if ($default !== null) {
                 return $default;
             }
-            throw new \InvalidArgumentException("An invalid option was searched for in the '" . $options['name'] .
-                     "' config");
+            throw new \InvalidArgumentException("An invalid option was searched for in the '" . $options['name'] . "' config");
         }
         
         return $options[$key];
@@ -166,7 +164,8 @@ abstract class Config
      * @param array $data
      * @param array $rules
      * @param array $messages
-     * @param mixed
+     * @param
+     *            mixed
      */
     public function validateData(array $data, array $rules, array $messages)
     {

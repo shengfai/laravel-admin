@@ -26,7 +26,7 @@
 </form>
 
 <script type="text/javascript">
-require(['jquery', 'select2'], function () {
+require(['jquery', '/admin/plugs/select2/select2.min.js'], function () {
 	window.form.render();
 	@foreach ($model->dimensions as $dimension)
 	$(".taggable-{{ $dimension->id }}-multiple-limit").select2({

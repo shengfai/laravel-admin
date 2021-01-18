@@ -16,7 +16,7 @@ class PostValidate
      */
     public function handle($request, Closure $next)
     {
-        $config = app('itemconfig');
+        $config = app('admin.item_config');
 
         //if the model doesn't exist at all, redirect to 404
         if (!$config) {

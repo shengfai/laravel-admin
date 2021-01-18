@@ -1,7 +1,7 @@
 @extends('admin::layouts.content')
 
 @section('button')
-<a data-modal="{{route('admin.positions.datas.create', $position->id)}}" data-title="{{$position->name}} 内容推送" class="layui-btn layui-btn-sm">推送内容</a>
+<a data-modal="{{route('admin.positions.datas.create', $position->id)}}" data-title="【{{$position->name}}】内容推送" class="layui-btn layui-btn-sm">推送内容</a>
 @stop
 
 @section('content')
@@ -13,17 +13,17 @@
             @else
             <input type="hidden" value="resort" name="action">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <table id="test" class="layui-table" lay-skin="line">
+            <table id="test" class="layui-table" lay-skin="line" lay-size="sm">
                 <thead>
                 <tr>
                     <th class="list-table-sort-td text-center">
                         <button type="submit" class="layui-btn layui-btn-normal layui-btn-xs">排 序</button>
                     </th>
-                    <th class="text-left" width="50px">关联模型</th>
-                    <th class="text-left" width="30%">标题</th>
-                    <th class="text-left" width="40%">摘要</th>
-                    <th class="text-left" width="50px">推送时间</th>
-                    <th class="text-left" width="50px">操作</th>
+                    <th class="text-left" width="80px">关联模型</th>
+                    <th class="text-left" width="450px">标题</th>
+                    <th class="text-left">摘要</th>
+                    <th class="text-left" width="80px">推送时间</th>
+                    <th class="text-left" width="90px">操作</th>
                 </tr>
                 </thead>
                 <tbody>

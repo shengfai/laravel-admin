@@ -18,7 +18,7 @@ class ValidateSettings
     {
         $settingsName = $request->route()->parameter('settings');
 
-        app()->singleton('itemconfig', function ($app) use ($settingsName) {
+        app()->singleton('admin.item_config', function ($app) use ($settingsName) {
             $configFactory = app('admin.config_factory');
 
             return $configFactory->make($configFactory->getSettingsPrefix().$settingsName, true);

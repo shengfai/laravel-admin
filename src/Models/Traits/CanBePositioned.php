@@ -1,11 +1,4 @@
 <?php
-
-/*
- * This file is part of the shengfai/laravel-admin.
- * (c) shengfai <shengfai@qq.com>
- * This source file is subject to the MIT license that is bundled.
- */
-
 namespace Shengfai\LaravelAdmin\Models\Traits;
 
 use Shengfai\LaravelAdmin\Models\Position;
@@ -13,11 +6,10 @@ use Shengfai\LaravelAdmin\Models\Positionable;
 
 /**
  * 可推荐
- * trait CanBePositioned.
+ * trait CanBePositioned
  *
+ * @package \Shengfai\LaravelAdmin\Models\Traits
  * @author ShengFai <shengfai@qq.com>
- *
- * @version 2020年3月17日
  */
 trait CanBePositioned
 {
@@ -29,23 +21,22 @@ trait CanBePositioned
      */
     public function isPositionedBy(Position $position)
     {
-        return $this->positionables()->ofPosition($position->id)->exists();
+        return $this->positionables()
+            ->ofPosition($position->id)
+            ->exists();
     }
 
     /**
      * 推荐至指定推荐位.
      */
     public function position(Position $position)
-    {
-    
-    }
+    {}
 
     /**
      * 取消推荐至指定推荐位.
      */
     public function unPosition(Position $position)
-    {
-    }
+    {}
 
     /**
      * 推荐的数据.

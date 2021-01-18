@@ -42,8 +42,6 @@
         </div>
     </div>
 
-    <div class="hr-line-dashed"></div>
-
     <div class="layui-form-item text-center">
         <input type="hidden" name="positionable_id" value="{{ $data->positionable_id }}">
         <input type="hidden" name="positionable_type" value="{{ $data->positionable_type }}">

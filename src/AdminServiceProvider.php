@@ -81,18 +81,17 @@ class AdminServiceProvider extends ServiceProvider
             return new ConfigFactory($app->make('admin.validator'), Validator::make([], []), config('administrator'));
         });
         $this->app->singleton('admin.field_factory', function ($app) {
-            return new FieldFactory($app->make('admin.validator'), $app->make('itemconfig'), $app->make('db'));
+            return new FieldFactory($app->make('admin.validator'), $app->make('admin.item_config'), $app->make('db'));
         });
         $this->app->singleton('admin.datatable', function ($app) {
-            $dataTable = new DataTable($app->make('itemconfig'), $app->make('admin.column_factory'), $app->make('admin.field_factory'));
-            $dataTable->setRowsPerPage($app->make('session.store'), config('administrator.global_rows_per_page'));
+            $dataTable = new DataTable($app->make('admin.column_factory'), $app->make('admin.field_factory'));
             return $dataTable;
         });
         $this->app->singleton('admin.column_factory', function ($app) {
-            return new ColumnFactory($app->make('admin.validator'), $app->make('itemconfig'), $app->make('db'));
+            return new ColumnFactory($app->make('admin.validator'), $app->make('admin.item_config'), $app->make('db'));
         });
         $this->app->singleton('admin.action_factory', function ($app) {
-            return new ActionFactory($app->make('admin.validator'), $app->make('itemconfig'), $app->make('db'));
+            return new ActionFactory($app->make('admin.validator'), $app->make('admin.item_config'), $app->make('db'));
         });
         $this->app->singleton('admin.menu', function ($app) {
             return new Menu($app->make('config'), $app->make('admin.config_factory'));
