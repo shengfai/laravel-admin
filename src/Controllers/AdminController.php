@@ -1,13 +1,13 @@
 <?php
-
 namespace Shengfai\LaravelAdmin\Controllers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Schema;
 use Shengfai\LaravelAdmin\Traits\Response;
 use Shengfai\LaravelAdmin\Handlers\ActivityHandler;
 use Symfony\Component\HttpFoundation\File\File as SFile;
+use Spatie\QueryBuilder\Exceptions\InvalidSortQuery;
+use Spatie\QueryBuilder\Exceptions\InvalidFilterQuery;
 
 /**
  * Handles all requests related to managing the data models.
@@ -28,7 +28,7 @@ class AdminController extends Controller
     {
         // 列表排序默认处理
         if ($this->request->action === 'resort') {
-            $config = app('itemconfig');
+            $config = app('admin.item_config');
             return $this->resort($config->getDataModel());
         }
         
@@ -54,7 +54,7 @@ class AdminController extends Controller
      */
     public function item($modelName, $itemId = 0)
     {
-        $config = app('itemconfig');
+        $config = app('admin.item_config');
         $fieldFactory = app('admin.field_factory');
         $actionFactory = app('admin.action_factory');
         $columnFactory = app('admin.column_factory');
@@ -98,7 +98,7 @@ class AdminController extends Controller
     public function save($modelName, $id = false)
     {
         try {
-            $config = app('itemconfig');
+            $config = app('admin.item_config');
             
             $fieldFactory = app('admin.field_factory');
             $actionFactory = app('admin.action_factory');
@@ -126,7 +126,6 @@ class AdminController extends Controller
             ActivityHandler::console()->performedOn($model)->log($id ? '更新' : '创建' . $config->getOption('single'));
             
             return $this->success();
-        
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
@@ -141,7 +140,7 @@ class AdminController extends Controller
      */
     public function delete($modelName)
     {
-        $config = app('itemconfig');
+        $config = app('admin.item_config');
         $actionFactory = app('admin.action_factory');
         $baseModel = $config->getDataModel();
         $errorResponse = [
@@ -151,7 +150,7 @@ class AdminController extends Controller
         
         // if don't have permission, send back request
         $permissions = $actionFactory->getActionPermissions();
-        if (!$permissions['delete']) {
+        if (! $permissions['delete']) {
             return response()->json($errorResponse);
         }
         
@@ -175,7 +174,7 @@ class AdminController extends Controller
      */
     public function customModelAction($modelName)
     {
-        $config = app('itemconfig');
+        $config = app('admin.item_config');
         $actionFactory = app('admin.action_factory');
         $actionName = $this->request->input('action_name', false);
         $dataTable = app('admin.datatable');
@@ -198,8 +197,7 @@ class AdminController extends Controller
                 'success' => false,
                 'error' => $result
             ));
-        } // if it's falsy, return the standard error message
-elseif (!$result) {
+        } elseif (! $result) {
             $messages = $action->getOption('messages');
             
             return response()->json(array(
@@ -221,8 +219,7 @@ elseif (!$result) {
                 ));
                 
                 $response['download'] = route('admin.file_download');
-            } // if it's a redirect, put the url into the redirect key so that javascript can transfer the user
-elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
+            } elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
                 $response['redirect'] = $result->getTargetUrl();
             }
             
@@ -240,7 +237,7 @@ elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
      */
     public function customModelItemAction($modelName, $id = null)
     {
-        $config = app('itemconfig');
+        $config = app('admin.item_config');
         $actionFactory = app('admin.action_factory');
         $model = $config->getDataModel();
         $model = $model::find($id);
@@ -259,8 +256,7 @@ elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
                 'success' => false,
                 'error' => $result
             ));
-        } // if it's falsy, return the standard error message
-elseif (!$result) {
+        } elseif (! $result) {
             $messages = $action->getOption('messages');
             
             return response()->json(array(
@@ -292,8 +288,7 @@ elseif (!$result) {
                 ));
                 
                 $response['download'] = route('admin.file_download');
-            } // if it's a redirect, put the url into the redirect key so that javascript can transfer the user
-elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
+            } elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
                 $response['redirect'] = $result->getTargetUrl();
             }
             
@@ -321,7 +316,7 @@ elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
         // first try to find it if it's a model config item
         $config = $configFactory->make($home);
         
-        if (!$config) {
+        if (! $config) {
             throw new \InvalidArgumentException('Administrator: ' . trans('administrator::administrator.valid_home_page'));
         } elseif ($config->getType() === 'model') {
             return redirect()->route('admin.index', [
@@ -343,39 +338,30 @@ elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
      */
     public function results($modelName)
     {
-        $dataTable = app('admin.datatable');
-        
-        // get the sort options and filters
-        $page = $this->request->input('page', 1);
-        $sortOptions = $this->request->input('sortOptions', []);
-        $filters = $this->request->input('filters', []);
-        
-        // 排序
-        if (empty($sortOptions)) {
-            $table = app('itemconfig')->getDataModel()->getTable();
-            $tableFields = Schema::getColumnListing($table);
-            in_array('sort', $tableFields) && $sortOptions = [
-                'field' => 'sort',
-                'direction' => 'desc'
-            ];
+        try {
+            
+            $dataTable = app('admin.datatable');
+            $modelConfig = app('admin.item_config');
+            
+            // return the rows
+            $queryParameters = $modelConfig->getOptions()['query_parameters'] ?? [];
+            $results = $dataTable->getRows($modelConfig->getDataModel(), $queryParameters, $this->perPage);
+            
+            return response()->json([
+                'error_code' => 0,
+                'data' => $results->items(),
+                'meta' => [
+                    'total' => $results->total(),
+                    'per_page' => $results->perPage(),
+                    'current_page' => $results->currentPage(),
+                    'last_page' => $results->lastPage()
+                ]
+            ]);
+        } catch (InvalidSortQuery $exception) {
+            \dd($exception);
+        } catch (InvalidFilterQuery $exception) {
+            \dd($exception);
         }
-        
-        // return the rows
-        if (config('administrator.global_rows_per_page') !== $this->perPage) {
-            $dataTable->setRowsPerPage(app('session.store'), $this->perPage, true);
-        }
-        $rows = $dataTable->getRows(app('db'), $filters, $page, $sortOptions);
-        
-        return response()->json([
-            'error_code' => 0,
-            'data' => $rows['results'],
-            'meta' => [
-                'total' => $rows['total'],
-                'per_page' => $dataTable->getRowsPerPage(),
-                'current_page' => $this->page,
-                'last_page' => $rows['last']
-            ]
-        ]);
     }
 
     /**
@@ -452,7 +438,7 @@ elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
     public function settings($settingsName)
     {
         try {
-            $config = app('itemconfig');
+            $config = app('admin.item_config');
             
             // set the layout content and title
             if ($this->request->isMethod('Get')) {
@@ -484,7 +470,7 @@ elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
      */
     public function settingsCustomAction($settingsName)
     {
-        $config = app('itemconfig');
+        $config = app('admin.item_config');
         $actionFactory = app('admin.action_factory');
         $actionName = $this->request->input('action_name', false);
         
@@ -502,8 +488,7 @@ elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
                 'success' => false,
                 'error' => $result
             ]);
-        } // if it's falsy, return the standard error message
-elseif (!$result) {
+        } elseif (! $result) {
             $messages = $action->getOption('messages');
             
             return response()->json(array(
@@ -526,8 +511,7 @@ elseif (!$result) {
                 ));
                 
                 $response['download'] = route('admin.file_download');
-            } // if it's a redirect, put the url into the redirect key so that javascript can transfer the user
-elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
+            } elseif (is_a($result, '\Illuminate\Http\RedirectResponse')) {
                 $response['redirect'] = $result->getTargetUrl();
             }
             

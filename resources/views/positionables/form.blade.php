@@ -43,8 +43,6 @@
         </div>
     </div>
 
-    <div class="hr-line-dashed"></div>
-
     <div class="layui-form-item text-center">
         <input type="hidden" name="position_id" value="{{$position->id}}">
         <button class="layui-btn" type="submit">保存数据</button>

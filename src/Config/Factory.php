@@ -4,8 +4,8 @@ namespace Shengfai\LaravelAdmin\Config;
 
 use Shengfai\LaravelAdmin\Validator;
 use Illuminate\Validation\Validator as CustomValidator;
-use Shengfai\LaravelAdmin\Config\Settings\Config as SettingsConfig;
 use Shengfai\LaravelAdmin\Config\Model\Config as ModelConfig;
+use Shengfai\LaravelAdmin\Config\Settings\Config as SettingsConfig;
 
 class Factory
 {

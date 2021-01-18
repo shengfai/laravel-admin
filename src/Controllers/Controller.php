@@ -111,7 +111,7 @@ abstract class Controller extends BaseController
         $this->session = $session;
         
         $this->page = (int)$request->input('page', 1);
-        $this->perPage = (int)min($request->input('per_page', config('administrator.global_rows_per_page')), 100);
+        $this->perPage = (int)min($request->input('per_page', config('administrator.global_rows_per_page')), 10000);
         
         // $this->formRequestErrors = $this->resolveDynamicFormRequestErrors($request);
     }
@@ -124,7 +124,7 @@ abstract class Controller extends BaseController
     protected function resolveDynamicFormRequestErrors(Request $request)
     {
         try {
-            $config = app('itemconfig');
+            $config = app('admin.item_config');
             $fieldFactory = app('admin.field_factory');
         } catch (\ReflectionException $e) {
             return;

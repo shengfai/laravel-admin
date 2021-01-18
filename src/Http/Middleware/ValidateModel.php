@@ -18,7 +18,7 @@ class ValidateModel
     {
         $modelName = $request->route()->parameter('model');
 
-        app()->singleton('itemconfig', function ($app) use ($modelName) {
+        app()->singleton('admin.item_config', function ($app) use ($modelName) {
             $configFactory = app('admin.config_factory');
 
             return $configFactory->make($modelName, true);

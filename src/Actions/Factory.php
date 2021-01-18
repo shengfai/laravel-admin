@@ -1,5 +1,4 @@
 <?php
-
 namespace Shengfai\LaravelAdmin\Actions;
 
 use Shengfai\LaravelAdmin\Validator;
@@ -7,55 +6,56 @@ use Shengfai\LaravelAdmin\Config\ConfigInterface;
 
 class Factory
 {
+
     /**
      * The validator instance.
      *
      * @var \Shengfai\LaravelAdmin\Validator
      */
     protected $validator;
-    
+
     /**
      * The config instance.
      *
      * @var \Shengfai\LaravelAdmin\Config\ConfigInterface
      */
     protected $config;
-    
+
     /**
      * The actions array.
      *
      * @var array
      */
     protected $actions = [];
-    
+
     /**
      * The array of actions options.
      *
      * @var array
      */
     protected $actionsOptions = [];
-    
+
     /**
      * The action permissions array.
      *
      * @var array
      */
     protected $actionPermissions = [];
-    
+
     /**
      * The global actions array.
      *
      * @var array
      */
     protected $globalActions = [];
-    
+
     /**
      * The array of global actions options.
      *
      * @var array
      */
     protected $globalActionsOptions = [];
-    
+
     /**
      * The action permissions defaults.
      *
@@ -65,7 +65,7 @@ class Factory
         'create' => true,
         'delete' => true,
         'update' => true,
-        'view'   => true
+        'view' => true
     ];
 
     /**
@@ -83,7 +83,7 @@ class Factory
     /**
      * Takes the model and an info array of options for the specific action.
      *
-     * @param string $name //the key name for this action
+     * @param string $name
      * @param array $options
      *
      * @return \Shengfai\LaravelAdmin\Actions\Action
@@ -100,7 +100,8 @@ class Factory
     /**
      * Sets up the default values for the $options array.
      *
-     * @param string $name //the key name for this action
+     * @param string $name
+     *            //the key name for this action
      * @param array $options
      *
      * @return array
@@ -109,11 +110,9 @@ class Factory
     {
         $model = $this->config->getDataModel();
         
-        // if the name is not a string or the options is not an array at this point, throw an error because we can't do
-        // anything with it
-        if (!is_string($name) || !is_array($options)) {
-            throw new \InvalidArgumentException('A custom action in your  ' . $this->config->getOption('action_name') .
-                     ' configuration file is invalid');
+        // if the name is not a string or the options is not an array at this point, throw an error because we can't do anything with it
+        if (! is_string($name) || ! is_array($options)) {
+            throw new \InvalidArgumentException('A custom action in your  ' . $this->config->getOption('action_name') . ' configuration file is invalid');
         }
         
         // set the action name
@@ -146,7 +145,8 @@ class Factory
      * Gets an action by name.
      *
      * @param string $name
-     * @param bool $global //if true, search the global actions
+     * @param bool $global
+     *            //if true, search the global actions
      *
      * @return mixed
      */
@@ -318,9 +318,9 @@ class Factory
             // loop over the actions to build the list
             foreach ($permissions as $action => $callback) {
                 if (is_callable($callback)) {
-                    $this->actionPermissions[$action] = (bool)$callback($model);
+                    $this->actionPermissions[$action] = (bool) $callback($model);
                 } else {
-                    $this->actionPermissions[$action] = (bool)$callback;
+                    $this->actionPermissions[$action] = (bool) $callback;
                 }
             }
         }

@@ -1,28 +1,20 @@
 <?php
-
-/*
- * This file is part of the shengfai/laravel-admin.
- * (c) shengfai <shengfai@qq.com>
- * This source file is subject to the MIT license that is bundled.
- */
-
 namespace Shengfai\LaravelAdmin\Models;
 
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use Shengfai\LaravelAdmin\Models\Traits\Attributes;
 use Shengfai\LaravelAdmin\Traits\Scope;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
+use Shengfai\LaravelAdmin\Models\Traits\Attributes;
 
 /**
  * 推荐数据模型
- * Class Positionable.
+ * Class Positionable
  *
+ * @package \Shengfai\LaravelAdmin\Models
  * @author ShengFai <shengfai@qq.com>
- *
- * @version 2020年3月10日
  */
 class Positionable extends Pivot
 {
@@ -53,12 +45,14 @@ class Positionable extends Pivot
     public function getPositionableModel(string $key = null)
     {
         $availablePositionedModels = config('administrator.available_positioned_models');
-        $modelName = Str::of(class_basename($this->positionable_type))->snake()->lower()->__toString();
+        $modelName = Str::of(class_basename($this->positionable_type))->snake()
+            ->lower()
+            ->__toString();
         return $key ? $availablePositionedModels[$modelName][$key] : $availablePositionedModels[$modelName];
     }
 
     /**
-     * 获得拥有此推荐的模型。
+     * 获得拥有此推荐的模型
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
@@ -68,7 +62,7 @@ class Positionable extends Pivot
     }
 
     /**
-     * 关联的推荐位.
+     * 关联的推荐位
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -80,7 +74,7 @@ class Positionable extends Pivot
     /**
      * 查询指定推荐位记录
      *
-     * @param Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param int $position_id
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -89,7 +83,7 @@ class Positionable extends Pivot
         if (is_null($position_id)) {
             return $query;
         }
-
+        
         return $query->where('position_id', $position_id);
     }
 }

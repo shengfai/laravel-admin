@@ -1,5 +1,4 @@
 <?php
-
 namespace Shengfai\LaravelAdmin;
 
 use Illuminate\Config\Repository as Config;
@@ -9,13 +8,14 @@ use Shengfai\LaravelAdmin\Handlers\DataHandler;
 
 class Menu
 {
+
     /**
      * The config instance.
      *
      * @var \Illuminate\Config\Repository
      */
     protected $config;
-    
+
     /**
      * The config instance.
      *
@@ -38,7 +38,8 @@ class Menu
     /**
      * Gets the menu items indexed by their name with a value of the title.
      *
-     * @param array $subMenu (used for recursion)
+     * @param array $subMenu
+     *            (used for recursion)
      *
      * @return array
      */
@@ -46,7 +47,7 @@ class Menu
     {
         $menu = [];
         
-        if (!$subMenu) {
+        if (! $subMenu) {
             $subMenu = $this->config->get('administrator.models');
         }
         
@@ -60,14 +61,10 @@ class Menu
                 // if a config object was returned and if the permission passes, add the item to the menu
                 if (is_a($config, 'Shengfai\LaravelAdmin\Config\Config') && $config->getOption('permission')) {
                     $menu[$item] = $config->getOption('title');
-                }
-                // otherwise if this is a custom page, add it to the menu
-                elseif ($config === true) {
+                } elseif ($config === true) {
                     $menu[$item] = $key;
                 }
-            }
-            // if the item is an array, recursively run this method on it
-            elseif (is_array($item)) {
+            } elseif (is_array($item)) {
                 $menu[$key] = $this->getMenu($item);
                 
                 // if the submenu is empty, unset it

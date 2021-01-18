@@ -1,13 +1,12 @@
 <?php
-
 namespace Shengfai\LaravelAdmin\Traits;
 
 /**
  * HTTP 响应
- * trait Response.
+ * trait Response
  *
+ * @package \Shengfai\LaravelAdmin\Traits
  * @author ShengFai <shengfai@qq.com>
- * @version 2020年3月8日
  */
 trait Response
 {

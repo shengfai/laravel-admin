@@ -30,6 +30,7 @@
                 url: "{{ $resultsUrl }}",
                 page: true,
                 limit: 20,
+                limits: [20,50,100,200,300,500,1000],
                 toolbar: true,
                 defaultToolbar: ["filter", "exports", "print"],
                 skin: "line",
@@ -49,7 +50,7 @@
                     limitName: "per_page"
                 },
                 done: function(res, curr, count) {
-                    console.log("count is " + count);
+                    
                 }
             });
 
@@ -57,24 +58,18 @@
             var $ = layui.$,
                 filter = {
                     reload: function() {
-                    	var filters = [];
+                    	var filters = Object.create(null);
                         var inputs = $(".form-filters .filter-input");
-
+                        
                         $.each(inputs, function(i, n) {
-                            filters.push({
-                                "field_name": $(n).attr("name"),
-                                "type": $(n).attr("data-type"),
-                                "value": $(n).val()
-                            });
+                        	filters['filter[' + $(n).attr('name') + ']'] = $(n).val();
                         });
 
                         table.reload("grid", {
                             page: {
                                 curr: 1
                             },
-                            where: {
-                                "filters": filters
-                            }
+                            where: filters
                         });
                     }
                 };
