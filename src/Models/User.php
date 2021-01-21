@@ -1,48 +1,37 @@
 <?php
 
-/*
- * This file is part of the shengfai/laravel-admin.
- *
- * (c) shengfai <shengfai@qq.com>
- *
- * This source file is subject to the MIT license that is bundled.
- */
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Shengfai\LaravelAdmin\Contracts\Conventions;
-use Shengfai\LaravelAdmin\Traits\CustomActivityProperties;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Shengfai\LaravelAdmin\Traits\CustomActivityProperties;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * 用户模型
- * Class User.
+ * Class User
  *
+ * @package \App\Models
  * @author ShengFai <shengfai@qq.com>
- *
- * @version 2020年3月10日
  */
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
-    use SoftDeletes;
-    use Notifiable;
-    use HasRoles;
-    use LogsActivity;
-    use CustomActivityProperties;
+    use SoftDeletes, LogsActivity, CustomActivityProperties;
+    use Notifiable, HasRoles;
 
     /**
-     * 用户类型.
+     * 用户类型
      */
-    const TYPE_USER = 1;        // 用户
-    const TYPE_ORGANIZER = 2;        // 组织
-    const TYPE_ADMINISTRATOR = 11;       // 后台用户
+    const TYPE_USER          = 1;   // 用户
+    const TYPE_ORGANIZER     = 2;   // 组织
+    const TYPE_ADMINISTRATOR = 11;  // 后台用户
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are mass assignable
      *
      * @var array
      */
@@ -65,21 +54,21 @@ class User extends Authenticatable
         'registered_channel',
         'spread_userid',
         'remark',
-        'status',
+        'status'
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that should be hidden for arrays
      *
      * @var array
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token'
     ];
 
     /**
-     * The attributes that should be cast to native types.
+     * The attributes that should be cast to native types
      *
      * @var array
      */
@@ -87,25 +76,25 @@ class User extends Authenticatable
         'gender' => 'integer',
         'status' => 'integer',
         'email_verified_at' => 'datetime',
-        'notification_count' => 'integer',
+        'notification_count' => 'integer'
     ];
 
     /**
-     * all $fillable attributes changes will be logged.
+     * all $fillable attributes changes will be logged
      *
      * @var string
      */
     protected static $logFillable = true;
 
     /**
-     * customizing the log name.
+     * customizing the log name
      *
      * @var string
      */
     protected static $logName = Conventions::LOG_TYPE_CONSOLE;
 
     /**
-     * customizing the description.
+     * customizing the description
      *
      * @return string
      */
@@ -121,6 +110,26 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the identifier that will be stored in the subject claim of the JWT
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    /**
      * 设置密码
      *
      * @param string $value
@@ -130,7 +139,6 @@ class User extends Authenticatable
         if (is_null($value)) {
             return;
         }
-
         $this->attributes['password'] = bcrypt($value);
     }
 }

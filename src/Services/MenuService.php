@@ -17,9 +17,9 @@ class MenuService
 {
 
     /**
-     * 获取指定用户的授权菜单.
+     * 获取指定用户的授权菜单
      *
-     * @param User $user
+     * @param \App\Models\User $user
      * @return Illuminate\Database\Eloquent\Collection $menus
      */
     public function getAvailableMenusByUser(User $user = null)
@@ -43,7 +43,7 @@ class MenuService
     }
 
     /**
-     * 获取（可被）用作父节点列表.
+     * 获取（可被）用作父节点列表
      *
      * @return array
      */

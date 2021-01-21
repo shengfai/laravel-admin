@@ -1,26 +1,25 @@
 <?php
-
-namespace Shengfai\LaravelAdmin\Controllers;
+namespace Shengfai\LaravelAdmin\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Shengfai\LaravelAdmin\Models\Dimension;
 use Shengfai\LaravelAdmin\Models\Module;
+use Shengfai\LaravelAdmin\Models\Dimension;
 
 /**
  * 维度控制器
- * Class DimensionsController
+ * Class DimensionController
  *
+ * @package \Shengfai\LaravelAdmin\Http\Controllers
  * @author ShengFai <shengfai@qq.com>
- * @version 2020年8月6日
  */
-class DimensionsController extends Controller
+class DimensionController extends Controller
 {
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage
      *
-     * @param Request $request
-     * @param Dimension $dimension
+     * @param \Illuminate\Http\Request $request
+     * @param \Shengfai\LaravelAdmin\Models\Dimension $dimension
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     public function modules(Request $request, Dimension $dimension)
@@ -28,7 +27,9 @@ class DimensionsController extends Controller
         if ($request->isMethod('GET')) {
             
             $modules = Module::get();
-            $used_module_ids = $dimension->modules()->pluck('id')->all();
+            $used_module_ids = $dimension->modules()
+                ->pluck('id')
+                ->all();
             
             return $this->view([
                 'modules' => $modules,

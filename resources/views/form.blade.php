@@ -65,8 +65,6 @@
     </div>
 	@endforeach
 
-    <div class="hr-line-dashed"></div>
-
     <div class="layui-form-item text-center">
     	<input type="hidden" name="_token" value="{{ csrf_token() }}">
         <button class="layui-btn" type="submit">保存数据</button>

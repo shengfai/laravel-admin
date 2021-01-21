@@ -1,42 +1,43 @@
 <?php
-
-namespace Shengfai\LaravelAdmin\Controllers;
+namespace Shengfai\LaravelAdmin\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasPermissions;
-use Shengfai\LaravelAdmin\Handlers\ActivityHandler;
 use Shengfai\LaravelAdmin\Contracts\Conventions;
+use Shengfai\LaravelAdmin\Handlers\ActivityHandler;
 
 /**
  * 管理员控制台
- * Class ManagersController
+ * Class ManagerController
  *
- * @package \Shengfai\LaravelAdmin\Controllers
+ * @package \Shengfai\LaravelAdmin\Http\Controllers
  * @author ShengFai <shengfai@qq.com>
  */
-class ManagersController extends Controller
+class ManagerController extends Controller
 {
     use HasPermissions;
-    
+
     /**
-     * 页面标题.
+     * 页面标题
      *
      * @var string
      */
     protected $title = '管理员列表';
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $queryBuilder = User::query()->whereType(User::TYPE_ADMINISTRATOR)->with('roles')->orderBy('updated_at', 'DESC');
+        $queryBuilder = User::query()->whereType(User::TYPE_ADMINISTRATOR)
+            ->with('roles')
+            ->orderBy('updated_at', 'DESC');
         
         // 手机号
         if ($request->filled('phone')) {
@@ -44,11 +45,16 @@ class ManagersController extends Controller
             $queryBuilder->where('phone', $request->phone);
         }
         
+        if ($request->wantsJson()) {
+            $data = $queryBuilder->paginate($this->perPage);
+            return response()->json($data);
+        }
+        
         return $this->list($queryBuilder);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource
      *
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
@@ -63,7 +69,7 @@ class ManagersController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage
      *
      * @param \Illuminate\Http\Request $request
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
@@ -97,7 +103,32 @@ class ManagersController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\User $manager
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function show(Request $request, User $manager)
+    {
+        if (! $manager->exists) {
+            $manager = $this->user();
+        }
+        
+        if ($request->wantsJson()) {
+            $manager->load([
+                'roles.permissions'
+            ]);
+            return $this->response($manager->toArray());
+        }
+        
+        return $this->view([
+            'user' => $manager
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource
      *
      * @param \App\Models\User $manager
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
@@ -118,7 +149,7 @@ class ManagersController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\User $manager
@@ -151,7 +182,7 @@ class ManagersController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage
      *
      * @param \App\Models\User $manager
      * @return \Illuminate\Http\Response

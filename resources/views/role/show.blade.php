@@ -53,7 +53,7 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
             };
             this.getData = function (self) {
                 var index = $.msg.loading();
-                jQuery.get("{{ route('admin.authorizations.show', ['role' => $role]) }}", function (ret) {
+                jQuery.get("{{ route('admin.roles.permissions', ['role' => $role]) }}", function (ret) {
                     $.msg.close(index);
                     self.data = renderChildren(ret.data, 1);
                     self.showTree();
@@ -94,7 +94,7 @@ ul.ztree>li>a>span{font-size:15px;font-weight:700}
                 for (var i in data) {
                     (data[i].node) && nodes.push(data[i].id);
                 }
-                $.form.load("{{ route('admin.authorizations.store', ['role' => $role->id]) }}", {_token: "{{ csrf_token() }}", nodes: nodes}, "post");
+                $.form.load("{{ route('admin.roles.authorize', ['role' => $role->id]) }}", {_token: "{{ csrf_token() }}", nodes: nodes}, "post");
             };
             this.getData(this);
         };

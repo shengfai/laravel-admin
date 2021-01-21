@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Shengfai\LaravelAdmin\Validator as CValidator;
 use Shengfai\LaravelAdmin\DataTable\DataTable;
+use Shengfai\LaravelAdmin\Http\Middleware\LogActivity;
 use Shengfai\LaravelAdmin\Fields\Factory as FieldFactory;
 use Shengfai\LaravelAdmin\Config\Factory as ConfigFactory;
 use Shengfai\LaravelAdmin\Actions\Factory as ActionFactory;
@@ -51,8 +52,12 @@ class AdminServiceProvider extends ServiceProvider
         $this->fixConfigAndRouteCacheIfNeeded();
         
         // Load route with web middleware
-        Route::group(['middleware' => 'web'], function () {
-            $this->loadRoutesFrom(__DIR__ . '/routes.php');
+        Route::group([
+            'domain' => config('administrator.domain', null),
+            'prefix' => config('administrator.prefix'),
+            'middleware' => LogActivity::class
+        ], function () {
+            $this->loadRoutesFrom(__DIR__ . '/Http/routes.php');
         });
         
         // the admin validator

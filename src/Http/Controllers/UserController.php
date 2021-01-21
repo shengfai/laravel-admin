@@ -1,24 +1,24 @@
 <?php
-
-namespace Shengfai\LaravelAdmin\Controllers;
+namespace Shengfai\LaravelAdmin\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Traits\HasPermissions;
+use Shengfai\LaravelAdmin\Http\Requests\ResetPasswordRequest;
 
 /**
  * 用户控制台
- * Class UsersController.
+ * Class UserController
  *
  * @package \Shengfai\LaravelAdmin\Controllers
  * @author ShengFai <shengfai@qq.com>
  */
-class UsersController extends Controller
+class UserController extends Controller
 {
     use HasPermissions;
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource
      *
      * @param \Illuminate\Http\Request $request
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Shengfai\LaravelAdmin\Controllers\unknown[]|\Shengfai\LaravelAdmin\Controllers\string[]|\Shengfai\LaravelAdmin\Controllers\NULL[]|\Shengfai\LaravelAdmin\Controllers\number[]
@@ -35,9 +35,9 @@ class UsersController extends Controller
         
         return $this->list($queryBuilder);
     }
-    
+
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified resource
      *
      * @param \App\Models\User $user
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
@@ -59,13 +59,13 @@ class UsersController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage
      *
-     * @param Illuminate\Http\Request $request
+     * @param \Shengfai\LaravelAdmin\Http\Requests\ResetPasswordRequest $request
      * @param \App\Models\User $user
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
-    public function update(Request $request, User $user)
+    public function update(ResetPasswordRequest $request, User $user)
     {
         // 更新用户
         if ($user->update($request->all())) {

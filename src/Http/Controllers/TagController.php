@@ -1,6 +1,5 @@
 <?php
-
-namespace Shengfai\LaravelAdmin\Controllers;
+namespace Shengfai\LaravelAdmin\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Shengfai\LaravelAdmin\Models\Module;
@@ -9,20 +8,21 @@ use Illuminate\Support\Facades\Event;
 
 /**
  * 标签控制器
- * Class TagsController
+ * Class TagController
  *
  * @package \Shengfai\LaravelAdmin\Controllers
  * @author ShengFai <shengfai@qq.com>
  */
-class TagsController extends Controller
+class TagController extends Controller
 {
 
     /**
      * 设置关联标签
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      * @param string $class
      * @param int $id
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     public function attach(Request $request, string $class, int $id)
     {
@@ -37,10 +37,11 @@ class TagsController extends Controller
                 'id' => $id,
                 'class' => $class,
                 'model' => $model->load('dimensions'),
-                'used_tags' => $taggable->tags()->pluck('id')
+                'used_tags' => $taggable->tags()
+                    ->pluck('id')
             ]);
         }
-    
+        
         $taggable->tags()->sync($request->tags);
         
         // 添加事件

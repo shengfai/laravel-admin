@@ -46,7 +46,7 @@ return [
                             'model' => 'roles',
                             'id' => $model->id
                         ]) . '?action=edit">编辑</a><span class="text-explode">|</span><a data-title="角色授权" data-open="' .
-                         route('admin.roles.show', $model->id) . '">授权</a>';
+                         route('admin.roles.authorizations', $model->id) . '">授权</a>';
             }
         ]
     ],
