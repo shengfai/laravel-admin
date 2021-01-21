@@ -1,24 +1,23 @@
 <?php
-
-namespace Shengfai\LaravelAdmin\Controllers;
+namespace Shengfai\LaravelAdmin\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Overtrue\LaravelUploader\StrategyResolver;
-use Shengfai\LaravelAdmin\Handlers\FileHandler;
 use Shengfai\LaravelAdmin\Models\File;
+use Shengfai\LaravelAdmin\Handlers\FileHandler;
+use Overtrue\LaravelUploader\StrategyResolver;
 
 /**
  * 后台插件控制器
- * Class PlugsController.
+ * Class PlugController
  *
+ * @package \Shengfai\LaravelAdmin\Http\Controllers
  * @author ShengFai <shengfai@qq.com>
- * @version 2020年3月10日
  */
-class PlugsController extends Controller
+class PlugController extends Controller
 {
 
     /**
-     * 选择图标.
+     * 选择图标
      *
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
@@ -30,9 +29,10 @@ class PlugsController extends Controller
     }
 
     /**
-     * 文件上传.
+     * 文件上传
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function upfile(Request $request)
     {
@@ -51,8 +51,9 @@ class PlugsController extends Controller
     }
 
     /**
-     * 文件状态检查.
+     * 文件状态检查
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     public function upstate(Request $request)
@@ -61,7 +62,8 @@ class PlugsController extends Controller
         $file_hash = $request->get('md5');
         
         // 校验文件是否存在
-        if ($data = $this->validateFileExists($file_hash)) return $data;
+        if ($data = $this->validateFileExists($file_hash))
+            return $data;
         
         return $this->write([
             'code' => 'NOT_FOUND',
@@ -73,9 +75,10 @@ class PlugsController extends Controller
     }
 
     /**
-     * 通用文件上传.
+     * 通用文件上传
      *
-     * @return string
+     * @param \Illuminate\Http\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse
      */
     public function upload(Request $request)
     {
@@ -83,7 +86,8 @@ class PlugsController extends Controller
         $file_hash = md5_file($request->file('file')->path());
         
         // 校验文件是否存在
-        if ($data = $this->validateFileExists($file_hash)) return $data;
+        if ($data = $this->validateFileExists($file_hash))
+            return $data;
         
         $response = StrategyResolver::resolveFromRequest($request, $request->get('strategy', 'default'))->upload();
         
@@ -113,9 +117,9 @@ class PlugsController extends Controller
     }
 
     /**
-     * 位置选择.
+     * 位置选择
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function poipicker()
     {
@@ -126,6 +130,7 @@ class PlugsController extends Controller
      * 校验文件是否存在
      *
      * @param string $file_hash
+     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     protected function validateFileExists(string $file_hash)
     {

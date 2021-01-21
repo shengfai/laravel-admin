@@ -1,35 +1,35 @@
 <?php
-
-namespace Shengfai\LaravelAdmin\Controllers;
+namespace Shengfai\LaravelAdmin\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Shengfai\LaravelAdmin\Handlers\DataHandler;
 use Shengfai\LaravelAdmin\Models\Menu;
+use Spatie\Permission\Models\Permission;
+use Shengfai\LaravelAdmin\Handlers\DataHandler;
 use Shengfai\LaravelAdmin\Services\MenuService;
 use Spatie\Permission\Exceptions\PermissionAlreadyExists;
-use Spatie\Permission\Models\Permission;
 
 /**
  * 菜单控制器
- * Class MenusController.
+ * Class MenuController
  *
+ * @package \Shengfai\LaravelAdmin\Http\Controllers
  * @author ShengFai <shengfai@qq.com>
- * @version 2020年3月10日
  */
-class MenusController extends Controller
+class MenuController extends Controller
 {
+
     /**
-     * 页面标题.
+     * 页面标题
      *
      * @var string
      */
     protected $title = '菜单管理';
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource
      *
-     * @param Request $request
-     * @param Menu $menu
+     * @param \Illuminate\Http\Request $request
+     * @param \Shengfai\LaravelAdmin\Models\Menu $menu
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Shengfai\LaravelAdmin\Controllers\unknown[]|\Shengfai\LaravelAdmin\Controllers\string[]|\Shengfai\LaravelAdmin\Controllers\NULL[]|\Shengfai\LaravelAdmin\Controllers\number[]
      */
     public function index(Request $request, Menu $menu)
@@ -41,14 +41,17 @@ class MenusController extends Controller
         $menus = $this->list(Menu::class, false, false);
         $this->index_data_filter($menus['list']);
         
+        if ($request->wantsJson()) {
+            return $this->response($menus['list']);
+        }
+        
         return $this->view($menus);
     }
 
     /**
-     * 列表数据处理.
+     * 列表数据处理
      *
      * @param array $data
-     *
      * @return array
      */
     protected function index_data_filter(&$data)
@@ -62,9 +65,11 @@ class MenusController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     * @param \Illuminate\Http\Request $request
+     * @param \Shengfai\LaravelAdmin\Services\MenuService $menuService
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create(Request $request, MenuService $menuService)
     {
@@ -78,8 +83,10 @@ class MenusController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage
      *
+     * @param \Illuminate\Http\Request $request
+     * @param \Shengfai\LaravelAdmin\Models\Menu $menu
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     public function store(Request $request, Menu $menu)
@@ -99,9 +106,31 @@ class MenusController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     * @param \Illuminate\Http\Request $request
+     * @param \Shengfai\LaravelAdmin\Models\Menu $menu
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function show(Request $request, Menu $menu)
+    {
+        $menu->load('permission');
+        
+        if ($request->wantsJson()){
+            return $this->response($menu->toArray());
+        }
+        
+        return $this->view([
+            'menu' => $menu
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource
+     *
+     * @param \Shengfai\LaravelAdmin\Models\Menu $menu
+     * @param \Shengfai\LaravelAdmin\Services\MenuService $menuService
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit(Menu $menu, MenuService $menuService)
     {
@@ -116,10 +145,11 @@ class MenusController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage
      *
+     * @param \Illuminate\Http\Request $request
+     * @param \Shengfai\LaravelAdmin\Models\Menu $menu
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
-     *
      * @throws PermissionAlreadyExists
      */
     public function update(Request $request, Menu $menu)
@@ -141,8 +171,9 @@ class MenusController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage
      *
+     * @param \Shengfai\LaravelAdmin\Models\Menu $menu
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     public function destroy(Menu $menu)
@@ -155,8 +186,9 @@ class MenusController extends Controller
     }
 
     /**
-     * 创建权限.
+     * 创建权限
      *
+     * @param \Shengfai\LaravelAdmin\Models\Menu $menu
      * @return void
      */
     protected function autoCreatePermission(Menu $menu)
@@ -179,8 +211,9 @@ class MenusController extends Controller
     }
 
     /**
-     * 更新权限.
+     * 更新权限
      *
+     * @param \Shengfai\LaravelAdmin\Models\Menu $menu
      * @return void
      */
     protected function autoUpdatePermission(Menu $menu)

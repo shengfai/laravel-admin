@@ -2,9 +2,9 @@
 namespace Shengfai\LaravelAdmin;
 
 use Illuminate\Config\Repository as Config;
-use Shengfai\LaravelAdmin\Config\Factory as ConfigFactory;
 use Shengfai\LaravelAdmin\Services\MenuService;
 use Shengfai\LaravelAdmin\Handlers\DataHandler;
+use Shengfai\LaravelAdmin\Config\Factory as ConfigFactory;
 
 class Menu
 {

@@ -1,4 +1,4 @@
-@extends('admin::layouts.content')
+@extends('admin::layout.content')
 	
 @section('content')
 <div class="layui-row layui-col-space15">

@@ -1,82 +1,69 @@
 <?php
-
-namespace Shengfai\LaravelAdmin\Controllers;
+namespace Shengfai\LaravelAdmin\Http\Controllers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Session\SessionManager as Session;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Shengfai\LaravelAdmin\Traits\Response;
+use Shengfai\LaravelAdmin\Traits\ResponseTrait;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**
- * 控制台控制器基类
- * Class AdminController.
+ * 控制器基类
+ * Class Controller
  *
+ * @package \Shengfai\LaravelAdmin\Http\Controllers
  * @author ShengFai <shengfai@qq.com>
- * @version 2020年3月8日
  */
 abstract class Controller extends BaseController
 {
-    use Response;
-    
+    use ResponseTrait;
+
     /**
-     *
      * @var int
      */
     protected $page = 1;
-    
+
     /**
-     *
      * @var int
      */
     protected $perPage = 20;
-    
+
     /**
-     *
      * @var \Illuminate\Http\Request
      */
     protected $request;
-    
+
     /**
-     *
-     * @var \Illuminate\Session\SessionManager
-     */
-    protected $session;
-    
-    /**
-     *
      * @var string
      */
     protected $formRequestErrors;
-    
+
     /**
-     *
      * @var string
      */
     protected $layout = 'admin::layouts.default';
-    
+
     /**
-     * 页面标题.
+     * 页面标题
      *
      * @var string
      */
     protected $title;
-    
+
     /**
      * 操作视图
      *
      * @var string
      */
     protected $view;
-    
+
     /**
-     * 模板变量.
+     * 模板变量
      *
      * @var array
      */
@@ -86,77 +73,37 @@ abstract class Controller extends BaseController
      * 初始化
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Session\SessionManager $session
+     * @return void
      */
-    public function __construct(Request $request, Session $session)
+    public function __construct(Request $request)
     {
         // 加载系统级参数
-        $this->loadSysParameters($request, $session);
+        $this->loadSysParameters($request);
         
         // 加载业务级参数
         if (method_exists($this, 'loadBizParameters')) {
             $this->loadBizParameters($request);
         }
     }
-    
+
     /**
      * 系统参数初始化
      *
-     * @param Request $request
-     * @param \Illuminate\Session\SessionManager $session
+     * @param \Illuminate\Http\Request $request
+     * @return void
      */
-    final protected function loadSysParameters(Request $request, Session $session)
+    final protected function loadSysParameters(Request $request)
     {
         $this->request = $request;
-        $this->session = $session;
-        
-        $this->page = (int)$request->input('page', 1);
-        $this->perPage = (int)min($request->input('per_page', config('administrator.global_rows_per_page')), 10000);
-        
-        // $this->formRequestErrors = $this->resolveDynamicFormRequestErrors($request);
-    }
-    
-    /**
-     * POST method to capture any form request errors.
-     *
-     * @param \Illuminate\Http\Request $request
-     */
-    protected function resolveDynamicFormRequestErrors(Request $request)
-    {
-        try {
-            $config = app('admin.item_config');
-            $fieldFactory = app('admin.field_factory');
-        } catch (\ReflectionException $e) {
-            return;
-        }
-        if (array_key_exists('form_request', $config->getOptions())) {
-            try {
-                $model = $config->getFilledDataModel($request, $fieldFactory->getEditFields(), $request->id);
-                
-                $request->merge($model->toArray());
-                $formRequestClass = $config->getOption('form_request');
-                app($formRequestClass);
-            } catch (HttpResponseException $e) {
-                // Parses the exceptions thrown by Illuminate\Foundation\Http\FormRequest
-                $errorMessages = $e->getResponse()->getContent();
-                $errorsArray = json_decode($errorMessages);
-                if (!$errorsArray && is_string($errorMessages)) {
-                    return $errorMessages;
-                }
-                if ($errorsArray) {
-                    return implode('.', array_dot($errorsArray));
-                }
-            }
-        }
-        
-        return;
+        $this->page = (int) $request->input('page', 1);
+        $this->perPage = (int) min($request->input('per_page', config('administrator.global_rows_per_page')), 5000);
     }
 
     /**
      * 模板变量赋值
      *
-     * @param mixed $name 要显示的模板变量
-     * @param mixed $value 变量的值
+     * @param mixed $name
+     * @param mixed $value
      *
      * @return void
      */
@@ -170,10 +117,10 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * 表单默认操作.
+     * 表单默认操作
      *
-     * @param mix $dbQuery 数据库查询对象
-     * @param array $where 查询规则
+     * @param mix $dbQuery
+     * @param array $where
      * @param string $pkField
      *
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
@@ -186,20 +133,23 @@ abstract class Controller extends BaseController
         $pkValue = request()->input($pk, isset($where[$pk]) ? $where[$pk] : null);
         
         // 非POST请求, 获取数据并显示表单页面
-        if (!request()->isMethod('post')) {
-            $result['data'] = (null !== $pkValue) ? $db->where($pk, $pkValue)->where($where)->find()->toArray() : [];
+        if (! request()->isMethod('post')) {
+            $result['data'] = (null !== $pkValue) ? $db->where($pk, $pkValue)
+                ->where($where)
+                ->find()
+                ->toArray() : [];
             return $this->view($result, 'form');
         }
     }
 
     /**
-     * 列表集成处理方法.
+     * 列表集成处理方法
      *
-     * @param mixed $dbQuery 数据库查询对象
-     * @param bool $isPage 是启用分页
-     * @param bool $isDisplay 是否直接输出显示
-     * @param bool $total 总记录数
-     * @param array $result 结果集
+     * @param mixed $dbQuery
+     * @param bool $isPage
+     * @param bool $isDisplay
+     * @param bool $total
+     * @param array $result
      *
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Shengfai\LaravelAdmin\Controllers\unknown[]|\Shengfai\LaravelAdmin\Controllers\string[]|\Shengfai\LaravelAdmin\Controllers\NULL[]|\Shengfai\LaravelAdmin\Controllers\number[]
      */
@@ -214,10 +164,7 @@ abstract class Controller extends BaseController
         }
         
         // 列表数据查询与显示
-        if (is_callable([
-            $db,
-            'getQuery'
-        ]) && (null === $db->getQuery()->orders)) {
+        if (is_callable([$db, 'getQuery']) && (null === $db->getQuery()->orders)) {
             if ($db instanceof Model) {
                 $table = $db->getTable();
             } elseif ($db instanceof Builder) {
@@ -247,36 +194,10 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * 索引查询.
+     * 分页显示
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|NULL[]
-     */
-    protected function search(string $keyword, bool $isDisplay = true)
-    {
-        // 执行搜索
-        $resources = $this->buildSearchQuery($keyword);
-        
-        // 直接返回数据
-        if (!$isDisplay) {
-            return $resources;
-        }
-        
-        // 添加路径
-        $resources->withPath(request()->url());
-        
-        // 列表数据查询与显示
-        $result = $this->page($resources);
-        
-        if ($isDisplay) {
-            return $this->view($result, 'index');
-        }
-        
-        return $result;
-    }
-
-    /**
-     * 分页显示.
-     *
+     * @param LengthAwarePaginator $page
+     * @param int $per_page
      * @return unknown[]|string[]|NULL[]|number[]
      */
     protected function page(LengthAwarePaginator $page, int $per_page = 0)
@@ -292,26 +213,28 @@ abstract class Controller extends BaseController
         
         // 分页数据处理
         if (($total = $page->total()) > 0) {
-            list($rowHTML, $curPage, $maxNum) = [[], $page->currentPage(), $page->lastPage()];
-            foreach ([20, 50, 100, 150, 200, 300, 500, 1000] as $num) {
-                list($query['per_page'], $query['page']) = [$num, 1];
+            list ($rowHTML, $curPage, $maxNum) = [[], $page->currentPage(), $page->lastPage()];
+            foreach ([20, 50, 100, 200, 300, 500, 1000] as $num) {
+                list ($query['per_page'], $query['page']) = [$num, 1];
                 $url = url(request()->getPathInfo()) . '?' . http_build_query($query);
-                $rowHTML[] = "<option data-url='{$url}' " . ($per_page === $num ? 'selected' : '') .
-                         " value='{$num}'>{$num}</option>";
+                $rowHTML[] = "<option data-url='{$url}' " . ($per_page === $num ? 'selected' : '') . " value='{$num}'>{$num}</option>";
             }
-            list($pattern, $replacement) = [
+            list ($pattern, $replacement) = [
                 ['|href="(.*?)"|', '|pagination|'],
                 ['data-open="$1"', 'pagination pull-right']
             ];
-            $html = "<span class='pagination-trigger nowrap'>共 {$total} 条记录，每页显示 <select data-auto-none>" .
-                     join('', $rowHTML) . "</select> 条，共 {$maxNum} 页当前显示第 {$curPage} 页。</span>";
-            list($result['total'], $result['list'], $result['page']) = [
+            $html = "<span class='pagination-trigger nowrap'>共 {$total} 条记录，每页显示 <select data-auto-none>" . join('', $rowHTML) . "</select> 条，共 {$maxNum} 页当前显示第 {$curPage} 页。</span>";
+            list ($result['total'], $result['list'], $result['page']) = [
                 $total,
                 $page->all(),
                 $html . preg_replace($pattern, $replacement, $page->render())
             ];
         } else {
-            list($result['total'], $result['list'], $result['page']) = [$total, $page->all(), $page->render()];
+            list ($result['total'], $result['list'], $result['page']) = [
+                $total,
+                $page->all(),
+                $page->render()
+            ];
         }
         
         return $result;
@@ -336,7 +259,7 @@ abstract class Controller extends BaseController
         $order_column = method_exists($model, 'getOrderColumnName') ? $model->getOrderColumnName() : 'sort';
         foreach (request()->input() as $key => $value) {
             if (preg_match('/^_\d{1,}$/', $key) && preg_match('/^\d{1,}$/', $value)) {
-                list($where, $update) = [
+                list ($where, $update) = [
                     ['id' => trim($key, '_')],
                     [$order_column => $value]
                 ];
@@ -351,19 +274,21 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * 输出视图.
+     * 输出视图
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     * @param array $data
+     * @param string $view
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     protected function view(array $data = [], string $view = '')
     {
         // 设置标题及模板变量
-        !isset($data['title']) && $data['title'] = $this->title;
+        ! isset($data['title']) && $data['title'] = $this->title;
         $data = array_merge($data, $this->data);
         
         // 操作视图
         $view = $this->view ?? $view;
-        if (empty($view) || !Str::contains($view, 'admin::')) {
+        if (empty($view) || ! Str::contains($view, 'admin::')) {
             $method = \Route::current()->getActionMethod();
             $action = empty($view) ? in_array($method, ['create', 'edit']) ? 'form' : $method : $view;
             $controller = $this->getCurrentControllerName(true);
@@ -374,13 +299,13 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * 操作成功跳转的快捷方法.
+     * 操作成功跳转的快捷方法
      *
-     * @param string $msg 提示信息
-     * @param string $url 跳转的URL地址
-     * @param string $data 返回的数据
-     * @param number $wait 跳转等待时间
-     * @param array $header 发送的Header信息
+     * @param string $msg
+     * @param string $url
+     * @param string $data
+     * @param number $wait
+     * @param array $header
      *
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
@@ -404,13 +329,13 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * 操作失败跳转的快捷方法.
+     * 操作失败跳转的快捷方法
      *
-     * @param string $msg 提示信息
-     * @param string $url 跳转的URL地址
-     * @param string $data 返回的数据
-     * @param number $wait 跳转等待时间
-     * @param array $header 发送的Header信息
+     * @param string $msg
+     * @param string $url
+     * @param string $data
+     * @param number $wait
+     * @param array $header
      *
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
@@ -434,7 +359,7 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * Get the authenticated user.
+     * Get the authenticated user
      *
      * @return \App\Models\User
      */
@@ -442,10 +367,11 @@ abstract class Controller extends BaseController
     {
         return Auth::user();
     }
-    
+
     /**
-     * 获取当前控制器名.
+     * 获取当前控制器名
      *
+     * @param string $baseName
      * @return string
      */
     protected function getCurrentControllerName($baseName = false)
