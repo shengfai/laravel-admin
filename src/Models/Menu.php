@@ -126,7 +126,7 @@ class Menu extends Model
      */
     public function getUrlAttribute($value)
     {
-        if (Str::contains($value, '/')) {
+        if (! Str::contains($value, 'http')) {
             $value = config('administrator.prefix') . $value;
         }
         
