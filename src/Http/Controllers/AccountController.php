@@ -26,7 +26,7 @@ class AccountController extends Controller
      */
     public function showLoginForm()
     {
-        return $this->view([], 'admin::accounts.login');
+        return $this->view([], 'admin::account.login');
     }
 
     /**

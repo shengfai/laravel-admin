@@ -96,7 +96,7 @@ class PositionableController extends Controller
      */
     public function edit(Positionable $data)
     {
-        return $this->view(compact('data'), 'admin::positionables.push');
+        return $this->view(compact('data'), 'admin::positionable.push');
     }
 
     /**
