@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Traits\HasPermissions;
 use Shengfai\LaravelAdmin\Handlers\DataHandler;
 use Shengfai\LaravelAdmin\Handlers\ActivityHandler;
+use Spatie\Permission\Exceptions\RoleAlreadyExists;
 
 /**
  * 角色控制器
@@ -45,6 +46,28 @@ class RoleController extends AdminController
         $this->title = '角色授权';
         
         return $this->view(compact('role'));
+    }
+
+    /**
+     * Show the form for creating a new resource
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function store(Request $request)
+    {
+        try {
+            $role = Role::create($request->only([
+                'name',
+                'guard_name',
+                'remark',
+                'status'
+            ]));
+            
+            return $this->success();
+        } catch (RoleAlreadyExists $exception) {
+            return $this->error('角色名已存在');
+        }
     }
 
     /**

@@ -9,6 +9,12 @@ return [
     'single' => '推荐位',
     'model' => Position::class,
     
+    'query_parameters' => [
+        'relationships' => [
+            'count' => ['datas']
+        ]
+    ],
+    
     'columns' => [
         'sortable' => [
             'title' => '<button type="submit" class="layui-btn layui-btn-normal layui-btn-xs">排 序</button>',
@@ -33,12 +39,10 @@ return [
         ],
         'datas_count' => [
             'title' => '推荐数',
-            'relationship' => 'datas',
-            'select' => 'COUNT((:table).id)',
             'width' => 80,
             'align' => 'center',
             'output' => function ($value, $model) {
-                return $value;
+                return $model->datas_count;
             }
         ],
         'description' => [

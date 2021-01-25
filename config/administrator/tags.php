@@ -11,6 +11,13 @@ return [
     'single' => '标签',
     'model' => Tag::class,
     
+    'query_parameters' => [
+        'relationships' => [
+            'with' => ['dimension'],
+            'count' => ['taggables']
+        ]
+    ],
+    
     'columns' => [
         'sortable' => [
             'title' => '<button type="submit" class="layui-btn layui-btn-normal layui-btn-xs">排 序</button>',
@@ -28,11 +35,9 @@ return [
         ],
         'dimension_id' => [
             'title' => '维度',
-            'relationship' => 'dimension',
-            'select' => '(:table).name',
             'width' => 120,
             'output' => function ($value, $model) {
-                return '<span class="color-blue">' . $value . '</span>';
+                return '<span class="color-blue">' . $model->dimension->name . '</span>';
             }
         ],
         'parent_id' => [
@@ -44,11 +49,9 @@ return [
         ],
         'taggables_count' => [
             'title' => '关联数',
-            'relationship' => 'taggables',
-            'select' => 'COUNT((:table).tag_id)',
             'width' => 80,
             'output' => function ($value, $model) {
-                return $value;
+                return $model->taggables_count;
             }
         ],
         'remark' => [
