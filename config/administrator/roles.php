@@ -1,5 +1,4 @@
 <?php
-
 use Spatie\Permission\Models\Role;
 use Shengfai\LaravelAdmin\Fields\Presenter;
 
@@ -35,18 +34,19 @@ return [
         'created_at' => [
             'title' => '时间',
             'width' => 150,
-            'sortable' => true
+            'sortable' => true,
+            'output' => function ($value, $model) {
+                return '<span class="color-desc">' . $model->created_at->toDateTimeString() . '</span>';
+            }
         ],
         'operation' => [
             'title' => '管理',
             'width' => 90,
             'output' => function ($value, $model) {
-                return '<a data-title="编辑角色" data-modal="' .
-                         route('admin.model.item', [
-                            'model' => 'roles',
-                            'id' => $model->id
-                        ]) . '?action=edit">编辑</a><span class="text-explode">|</span><a data-title="角色授权" data-open="' .
-                         route('admin.roles.authorizations', $model->id) . '">授权</a>';
+                return '<a data-title="编辑角色" data-modal="' . route('admin.model.item', [
+                    'model' => 'roles',
+                    'id' => $model->id
+                ]) . '?action=edit">编辑</a><span class="text-explode">|</span><a data-title="角色授权" data-open="' . route('admin.roles.authorizations', $model->id) . '">授权</a>';
             }
         ]
     ],

@@ -11,6 +11,7 @@ Route::match(['put', 'patch'], 'types/{type}', 'TypeController@update')->name('t
 Route::delete('types/{type}', 'TypeController@destroy')->name('types.destroy');                 // 删除
 
 // 角色权限
+Route::post('roles', 'RoleController@store')->name('roles.store');                                                         // 创建角色
 Route::get('managers/{manager}/authorizations', 'ManagerController@authorizations')->name('managers.authorizations');      // 用户授权
 Route::get('users/{user}/password', 'UserController@password')->name('users.reset_password');                              // 重置密码
 Route::get('roles/{role}/authorizations', 'RoleController@show')->where('role', '[0-9]+')->name('roles.authorizations');   // 查看角色
