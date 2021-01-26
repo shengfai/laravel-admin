@@ -3,11 +3,11 @@
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	
 	@empty($model->dimensions)
-    <p class="help-block text-center well">所属模型未配置维度！</p>
+    <p class="help-block text-center well">所属模型未配置标签维度！</p>
     @else
 	@foreach ($model->dimensions as $dimension)
 	<div class="layui-form-item">
-        <label class="layui-form-label">{{ $dimension->name }}维度</label>
+        <label class="layui-form-label">{{ $dimension->name }}@维度</label>
         <div class="layui-input-block">
             <select class="layui-input taggable-{{ $dimension->id }}-multiple-limit" multiple="multiple" name="tags[]">
             	@foreach ($dimension->tags as $tag)
@@ -30,7 +30,7 @@ require(['jquery', '/admin/plugs/select2/select2.min.js'], function () {
 	window.form.render();
 	@foreach ($model->dimensions as $dimension)
 	$(".taggable-{{ $dimension->id }}-multiple-limit").select2({
-    	placeholder: "请选择{{ $dimension->name }}标签",
+    	placeholder: "请选择{{ $dimension->name }}维度标签",
     	tags: false,
     	multiple: true,
     	maximumSelectionLength: {{ $dimension->limits }},

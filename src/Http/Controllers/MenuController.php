@@ -2,6 +2,7 @@
 namespace Shengfai\LaravelAdmin\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Shengfai\LaravelAdmin\Models\Menu;
 use Spatie\Permission\Models\Permission;
 use Shengfai\LaravelAdmin\Handlers\DataHandler;
@@ -24,6 +25,13 @@ class MenuController extends Controller
      * @var string
      */
     protected $title = '菜单管理';
+
+    /**
+     * 守卫
+     *
+     * @var web
+     */
+    protected $defaultGuardName = 'web';
 
     /**
      * Display a listing of the resource
@@ -92,13 +100,16 @@ class MenuController extends Controller
     public function store(Request $request, Menu $menu)
     {
         try {
-            // 创建菜单
-            $menu->fill($request->all());
-            $menu->save();
             
-            // 创建权限
-            $this->autoCreatePermission($menu);
-            
+            DB::transaction(function () use ($request, $menu) {
+                
+                // 创建菜单
+                $menu->fill($request->all());
+                $menu->save();
+                
+                // 创建权限
+                $this->autoCreatePermission($menu);
+            });
             return $this->success('数据保存成功', '');
         } catch (PermissionAlreadyExists $e) {
             return $this->error('权限已存在，创建失败！');
@@ -116,7 +127,7 @@ class MenuController extends Controller
     {
         $menu->load('permission');
         
-        if ($request->wantsJson()){
+        if ($request->wantsJson()) {
             return $this->response($menu->toArray());
         }
         
@@ -201,7 +212,8 @@ class MenuController extends Controller
         // 创建权限
         $permission = Permission::create([
             'name' => $menu->code,
-            'title' => $menu->name
+            'title' => $menu->name,
+            'guard_name' => $this->defaultGuardName
         ]);
         
         // 更新菜单

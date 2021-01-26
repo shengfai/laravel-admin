@@ -160,15 +160,8 @@ class ManagerController extends Controller
         // 更新角色
         if ($request->roles) {
             
-            // 删除绑定角色
-            $bindRoles = $manager->getRoleNames();
-            
-            foreach ($bindRoles as $role) {
-                $manager->removeRole($role);
-            }
-            
             // 绑定角色
-            $manager->assignRole($request->roles);
+            $manager->syncRoles($request->roles);
             
             ActivityHandler::console()->performedOn($manager)->log('用户授权');
         }
