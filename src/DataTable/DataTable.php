@@ -53,7 +53,7 @@ class DataTable
         $withs = $queryParameters['relationships']['with'] ?? [];
         $counts = $queryParameters['relationships']['count'] ?? [];
         
-        $rows = QueryBuilder::for($queryBuilder)->defaultSort($defaultSort)
+        $rows = QueryBuilder::for($queryBuilder)->defaultSorts($defaultSort)
             ->allowedSorts($allowedSorts)
             ->allowedFilters($allowedFilters)
             ->allowedIncludes($allowedIncludes)
