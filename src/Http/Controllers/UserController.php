@@ -27,10 +27,11 @@ class UserController extends Controller
     {
         $this->title = '用户管理';
         
-        $queryBuilder = User::query();
+        $queryBuilder = User::query()->latest()->inNormalType($request->type);
         
-        if ($request->has('type')) {
-            $queryBuilder->where('type', $request->type);
+        if ($request->wantsJson()) {
+            $data = $queryBuilder->paginate($this->perPage);
+            return response()->json($data);
         }
         
         return $this->list($queryBuilder);

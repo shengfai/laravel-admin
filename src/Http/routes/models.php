@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 // 模型设置
 Route::group([
-                'middleware' => [
+    'middleware' => [
         'Shengfai\LaravelAdmin\Http\Middleware\ValidateModel',
         'Shengfai\LaravelAdmin\Http\Middleware\PostValidate'
     ]

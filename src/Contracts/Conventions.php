@@ -11,7 +11,7 @@ namespace Shengfai\LaravelAdmin\Contracts;
  */
 interface Conventions
 {
-    const VERSION = '1.1.0';                            // 版本
+    const VERSION = '1.1.8';                            // 版本
 
     /**
      * 注册通道
