@@ -29,6 +29,11 @@ class PositionController extends Controller
             return $this->list($queryBuilder);
         }
         
+        if ($request->wantsJson()) {
+            $data = Positionable::query()->ofPosition($position->id)->paginate($this->perPage);
+            return response()->json($data);
+        }
+        
         $this->title = '【' . $position->name . '】内容管理';
         
         return $this->view(compact('position'));
