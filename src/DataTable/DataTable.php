@@ -48,7 +48,7 @@ class DataTable
     {
         $defaultSort = $queryParameters['sorting']['default'] ?? '-id';
         $allowedSorts = $queryParameters['sorting']['allowed'] ?? [];
-        $allowedFilters = $queryParameters['filtering']['allowed'] ?? [];
+        $allowedFilters = $this->parseAllowedQueryFilters($queryParameters);
         $allowedIncludes = $queryParameters['including']['allowed'] ?? [];
         $withs = $queryParameters['relationships']['with'] ?? [];
         $counts = $queryParameters['relationships']['count'] ?? [];
@@ -130,5 +130,21 @@ class DataTable
                 ];
             }
         }
+    }
+    
+    /**
+     * 获取查询过滤器
+     *
+     * @param array $parameters
+     * @return array
+     */
+    protected function parseAllowedQueryFilters(array $parameters)
+    {
+        if (! isset($parameters['filtering']['allowed'])) {
+            return [];
+        }
+    
+        $allowedFilters = $parameters['filtering']['allowed'];
+        return ($allowedFilters instanceof \Closure) ? $allowedFilters() : $allowedFilters;
     }
 }
