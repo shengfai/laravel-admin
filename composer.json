@@ -11,16 +11,16 @@
     ],
     "require": {
         "php": ">=7.0.0",
-        "laravel/framework": ">=7.0",
+        "laravel/framework": ">=8.0",
         "spatie/laravel-permission": ">=3.0",
         "spatie/laravel-activitylog": ">=3.0",
-        "laravel/ui": ">=2.0",
+        "laravel/ui": ">=3.0",
         "overtrue/laravel-options": "^2.0",
-        "overtrue/laravel-uploader": "^1.2",
-        "spatie/laravel-tags": "^2.6",
+        "overtrue/laravel-uploader": "^2.0",
+        "spatie/laravel-tags": "^3.0",
         "overtrue/pinyin": "~4.0",
         "spatie/laravel-query-builder": "^3.3",
-        "tymon/jwt-auth": "^1.0"
+        "tymon/jwt-auth": "dev-develop"
     },
     "autoload": {
         "psr-4": {
