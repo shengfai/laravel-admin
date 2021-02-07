@@ -3,6 +3,7 @@ namespace Shengfai\LaravelAdmin\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\Permission\Traits\HasPermissions;
 use Shengfai\LaravelAdmin\Http\Requests\ResetPasswordRequest;
 
@@ -27,7 +28,11 @@ class UserController extends Controller
     {
         $this->title = '用户管理';
         
-        $queryBuilder = User::query()->latest()->inNormalType($request->type);
+        $queryBuilder = QueryBuilder::for(User::query()->latest()->inNormalType($request->type))->allowedFilters([
+            'name',
+            'phone',
+            'status'
+        ]);
         
         if ($request->wantsJson()) {
             $data = $queryBuilder->paginate($this->perPage);
