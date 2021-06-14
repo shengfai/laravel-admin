@@ -25,12 +25,12 @@ class PositionController extends Controller
     public function show(Request $request, Position $position)
     {
         if ($request->get('action') == 'resort') {
-            $queryBuilder = Positionable::ofPosition($position->id);
+            $queryBuilder = Positionable::ofPosid($position->id);
             return $this->list($queryBuilder);
         }
         
         if ($request->wantsJson()) {
-            $data = Positionable::query()->ofPosition($position->id)->paginate($this->perPage);
+            $data = Positionable::query()->ofPosid($position->id)->paginate($this->perPage);
             return response()->json($data);
         }
         
