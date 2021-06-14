@@ -1,5 +1,4 @@
 <?php
-
 namespace Shengfai\LaravelAdmin\Models;
 
 use Spatie\Tags\Tag as OriginalTag;
@@ -14,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Tag extends OriginalTag
 {
+
     /**
      * The attributes that are mass assignable.
      *
@@ -29,7 +29,7 @@ class Tag extends OriginalTag
         'remark',
         'sort'
     ];
-    
+
     /**
      * The relations to eager load on every query.
      *
@@ -48,6 +48,20 @@ class Tag extends OriginalTag
         static::saving(function ($model) {
             $model->type = $model->dimension->name;
         });
+    }
+
+    /**
+     * 检查绑定值的模型
+     *
+     * @param mixed $value
+     * @param string|null $field
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $locale = $locale ?? app()->getLocale();
+        
+        return $this->where("$field->{$locale}", $value)->firstOrFail();
     }
 
     /**
@@ -71,7 +85,9 @@ class Tag extends OriginalTag
     {
         $locale = $locale ?? app()->getLocale();
         
-        return static::query()->where("name->{$locale}", $name)->withType($type)->first();
+        return static::query()->where("name->{$locale}", $name)
+            ->withType($type)
+            ->first();
     }
 
     /**

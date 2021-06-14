@@ -78,7 +78,7 @@ class Positionable extends Pivot
      * @param int $position_id
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOfPosition(Builder $query, int $position_id = null)
+    public function scopeOfPosid(Builder $query, int $position_id = null)
     {
         if (is_null($position_id)) {
             return $query;

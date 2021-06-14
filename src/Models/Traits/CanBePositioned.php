@@ -22,7 +22,7 @@ trait CanBePositioned
     public function isPositionedBy(Position $position)
     {
         return $this->positionables()
-            ->ofPosition($position->id)
+            ->ofPosid($position->id)
             ->exists();
     }
 
