@@ -55,7 +55,7 @@ Route::name('admin.')->middleware(['web', Authenticate::class])->group(function 
 
         // 登录页
         Route::get('login', 'AccountController@showLoginForm')->name('login');
-        Route::post('login', 'AccountController@login');
+        Route::post('login', 'AccountController@login')->name('login');
         Route::post('logout', 'AccountController@logout')->name('logout');
 
         // Admin Dashboard
