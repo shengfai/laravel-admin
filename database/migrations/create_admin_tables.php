@@ -63,7 +63,7 @@ class CreateAdminTables extends Migration
             $table->string('relative_url', 256);
             $table->string('original_name', 256);
             $table->string('url', 256);
-            $table->string('remark', 128)->nullable();
+            $table->string('remark', 256)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -55,6 +55,15 @@ return [
     },
 
     /*
+     * Determine if the request has a URI that should pass through verification.
+     *
+     * @type array
+     */
+    'auth' => [
+        'excepts' => ['admin.login', 'admin.logout']
+    ],
+    
+    /*
      * This determines if you will have a dashboard (whose view you provide in the dashboard_view option) or a non-dashboard home
      * page (whose menu item you provide in the home_page option)
      *

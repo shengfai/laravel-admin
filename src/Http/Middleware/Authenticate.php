@@ -49,17 +49,16 @@ class Authenticate
      */
     protected function shouldPassThrough($request)
     {
+        // excepts uri
         $excepts = config('administrator.auth.excepts', [
-            'console/login',
-            'console/logout'
+            'admin.login',
+            'admin.logout'
         ]);
         
-        return collect($excepts)->map('admin_base_path')->contains(function ($except) use($request) {
-            if ($except !== '/') {
-                $except = trim($except, '/');
-            }
-            
-            return $request->is($except);
+        $route = collect($excepts)->first(function ($item) use ($request) {
+            return $request->routeIs($item);
         });
+        
+        return $route != null;
     }
 }
