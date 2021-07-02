@@ -22,11 +22,16 @@ class AccountController extends Controller
     /**
      * 登录表单
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
-        return $this->view([], 'admin::account.login');
+        if ($request->isMethod('Get')) {
+            return $this->view([], 'admin::account.login');
+        }
+        
+        return $this->login($request);
     }
 
     /**
