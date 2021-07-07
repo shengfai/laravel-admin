@@ -227,13 +227,13 @@ abstract class Controller extends BaseController
             list ($result['total'], $result['list'], $result['page']) = [
                 $total,
                 $page->all(),
-                $html . preg_replace($pattern, $replacement, $page->render())
+                $html . preg_replace($pattern, $replacement, $page->render('admin::pagination.bootstrap-4'))
             ];
         } else {
             list ($result['total'], $result['list'], $result['page']) = [
                 $total,
                 $page->all(),
-                $page->render()
+                $page->render('admin::pagination.bootstrap-4')
             ];
         }
         
