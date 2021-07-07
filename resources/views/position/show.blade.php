@@ -19,7 +19,8 @@
                     <th class="list-table-sort-td text-center">
                         <button type="submit" class="layui-btn layui-btn-normal layui-btn-xs">排 序</button>
                     </th>
-                    <th class="text-left" width="80px">关联模型</th>
+                    <th class="text-left" width="80px">模型</th>
+                    <th class="text-left" width="80px">编号</th>
                     <th class="text-left" width="450px">标题</th>
                     <th class="text-left">摘要</th>
                     <th class="text-left" width="80px">推送时间</th>
@@ -33,9 +34,10 @@
                         <input name="_{{ $vo->id }}" value="{{ $vo->sort }}" class="list-sort-input">
                     </td>
                     <td class="text-left">{{$vo->getPositionableModel('name')}}</a></td>
+                    <td class="text-left">{{$vo->positionable_id}}</a></td>
                     <td class="text-left">
                         <img style="height:22px; vertical-align: text-bottom;" data-tips-text="{{ $vo->title }}缩略图" data-tips-image src="{{ $vo->cover_pic ? : '/admin/images/image.png' }}">
-                        {{$vo->title}}
+                        <a target="_blank" href="{{$vo->positionable->getWebUrl()}}">{{$vo->title}}</a>
                     </td>
                     <td class="text-left"><span class="color-desc">{{ $vo->description }}</span></td>
                     <td class="text-left"><span class="color-desc">{{ $vo->updated_at->diffForHumans() }}</span></td>
