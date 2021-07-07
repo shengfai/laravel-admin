@@ -24,18 +24,17 @@ class PositionController extends Controller
      */
     public function show(Request $request, Position $position)
     {
-        if ($request->get('action') == 'resort') {
-            $queryBuilder = Positionable::ofPosid($position->id);
-            return $this->list($queryBuilder);
-        }
+        $this->title = '【' . $position->name . '】内容管理';
         
         if ($request->wantsJson()) {
             $data = Positionable::query()->ofPosid($position->id)->paginate($this->perPage);
             return response()->json($data);
         }
         
-        $this->title = '【' . $position->name . '】内容管理';
+        $this->view = 'admin::position.show';
+        $this->assign('position', $position);
         
-        return $this->view(compact('position'));
+        $queryBuilder = Positionable::ofPosid($position->id);
+        return $this->list($queryBuilder);
     }
 }
