@@ -8,7 +8,7 @@
 <div class="layui-card">
     <div class="layui-card-body">
         <form autocomplete="off" onsubmit="return false;" data-auto="true" action="{{route('admin.positions.datas', $position->id)}}" method="get">
-            @empty($position->datas)
+            @empty($list)
             <p class="help-block text-center well">没 有 记 录 哦！</p>
             @else
             <input type="hidden" value="resort" name="action">
@@ -27,7 +27,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($position->datas as $key => $vo)
+                @foreach ($list as $key => $vo)
                 <tr>
                     <td class="list-table-sort-td">
                         <input name="_{{ $vo->id }}" value="{{ $vo->sort }}" class="list-sort-input">
@@ -48,6 +48,9 @@
                 @endforeach
                 </tbody>
             </table>
+            <div class="layui-table-page">
+        		{!! $page !!}
+        	</div>
             @endempty
         </form>
     </div>

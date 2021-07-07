@@ -25,8 +25,7 @@ Route::match(['get', 'post'], 'taggables/{model}/{id}', 'TagController@attach')-
 // 推荐位
 Route::get('positions/{position}/datas', 'PositionController@show')->name('positions.datas');                // 推荐位详情
 Route::get('positions/{position}/create', 'PositionableController@create')->name('positions.datas.create');  // 添加推送内容
-Route::get('positions/datas/push', 'PositionableController@push')->name('positions.datas.push');             // 推送内容
-Route::get('positions/models/types', 'PositionController@model')->name('positions.models');                  // 推荐内容的种类
+Route::match(['get', 'post'], 'positions/push/{model}/{id}', 'PositionableController@push')->name('positions.datas.push');   // 推送内容
 
 // 资源相关
 Route::resources(
