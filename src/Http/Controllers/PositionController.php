@@ -27,14 +27,14 @@ class PositionController extends Controller
         $this->title = '【' . $position->name . '】内容管理';
         
         if ($request->wantsJson()) {
-            $data = Positionable::query()->ofPosid($position->id)->paginate($this->perPage);
+            $data = Positionable::ofPosid($position->id)->with('positionable')->sorted()->latest('updated_at')->paginate($this->perPage);
             return response()->json($data);
         }
         
         $this->view = 'admin::position.show';
         $this->assign('position', $position);
         
-        $queryBuilder = Positionable::ofPosid($position->id);
+        $queryBuilder = Positionable::ofPosid($position->id)->with('positionable')->sorted()->latest('updated_at');
         return $this->list($queryBuilder);
     }
 }

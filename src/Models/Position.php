@@ -1,106 +1,43 @@
 <?php
 namespace Shengfai\LaravelAdmin\Models;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Shengfai\LaravelAdmin\Traits\Scope;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Shengfai\LaravelAdmin\Models\Traits\Attributes;
-
+use Shengfai\LaravelAdmin\Traits\Scope;
 
 /**
- * 推荐数据模型
- * Class Positionable
+ * 推荐位模型
+ * Class Position
  *
  * @package \Shengfai\LaravelAdmin\Models
  * @author ShengFai <shengfai@qq.com>
  */
-class Positionable extends Model
+class Position extends Model
 {
     use Scope;
     use Attributes;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'positionable';
-
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = true;
-
-    /**
-     * 批量填充字段.
+     * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'position_id',
-        'positionable_type',
-        'positionable_id',
-        'title',
+        'name',
         'cover_pic',
-        'description',
-        'sort',
-        'created_at',
-        'updated_at'
+        'description'
     ];
 
     /**
-     * 获取推荐模型
+     * 关联推荐对象
      *
-     * @param string $key
-     * @return string|array
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function getPositionableModel(string $key = null)
+    public function datas(): HasMany
     {
-        $availablePositionedModels = config('administrator.available_positioned_models');
-        $modelName = Str::of(class_basename($this->positionable_type))->snake()
-            ->lower()
-            ->__toString();
-        return $key ? $availablePositionedModels[$modelName][$key] : $availablePositionedModels[$modelName];
-    }
-
-    /**
-     * 获得拥有此推荐的模型
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function positionable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    /**
-     * 关联的推荐位
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function position(): BelongsTo
-    {
-        return $this->belongsTo(Position::class);
-    }
-
-    /**
-     * 查询指定推荐位记录
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param int $position_id
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeOfPosid(Builder $query, int $position_id = null)
-    {
-        if (is_null($position_id)) {
-            return $query;
-        }
-        
-        return $query->where('position_id', $position_id);
+        return $this->hasMany(Positionable::class)
+            ->sorted()
+            ->latest('updated_at');
     }
 }

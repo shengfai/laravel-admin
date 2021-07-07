@@ -2,12 +2,13 @@
 namespace Shengfai\LaravelAdmin\Models;
 
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Shengfai\LaravelAdmin\Traits\Scope;
 use Shengfai\LaravelAdmin\Models\Traits\Attributes;
+
 
 /**
  * 推荐数据模型
@@ -16,10 +17,17 @@ use Shengfai\LaravelAdmin\Models\Traits\Attributes;
  * @package \Shengfai\LaravelAdmin\Models
  * @author ShengFai <shengfai@qq.com>
  */
-class Positionable extends Pivot
+class Positionable extends Model
 {
     use Scope;
     use Attributes;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'positionable';
 
     /**
      * 批量填充字段.
@@ -33,7 +41,9 @@ class Positionable extends Pivot
         'title',
         'cover_pic',
         'description',
-        'sort'
+        'sort',
+        'created_at',
+        'updated_at'
     ];
 
     /**
