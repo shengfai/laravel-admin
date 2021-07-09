@@ -123,6 +123,7 @@ return [
         'roles',
         'activities',
         'positions',
+        'positionables',
         'modules',
         'dimensions',
         'tags'

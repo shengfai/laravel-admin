@@ -19,11 +19,11 @@
                     <th class="list-table-sort-td text-center">
                         <button type="submit" class="layui-btn layui-btn-normal layui-btn-xs">排 序</button>
                     </th>
-                    <th class="text-left" width="80px">模型</th>
-                    <th class="text-left" width="80px">编号</th>
-                    <th class="text-left" width="450px">标题</th>
+                    <th class="text-left" width="70px">模型</th>
+                    <th class="text-left" width="60px">编号</th>
+                    <th class="text-left" width="360px">标题</th>
                     <th class="text-left">摘要</th>
-                    <th class="text-left" width="80px">推送时间</th>
+                    <th class="text-left" width="70px">推送时间</th>
                     <th class="text-left" width="90px">操作</th>
                 </tr>
                 </thead>
@@ -36,15 +36,15 @@
                     <td class="text-left">{{$vo->getPositionableModel('name')}}</a></td>
                     <td class="text-left">{{$vo->positionable_id}}</a></td>
                     <td class="text-left">
-                        <img style="height:22px; vertical-align: text-bottom;" data-tips-text="{{ $vo->title }}缩略图" data-tips-image src="{{ $vo->cover_pic ? : '/admin/images/image.png' }}">
+                        <img style="height:22px;" data-tips-image src="{{ $vo->cover_pic ? $vo->cover_pic . '!thumb' : '/admin/images/image.png' }}">
                         <a target="_blank" href="{{$vo->positionable->getWebUrl()}}">{{$vo->title}}</a>
                     </td>
-                    <td class="text-left"><span class="color-desc">{{ $vo->description }}</span></td>
+                    <td class="text-left"><span class="color-desc">{{ $vo->getDescription(68) }}</span></td>
                     <td class="text-left"><span class="color-desc">{{ $vo->updated_at->diffForHumans() }}</span></td>
                     <td class="text-left">
-                        <a data-modal="{{ route('admin.datas.edit', $vo->id) }}">编辑</a>
+                        <a data-modal="{{ route('admin.model.item', ['model' => 'positionables', 'id' => $vo->id]) }}?action=edit">编辑</a>
                         <span class="text-explode">|</span>
-                        <a data-delete="{{ $vo->id }}" data-field="delete" data-csrf="{{ csrf_token() }}" data-action="{{ route('admin.datas.destroy', $vo->id) }}">删除</a>
+                        <a data-delete="{{ $vo->id }}" data-field="delete" data-csrf="{{ csrf_token() }}" data-action="{{ route('admin.model.delete', ['model' => 'positionables', 'id' => $vo->id]) }}">删除</a>
                     </td>
                 </tr>
                 @endforeach

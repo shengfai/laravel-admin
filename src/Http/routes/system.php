@@ -36,7 +36,6 @@ Route::resources(
         'managers'        => 'ManagerController',        // 管理员资源
         'consumers'       => 'ConsumerController',       // 用户资源
         'permissions'     => 'PermissionController',     // 权限资源
-        'positions/datas' => 'PositionableController',   // 推荐内容资源
     ]
 );
 
