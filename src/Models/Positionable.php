@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Shengfai\LaravelAdmin\Traits\Scope;
 use Shengfai\LaravelAdmin\Models\Traits\Attributes;
 
-
 /**
  * 推荐数据模型
  * Class Positionable
@@ -45,6 +44,17 @@ class Positionable extends Model
         'created_at',
         'updated_at'
     ];
+
+    /**
+     * 获取摘要
+     *
+     * @param int $length
+     * @return string
+     */
+    public function getDescription(int $length = 180)
+    {
+        return Str::limit(strip_tags($this->description), $length);
+    }
 
     /**
      * 获取推荐模型

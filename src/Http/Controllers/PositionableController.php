@@ -81,17 +81,4 @@ class PositionableController extends Controller
             return $this->error('推荐数据不存在, 请检查后重试!');
         }
     }
-
-    /**
-     * Remove the specified resource from storage
-     *
-     * @param \Shengfai\LaravelAdmin\Models\Positionable $data
-     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
-     */
-    public function destroy(Positionable $data)
-    {
-        $data->delete();
-        
-        return $this->success('数据保存成功', '');
-    }
 }
