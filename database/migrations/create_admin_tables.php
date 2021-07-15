@@ -122,6 +122,7 @@ class CreateAdminTables extends Migration
             $table->string('description', 512)->default('')->nullable()->comment('描述');
             $table->unsignedTinyInteger('sort')->default(0);
             $table->timestamps();
+            $table->index(['sort', 'updated_at']);
         });
     }
 
